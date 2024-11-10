@@ -1,0 +1,382 @@
+GAMS 48.2.0  4a7dd217 Oct 29, 2024          WEX-WEI x86 64bit/MS Windows - 11/10/24 19:17:11 Page 1
+Task 1 - Optimization under Uncertainty
+C o m p i l a t i o n
+
+
+   2   
+      Detailed description of the model:
+      - Objective: Minimize the cost of a diet that meets specific nutritional constraints.
+      - Variables: Quantities of various foods to be included in the diet.
+      - Constraints: Caloric, protein, carbohydrate, fat, calcium, and vitamin B2 requirements.
+       
+      Inputs:
+      - Price per 100g for each food.
+      - Nutritional values per 100g for each food item.
+  13   
+  14  * Declaration of all positive Variables
+  15  Positive variables x_1_apple, x_2_cornflakes, x_3_carrots, x_4_potatoes, x_5_cheese, x_6_milk, x_7_chocolate, x_8_spinach, x_9_steak;
+  16  * Setting their universal upper Bound
+  17  x_1_apple.up = 5;
+  18  x_2_cornflakes.up = 5;
+  19  x_3_carrots.up =5;
+  20  x_4_potatoes.up = 5;
+  21  x_5_cheese.up =5;
+  22  x_6_milk.up =5;
+  23  x_7_chocolate.up = 5;
+  24  x_8_spinach.up = 5;
+  25  x_9_steak.up = 5;
+  26  * Setting individual bounds
+  27  x_2_cornflakes.up = 3;
+  28  x_6_milk.up = 2;
+  29  x_7_chocolate.up = 3;
+  30  x_9_steak.lo = 1;
+  31   
+  32  * Free variable for the target function
+  33  Free variable z;
+  34   
+  35  * Declaration of the equations
+  36  Equations
+  37  eq_1 target_function,
+  38  eq_2 calorie_restriction,
+  39  eq_3 protein_restriction,
+  40  eq_4 carbohydrates_restriction,
+  41  eq_5 min_fat_restriction,
+  42  eq_6 max_fat_restriction,
+  43  eq_7 calcium_restriction,
+  44  eq_8 vitamin_b2_restriction,
+  45  eq_9 min_amount_restriction;
+  46   
+  47  * Target Function with the Price in Euro per 100g
+  48  eq_1 .. z =e= 0.22*x_1_apple + 0.18*x_2_cornflakes + 0.07*x_3_carrots + 0.14*x_4_potatoes + 0.55*x_5_cheese + 0.1*x_6_milk + 0.54*x_7_chocolate + 0.28*x_8_spinach + 3.2*x_9_steak;
+  49  * Minimum Amount of Calories in kcal
+  50  eq_2 .. 52*x_1_apple + 355*x_2_cornflakes + 26*x_3_carrots + 71*x_4_potatoes + 354*x_5_cheese + 64*x_6_milk + 536*x_7_chocolate + 17*x_8_spinach + 121*x_9_steak =g= 2400;
+  51  * Minimum Amount of Protein in g
+  52  eq_3 .. 0.35*x_1_apple + 7*x_2_cornflakes + 1*x_3_carrots + 2*x_4_potatoes + 25*x_5_cheese + 3.5*x_6_milk + 9*x_7_chocolate + 2.5*x_8_spinach + 21*x_9_steak =g= 56;
+  53  * Carbohydrates cover 50% of the calorie requirement
+  54  eq_4 .. 18*x_1_apple + 307*x_2_cornflakes + 7*x_3_carrots + 24.5*x_4_potatoes - 177*x_5_cheese - 12*x_6_milk - 52*x_7_chocolate - 6.5*x_8_spinach - 60.5*x_9_steak =g= 0;
+  55  * Minimum Amount of Fat in g
+  56  eq_5 .. 0.4*x_1_apple + 0.6*x_2_cornflakes + 0.2*x_3_carrots + 0.11*x_4_potatoes + 28.3*x_5_cheese + 3.5*x_6_milk + 31.5*x_7_chocolate + 0.3*x_8_spinach + 4*x_9_steak =g= 50;
+  57  * Maximum Amount of Fat in g
+  58  eq_6 .. 0.4*x_1_apple + 0.6*x_2_cornflakes + 0.2*x_3_carrots + 0.11*x_4_potatoes + 28.3*x_5_cheese + 3.5*x_6_milk + 31.5*x_7_chocolate + 0.3*x_8_spinach + 4*x_9_steak =l= 70;
+  59  * Minimum Amount of Calcium in mg
+  60  eq_7 .. 7*x_1_apple + 13*x_2_cornflakes + 41*x_3_carrots + 6*x_4_potatoes + 800*x_5_cheese + 120*x_6_milk + 214*x_7_chocolate + 126*x_8_spinach + 3*x_9_steak =g= 500;
+  61  * Minimum Amount of Vitamin B2 in µg
+  62  eq_8 .. 30*x_1_apple + 60*x_2_cornflakes + 53*x_3_carrots + 47*x_4_potatoes + 300*x_5_cheese + 170*x_6_milk + 370*x_7_chocolate + 230*x_8_spinach + 130*x_9_steak =g= 1100;
+  63  * Minimum healthy Amount
+  64  eq_9 .. 1*x_1_apple + 1*x_3_carrots + x_8_spinach =g= 4;
+  65   
+  66  * Define all declared Equations in the Model
+  67  Model problem /all/;
+  68   
+  69  * Solve the Model using the Linear Programming Method and minimize the Target Function
+  70  Solve problem using lp minimizing z;
+  71   
+  72  * Print the Results
+  73  Display x_1_apple.l, x_2_cornflakes.l, x_3_carrots.l, x_4_potatoes.l, x_5_cheese.l, x_6_milk.l, x_7_chocolate.l, x_8_spinach.l, x_9_steak.l, z.l;
+
+
+COMPILATION TIME     =        0.000 SECONDS      2 MB  48.2.0 4a7dd217 WEX-WEI
+GAMS 48.2.0  4a7dd217 Oct 29, 2024          WEX-WEI x86 64bit/MS Windows - 11/10/24 19:17:11 Page 2
+Task 1 - Optimization under Uncertainty
+Equation Listing    SOLVE problem Using LP From line 70
+
+
+---- eq_1  =E=  target_function
+
+eq_1..  - 0.22*x_1_apple - 0.18*x_2_cornflakes - 0.07*x_3_carrots - 0.14*x_4_potatoes - 0.55*x_5_cheese - 0.1*x_6_milk - 0.54*x_7_chocolate - 0.28*x_8_spinach - 3.2*x_9_steak + z =E= 0 ; (LHS = -3.2, INFES = 3.2 ****)
+     
+
+---- eq_2  =G=  calorie_restriction
+
+eq_2..  52*x_1_apple + 355*x_2_cornflakes + 26*x_3_carrots + 71*x_4_potatoes + 354*x_5_cheese + 64*x_6_milk + 536*x_7_chocolate + 17*x_8_spinach + 121*x_9_steak =G= 2400 ; (LHS = 121, INFES = 2279 ****)
+     
+
+---- eq_3  =G=  protein_restriction
+
+eq_3..  0.35*x_1_apple + 7*x_2_cornflakes + x_3_carrots + 2*x_4_potatoes + 25*x_5_cheese + 3.5*x_6_milk + 9*x_7_chocolate + 2.5*x_8_spinach + 21*x_9_steak =G= 56 ; (LHS = 21, INFES = 35 ****)
+     
+
+---- eq_4  =G=  carbohydrates_restriction
+
+eq_4..  18*x_1_apple + 307*x_2_cornflakes + 7*x_3_carrots + 24.5*x_4_potatoes - 177*x_5_cheese - 12*x_6_milk - 52*x_7_chocolate - 6.5*x_8_spinach - 60.5*x_9_steak =G= 0 ; (LHS = -60.5, INFES = 60.5 ****)
+     
+
+---- eq_5  =G=  min_fat_restriction
+
+eq_5..  0.4*x_1_apple + 0.6*x_2_cornflakes + 0.2*x_3_carrots + 0.11*x_4_potatoes + 28.3*x_5_cheese + 3.5*x_6_milk + 31.5*x_7_chocolate + 0.3*x_8_spinach + 4*x_9_steak =G= 50 ; (LHS = 4, INFES = 46 ****)
+     
+
+---- eq_6  =L=  max_fat_restriction
+
+eq_6..  0.4*x_1_apple + 0.6*x_2_cornflakes + 0.2*x_3_carrots + 0.11*x_4_potatoes + 28.3*x_5_cheese + 3.5*x_6_milk + 31.5*x_7_chocolate + 0.3*x_8_spinach + 4*x_9_steak =L= 70 ; (LHS = 4)
+     
+
+---- eq_7  =G=  calcium_restriction
+
+eq_7..  7*x_1_apple + 13*x_2_cornflakes + 41*x_3_carrots + 6*x_4_potatoes + 800*x_5_cheese + 120*x_6_milk + 214*x_7_chocolate + 126*x_8_spinach + 3*x_9_steak =G= 500 ; (LHS = 3, INFES = 497 ****)
+     
+
+---- eq_8  =G=  vitamin_b2_restriction
+
+eq_8..  30*x_1_apple + 60*x_2_cornflakes + 53*x_3_carrots + 47*x_4_potatoes + 300*x_5_cheese + 170*x_6_milk + 370*x_7_chocolate + 230*x_8_spinach + 130*x_9_steak =G= 1100 ; (LHS = 130, INFES = 970 ****)
+     
+
+---- eq_9  =G=  min_amount_restriction
+
+eq_9..  x_1_apple + x_3_carrots + x_8_spinach =G= 4 ; (LHS = 0, INFES = 4 ****)
+     
+GAMS 48.2.0  4a7dd217 Oct 29, 2024          WEX-WEI x86 64bit/MS Windows - 11/10/24 19:17:11 Page 3
+Task 1 - Optimization under Uncertainty
+Column Listing      SOLVE problem Using LP From line 70
+
+
+---- x_1_apple  
+
+x_1_apple
+                (.LO, .L, .UP, .M = 0, 0, 5, 0)
+       -0.22    eq_1
+       52       eq_2
+        0.35    eq_3
+       18       eq_4
+        0.4     eq_5
+        0.4     eq_6
+        7       eq_7
+       30       eq_8
+        1       eq_9
+
+
+---- x_2_cornflakes  
+
+x_2_cornflakes
+                (.LO, .L, .UP, .M = 0, 0, 3, 0)
+       -0.18    eq_1
+      355       eq_2
+        7       eq_3
+      307       eq_4
+        0.6     eq_5
+        0.6     eq_6
+       13       eq_7
+       60       eq_8
+
+
+---- x_3_carrots  
+
+x_3_carrots
+                (.LO, .L, .UP, .M = 0, 0, 5, 0)
+       -0.07    eq_1
+       26       eq_2
+        1       eq_3
+        7       eq_4
+        0.2     eq_5
+        0.2     eq_6
+       41       eq_7
+       53       eq_8
+        1       eq_9
+
+
+---- x_4_potatoes  
+
+x_4_potatoes
+                (.LO, .L, .UP, .M = 0, 0, 5, 0)
+       -0.14    eq_1
+       71       eq_2
+        2       eq_3
+       24.5     eq_4
+        0.11    eq_5
+        0.11    eq_6
+        6       eq_7
+       47       eq_8
+
+
+---- x_5_cheese  
+
+x_5_cheese
+                (.LO, .L, .UP, .M = 0, 0, 5, 0)
+       -0.55    eq_1
+      354       eq_2
+       25       eq_3
+     -177       eq_4
+       28.3     eq_5
+       28.3     eq_6
+      800       eq_7
+      300       eq_8
+
+
+---- x_6_milk  
+
+x_6_milk
+                (.LO, .L, .UP, .M = 0, 0, 2, 0)
+       -0.1     eq_1
+       64       eq_2
+        3.5     eq_3
+      -12       eq_4
+        3.5     eq_5
+        3.5     eq_6
+      120       eq_7
+      170       eq_8
+
+
+---- x_7_chocolate  
+
+x_7_chocolate
+                (.LO, .L, .UP, .M = 0, 0, 3, 0)
+       -0.54    eq_1
+      536       eq_2
+        9       eq_3
+      -52       eq_4
+       31.5     eq_5
+       31.5     eq_6
+      214       eq_7
+      370       eq_8
+
+
+---- x_8_spinach  
+
+x_8_spinach
+                (.LO, .L, .UP, .M = 0, 0, 5, 0)
+       -0.28    eq_1
+       17       eq_2
+        2.5     eq_3
+       -6.5     eq_4
+        0.3     eq_5
+        0.3     eq_6
+      126       eq_7
+      230       eq_8
+        1       eq_9
+
+
+---- x_9_steak  
+
+x_9_steak
+                (.LO, .L, .UP, .M = 1, 1, 5, 0)
+       -3.2     eq_1
+      121       eq_2
+       21       eq_3
+      -60.5     eq_4
+        4       eq_5
+        4       eq_6
+        3       eq_7
+      130       eq_8
+        0       (OLD LEVEL ****)
+
+
+---- z  
+
+z
+                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+        1       eq_1
+
+GAMS 48.2.0  4a7dd217 Oct 29, 2024          WEX-WEI x86 64bit/MS Windows - 11/10/24 19:17:11 Page 4
+Task 1 - Optimization under Uncertainty
+Range Statistics    SOLVE problem Using LP From line 70
+
+
+RANGE STATISTICS (ABSOLUTE NON-ZERO FINITE VALUES)
+
+RHS       [min, max] : [ 4.000E+00, 2.400E+03] - Zero values observed as well
+Bound     [min, max] : [ 1.000E+00, 5.000E+00] - Zero values observed as well
+Matrix    [min, max] : [ 7.000E-02, 8.000E+02]
+
+GAMS 48.2.0  4a7dd217 Oct 29, 2024          WEX-WEI x86 64bit/MS Windows - 11/10/24 19:17:11 Page 5
+Task 1 - Optimization under Uncertainty
+Model Statistics    SOLVE problem Using LP From line 70
+
+
+MODEL STATISTICS
+
+BLOCKS OF EQUATIONS           9     SINGLE EQUATIONS            9
+BLOCKS OF VARIABLES          10     SINGLE VARIABLES           10  1 projected
+NON ZERO ELEMENTS            76
+
+
+GENERATION TIME      =        0.000 SECONDS      3 MB  48.2.0 4a7dd217 WEX-WEI
+GAMS 48.2.0  4a7dd217 Oct 29, 2024          WEX-WEI x86 64bit/MS Windows - 11/10/24 19:17:11 Page 6
+Task 1 - Optimization under Uncertainty
+Solution Report     SOLVE problem Using LP From line 70
+
+
+               S O L V E      S U M M A R Y
+
+     MODEL   problem             OBJECTIVE  z
+     TYPE    LP                  DIRECTION  MINIMIZE
+     SOLVER  CPLEX               FROM LINE  70
+
+**** SOLVER STATUS     1 Normal Completion
+**** MODEL STATUS      1 Optimal
+**** OBJECTIVE VALUE                5.1692
+
+ RESOURCE USAGE, LIMIT          0.000 10000000000.000
+ ITERATION COUNT, LIMIT         3    2147483647
+*** This solver runs with a demo license. No commercial use.
+--- GMO setup time: 0.00s
+--- GMO memory 0.50 Mb (peak 0.50 Mb)
+--- Dictionary memory 0.00 Mb
+--- Cplex 22.1.1.0 link memory 0.00 Mb (peak 0.00 Mb)
+--- Starting Cplex
+
+
+--- LP status (1): optimal.
+--- Cplex Time: 0.00sec (det. 0.03 ticks)
+
+
+Optimal solution found
+Objective:            5.169180
+
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- EQU eq_1                .              .              .             1.0000      
+---- EQU eq_2            2400.0000      2400.0000        +INF            0.0020      
+---- EQU eq_3              56.0000        65.0026        +INF             .          
+---- EQU eq_4                .           794.9771        +INF             .          
+---- EQU eq_5              50.0000        70.0000        +INF             .          
+---- EQU eq_6              -INF           70.0000        70.0000        -0.0169      
+---- EQU eq_7             500.0000       639.0877        +INF             .          
+---- EQU eq_8            1100.0000      1287.3238        +INF             .          
+---- EQU eq_9               4.0000         4.0000        +INF            0.0214      
+
+  eq_1  target_function
+  eq_2  calorie_restriction
+  eq_3  protein_restriction
+  eq_4  carbohydrates_restriction
+  eq_5  min_fat_restriction
+  eq_6  max_fat_restriction
+  eq_7  calcium_restriction
+  eq_8  vitamin_b2_restriction
+  eq_9  min_amount_restriction
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- VAR x_1_apple           .              .             5.0000         0.1014      
+---- VAR x_2_cornf~          .             3.0000         3.0000        -0.5192      
+---- VAR x_3_carro~          .             4.0000         5.0000          .          
+---- VAR x_4_potat~          .             0.4512         5.0000          .          
+---- VAR x_5_cheese          .              .             5.0000         0.3197      
+---- VAR x_6_milk            .              .             2.0000         0.0311      
+---- VAR x_7_choco~          .             2.0111         3.0000          .          
+---- VAR x_8_spina~          .              .             5.0000         0.2297      
+---- VAR x_9_steak          1.0000         1.0000         5.0000         3.0257      
+---- VAR z                 -INF            5.1692        +INF             .          
+
+
+**** REPORT SUMMARY :        0     NONOPT
+                             0 INFEASIBLE
+                             0  UNBOUNDED
+GAMS 48.2.0  4a7dd217 Oct 29, 2024          WEX-WEI x86 64bit/MS Windows - 11/10/24 19:17:11 Page 7
+Task 1 - Optimization under Uncertainty
+E x e c u t i o n
+
+
+----     73 VARIABLE x_1_apple.L           =        0.000  
+            VARIABLE x_2_cornflakes.L      =        3.000  
+            VARIABLE x_3_carrots.L         =        4.000  
+            VARIABLE x_4_potatoes.L        =        0.451  
+            VARIABLE x_5_cheese.L          =        0.000  
+            VARIABLE x_6_milk.L            =        0.000  
+            VARIABLE x_7_chocolate.L       =        2.011  
+            VARIABLE x_8_spinach.L         =        0.000  
+            VARIABLE x_9_steak.L           =        1.000  
+            VARIABLE z.L                   =        5.169  
+
+
+EXECUTION TIME       =        0.047 SECONDS      3 MB  48.2.0 4a7dd217 WEX-WEI
