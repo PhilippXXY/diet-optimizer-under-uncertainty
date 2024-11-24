@@ -100,3 +100,40 @@ c(i) = c_initial(i);
 c(uncertainty_surcharge_c_absolut_items) = c(uncertainty_surcharge_c_absolut_items) + uncertainty_surcharge_c_absolut(uncertainty_surcharge_c_absolut_items);
 * Apply relative surcharge
 c(uncertainty_surcharge_c_relative_items) = c(uncertainty_surcharge_c_relative_items) * (1 + uncertainty_surcharge_c_relative(uncertainty_surcharge_c_relative_items));
+
+* Define variables
+Positive Variable x(i);
+Free Variable z;
+
+* Universal upper bounds and specific constraints
+x.up(i) = 5;
+x.up("cornflake") = 3;
+x.up("milk") = 2;
+x.up("chocolate") = 3;
+x.lo("steak") = 1;
+
+* Define equations
+Equations
+    eq1 objective_function,
+    eq2_min(j) minimum_nutritional_restrictions
+    eq2_max(j) maximum_nutritional_restrictions;
+
+* Objective function
+eq1 .. z =e= sum(i, c(i) * x(i));
+
+* Constraints with a minimum nutritional requirement (greater than or equal to) 
+eq2_min(j)$(ord(j) ne 5) .. 
+    sum(i, A(i,j) * x(i)) =g= b(j);
+
+* Constraints with a maximum nutritional requirement (less than or equal to) in this case for fat
+eq2_max(j)$(ord(j) eq 5) .. 
+    sum(i, A(i,j) * x(i)) =l= b(j);
+
+* Model definition
+Model problem /all/;
+
+* Solve the model
+Solve problem using lp minimizing z;
+
+* Display results
+Display x.l, z.l;

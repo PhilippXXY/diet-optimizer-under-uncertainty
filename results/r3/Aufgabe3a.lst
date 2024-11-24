@@ -1,0 +1,345 @@
+GAMS 48.2.0  4a7dd217 Oct 29, 2024          DAX-DAC arm 64bit/macOS - 11/24/24 18:02:55 Page 1
+Task 3a - Optimization under Uncertainty
+C o m p i l a t i o n
+
+
+   4   
+   5  * Sets for foods (i) and nutrients (j)
+   6  Set
+   7      i  / apple, cornflake, carrots, potatoes, cheese, milk, chocolate, spinach, steak /
+   8      uncertainty_surcharge_c_absolut_items(i) 'Items to apply sum increases' / apple, potatoes, cheese, spinach /
+   9      uncertainty_surcharge_c_relative_items(i) 'Items to apply percentage increases' / cornflake, carrots, milk, chocolate, steak/
+  10      j  / calories, protein, carbs, fat_min, fat_max, calcium, vit_b2, min_amount /;
+  11   
+  12  * Table for nutritional values of each food (left-hand side coefficients)
+  13  Table A_initial(i,j) Nutritional values per 100g
+  14                calories   protein   carbs   fat_min   fat_max   calcium   vit_b2   min_amount
+  15      apple       52       0.35      18      0.4       0.4       7         30        1
+  16      cornflake  355       7        307      0.6       0.6       13        60        0
+  17      carrots     26       1          7      0.2       0.2       41        53        1
+  18      potatoes    71       2        24.5     0.11      0.11      6         47        0
+  19      cheese     354       25       177     28.3      28.3      800       300        0
+  20      milk        64       3.5       12      3.5       3.5      120       170        0
+  21      chocolate  536       9         52     31.5      31.5      214       370        0
+  22      spinach     17       2.5        6.5    0.3       0.3      126       230        1
+  23      steak      121       21        60.5    4         4         3        130        0;
+  24   
+  25  * Table of reduction percentages as for an lp equivalent the worst case scenario is considered, which is that less nutrients are available in the food than expected
+  26  Table Uncertainty_interval_A_relativ(i,j) Uncertainty percentage for each nutrient of each food item
+  27                calories   protein  carbs   fat_min   fat_max   calcium   vit_b2   min_amount
+  28      apple       0        0.2       0       0.2       0.2       0.2       0.15       0
+  29      cornflake   0        0.1       0       0.2       0.2       0.5       0.2        0
+  30      carrots     0        0.2       0       0.2       0.2       0.2       0.2        0
+  31      potatoes    0        0.05      0       0.02      0.02      0.02      0.01       0
+  32      cheese      0        0.01      0       0.01      0.01      0.1       0.05       0
+  33      milk        0        0.1       0       0.1       0.1       0.2       0.05       0
+  34      chocolate   0        0.01      0       0.01      0.01      0.01      0.01       0
+  35      spinach     0        0.1       0       0.015     0.015     0.1       0.2        0
+  36      steak       0        0.15      0       0.3       0.3       0.2       0.15       0;
+  37   
+  38  * Table for updated nutritional values
+  39  Table A(i,j) Updated nutritional values per 100g;
+  40   
+  41  * Apply reductions to the nutritional values
+  42  A(i,j) = A_initial(i,j) * (1 - Uncertainty_interval_A_relativ(i,j));
+  43   
+  44   
+  45  * Parameters for right-hand side constraints (nutritional requirements) and objective function coefficients
+  46  Parameter
+  47      b_initial(j) /
+  48          calories 2400,
+  49          protein  56,
+  50          carbs    0,
+  51          fat_min  50,
+  52          fat_max  70,
+  53          calcium  500,
+  54          vit_b2   1100,
+  55          min_amount 4 /
+  56      uncertainty_surcharge_b_absolut(j) 'Amount of additional surcharge needed per day as the worst case scenario is that more nutrients are needed' /
+  57          calories 350,
+  58          protein  10,
+  59          carbs    0,
+  60          fat_min  10,
+  61  *       Only the minimum amount of fat needed to get increased
+  62          fat_max  0,
+  63          calcium  200,
+  64          vit_b2   300,
+  65          min_amount 0 /
+  66      b(j) 'Updated parameter for daily nutrient needs equivalent to the right-hand side of the constraints';
+  67   
+  68  * Initialize b(j) with b_initial(j) and apply the absolute surcharge
+  69  b(j) = b_initial(j) + uncertainty_surcharge_b_absolut(j);
+  70  Display b;
+  71   
+  72   
+  73  Parameter
+  74      c_initial(i) /
+  75          apple 0.22,
+  76          cornflake 0.18,
+  77          carrots 0.07,
+  78          potatoes 0.14,
+  79          cheese 0.55,
+  80          milk 0.1,
+  81          chocolate 0.54,
+  82          spinach 0.28,
+  83          steak 3.2 /
+  84      uncertainty_surcharge_c_absolut(i) 'Amount of additional surcharge per 100g' /
+  85          apple 0.06,
+  86          potatoes 0.04,
+  87          cheese 0.1,
+  88          spinach 0.1/
+  89      uncertainty_surcharge_c_relative(i) 'Percentage of additional surcharge per 100g' /
+  90          cornflake 0.15,
+  91          carrots 0.2,
+  92          milk 0.25,
+  93          chocolate 0.4,
+  94          steak 0.4/
+  95      c(i) 'Final coefficients for objective function';
+  96   
+  97  * Initialize c(i) with c_initial(i)
+  98  c(i) = c_initial(i);
+  99  * Apply absolute surcharge
+ 100  c(uncertainty_surcharge_c_absolut_items) = c(uncertainty_surcharge_c_absolut_items) + uncertainty_surcharge_c_absolut(uncertainty_surcharge_c_absolut_items);
+ 101  * Apply relative surcharge
+ 102  c(uncertainty_surcharge_c_relative_items) = c(uncertainty_surcharge_c_relative_items) * (1 + uncertainty_surcharge_c_relative(uncertainty_surcharge_c_relative_items));
+ 103   
+ 104  * Define variables
+ 105  Positive Variable x(i);
+ 106  Free Variable z;
+ 107   
+ 108  * Universal upper bounds and specific constraints
+ 109  x.up(i) = 5;
+ 110  x.up("cornflake") = 3;
+ 111  x.up("milk") = 2;
+ 112  x.up("chocolate") = 3;
+ 113  x.lo("steak") = 1;
+ 114   
+ 115  * Define equations
+ 116  Equations
+ 117      eq1 objective_function,
+ 118      eq2_min(j) minimum_nutritional_restrictions
+ 119      eq2_max(j) maximum_nutritional_restrictions;
+ 120   
+ 121  * Objective function
+ 122  eq1 .. z =e= sum(i, c(i) * x(i));
+ 123   
+ 124  * Constraints with a minimum nutritional requirement (greater than or equal to)
+ 125  eq2_min(j)$(ord(j) ne 5) ..
+ 126      sum(i, A(i,j) * x(i)) =g= b(j);
+ 127   
+ 128  * Constraints with a maximum nutritional requirement (less than or equal to) in this case for fat
+ 129  eq2_max(j)$(ord(j) eq 5) ..
+ 130      sum(i, A(i,j) * x(i)) =l= b(j);
+ 131   
+ 132  * Model definition
+ 133  Model problem /all/;
+ 134   
+ 135  * Solve the model
+ 136  Solve problem using lp minimizing z;
+ 137   
+ 138  * Display results
+ 139  Display x.l, z.l;
+
+
+COMPILATION TIME     =        0.001 SECONDS      3 MB  48.2.0 4a7dd217 DAX-DAC
+GAMS 48.2.0  4a7dd217 Oct 29, 2024          DAX-DAC arm 64bit/macOS - 11/24/24 18:02:55 Page 2
+Task 3a - Optimization under Uncertainty
+E x e c u t i o n
+
+
+----     70 PARAMETER b  Updated parameter for daily nutrient needs equivalent to the right-hand side of the constraints
+
+calories   2750.000,    protein      66.000,    fat_min      60.000,    fat_max      70.000,    calcium     700.000,    vit_b2     1400.000,    min_amount    4.000
+
+GAMS 48.2.0  4a7dd217 Oct 29, 2024          DAX-DAC arm 64bit/macOS - 11/24/24 18:02:55 Page 3
+Task 3a - Optimization under Uncertainty
+Equation Listing    SOLVE problem Using LP From line 136
+
+
+---- eq1  =E=  objective_function
+
+eq1..  - 0.28*x(apple) - 0.207*x(cornflake) - 0.084*x(carrots) - 0.18*x(potatoes) - 0.65*x(cheese) - 0.125*x(milk) - 0.756*x(chocolate) - 0.38*x(spinach) - 4.48*x(steak) + z =E= 0 ; (LHS = -4.48, INFES = 4.48 ****)
+     
+
+---- eq2_min  =G=  minimum_nutritional_restrictions
+
+eq2_min(calories)..  52*x(apple) + 355*x(cornflake) + 26*x(carrots) + 71*x(potatoes) + 354*x(cheese) + 64*x(milk) + 536*x(chocolate) + 17*x(spinach) + 121*x(steak) =G= 2750 ; (LHS = 121, INFES = 2629 ****)
+     
+eq2_min(protein)..  0.28*x(apple) + 6.3*x(cornflake) + 0.8*x(carrots) + 1.9*x(potatoes) + 24.75*x(cheese) + 3.15*x(milk) + 8.91*x(chocolate) + 2.25*x(spinach) + 17.85*x(steak) =G= 66 ; (LHS = 17.85, INFES = 48.15 ****)
+     
+eq2_min(carbs)..  18*x(apple) + 307*x(cornflake) + 7*x(carrots) + 24.5*x(potatoes) + 177*x(cheese) + 12*x(milk) + 52*x(chocolate) + 6.5*x(spinach) + 60.5*x(steak) =G= 0 ; (LHS = 60.5)
+     
+REMAINING 4 ENTRIES SKIPPED
+
+
+---- eq2_max  =L=  maximum_nutritional_restrictions
+
+eq2_max(fat_max)..  0.32*x(apple) + 0.48*x(cornflake) + 0.16*x(carrots) + 0.1078*x(potatoes) + 28.017*x(cheese) + 3.15*x(milk) + 31.185*x(chocolate) + 0.2955*x(spinach) + 2.8*x(steak) =L= 70 ; (LHS = 2.8)
+     
+GAMS 48.2.0  4a7dd217 Oct 29, 2024          DAX-DAC arm 64bit/macOS - 11/24/24 18:02:55 Page 4
+Task 3a - Optimization under Uncertainty
+Column Listing      SOLVE problem Using LP From line 136
+
+
+---- x  
+
+x(apple)
+                (.LO, .L, .UP, .M = 0, 0, 5, 0)
+       -0.28    eq1
+       52       eq2_min(calories)
+        0.28    eq2_min(protein)
+       18       eq2_min(carbs)
+        0.32    eq2_min(fat_min)
+        5.6     eq2_min(calcium)
+       25.5     eq2_min(vit_b2)
+        1       eq2_min(min_amount)
+        0.32    eq2_max(fat_max)
+
+x(cornflake)
+                (.LO, .L, .UP, .M = 0, 0, 3, 0)
+       -0.207   eq1
+      355       eq2_min(calories)
+        6.3     eq2_min(protein)
+      307       eq2_min(carbs)
+        0.48    eq2_min(fat_min)
+        6.5     eq2_min(calcium)
+       48       eq2_min(vit_b2)
+        0.48    eq2_max(fat_max)
+
+x(carrots)
+                (.LO, .L, .UP, .M = 0, 0, 5, 0)
+       -0.084   eq1
+       26       eq2_min(calories)
+        0.8     eq2_min(protein)
+        7       eq2_min(carbs)
+        0.16    eq2_min(fat_min)
+       32.8     eq2_min(calcium)
+       42.4     eq2_min(vit_b2)
+        1       eq2_min(min_amount)
+        0.16    eq2_max(fat_max)
+
+REMAINING 6 ENTRIES SKIPPED
+
+---- z  
+
+z
+                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+        1       eq1
+
+GAMS 48.2.0  4a7dd217 Oct 29, 2024          DAX-DAC arm 64bit/macOS - 11/24/24 18:02:55 Page 5
+Task 3a - Optimization under Uncertainty
+Range Statistics    SOLVE problem Using LP From line 136
+
+
+RANGE STATISTICS (ABSOLUTE NON-ZERO FINITE VALUES)
+
+RHS       [min, max] : [ 4.000E+00, 2.750E+03] - Zero values observed as well
+Bound     [min, max] : [ 1.000E+00, 5.000E+00] - Zero values observed as well
+Matrix    [min, max] : [ 8.400E-02, 7.200E+02]
+
+GAMS 48.2.0  4a7dd217 Oct 29, 2024          DAX-DAC arm 64bit/macOS - 11/24/24 18:02:55 Page 6
+Task 3a - Optimization under Uncertainty
+Model Statistics    SOLVE problem Using LP From line 136
+
+
+MODEL STATISTICS
+
+BLOCKS OF EQUATIONS           3     SINGLE EQUATIONS            9
+BLOCKS OF VARIABLES           2     SINGLE VARIABLES           10  1 projected
+NON ZERO ELEMENTS            76
+
+
+GENERATION TIME      =        0.010 SECONDS      4 MB  48.2.0 4a7dd217 DAX-DAC
+GAMS 48.2.0  4a7dd217 Oct 29, 2024          DAX-DAC arm 64bit/macOS - 11/24/24 18:02:55 Page 7
+Task 3a - Optimization under Uncertainty
+Solution Report     SOLVE problem Using LP From line 136
+
+
+               S O L V E      S U M M A R Y
+
+     MODEL   problem             OBJECTIVE  z
+     TYPE    LP                  DIRECTION  MINIMIZE
+     SOLVER  CPLEX               FROM LINE  136
+
+**** SOLVER STATUS     1 Normal Completion
+**** MODEL STATUS      1 Optimal
+**** OBJECTIVE VALUE                7.9148
+
+ RESOURCE USAGE, LIMIT          0.005 10000000000.000
+ ITERATION COUNT, LIMIT         4    2147483647
+*** This solver runs with a demo license. No commercial use.
+--- GMO setup time: 0.00s
+--- GMO memory 0.50 Mb (peak 0.50 Mb)
+--- Dictionary memory 0.00 Mb
+--- Cplex 22.1.1.0 link memory 0.00 Mb (peak 0.00 Mb)
+--- Starting Cplex
+
+
+--- LP status (1): optimal.
+--- Cplex Time: 0.00sec (det. 0.03 ticks)
+
+
+Optimal solution found
+Objective:            7.914778
+
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- EQU eq1                 .              .              .             1.0000      
+
+  eq1  objective_function
+
+---- EQU eq2_min  minimum_nutritional_restrictions
+
+                  LOWER          LEVEL          UPPER         MARGINAL
+
+calories        2750.0000      2750.0000        +INF            0.0025      
+protein           66.0000        69.8914        +INF             .          
+carbs               .          1241.4413        +INF             .          
+fat_min           60.0000        70.0000        +INF             .          
+calcium          700.0000       700.0000        +INF            0.0003      
+vit_b2          1400.0000      1538.5076        +INF             .          
+min_amount         4.0000         4.0000        +INF            0.0110      
+
+---- EQU eq2_max  maximum_nutritional_restrictions
+
+               LOWER          LEVEL          UPPER         MARGINAL
+
+fat_max        -INF           70.0000        70.0000        -0.0216      
+
+---- VAR x  
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
+apple              .              .             5.0000         0.1420      
+cornflake          .             3.0000         3.0000        -0.6870      
+carrots            .             4.0000         5.0000          .          
+potatoes           .             4.7749         5.0000          .          
+cheese             .              .             5.0000         0.1276      
+milk               .             1.0713         2.0000          .          
+chocolate          .             1.9635         3.0000          .          
+spinach            .              .             5.0000         0.2963      
+steak             1.0000         1.0000         5.0000         4.2321      
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- VAR z                 -INF            7.9148        +INF             .          
+
+
+**** REPORT SUMMARY :        0     NONOPT
+                             0 INFEASIBLE
+                             0  UNBOUNDED
+GAMS 48.2.0  4a7dd217 Oct 29, 2024          DAX-DAC arm 64bit/macOS - 11/24/24 18:02:55 Page 8
+Task 3a - Optimization under Uncertainty
+E x e c u t i o n
+
+
+----    139 VARIABLE x.L  
+
+cornflake 3.000,    carrots   4.000,    potatoes  4.775,    milk      1.071,    chocolate 1.963,    steak     1.000
+
+
+----    139 VARIABLE z.L                   =        7.915  
+
+
+EXECUTION TIME       =        0.054 SECONDS      4 MB  48.2.0 4a7dd217 DAX-DAC
