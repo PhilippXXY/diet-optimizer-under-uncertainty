@@ -11,7 +11,7 @@ Set
 
 * Table for nutritional values of each food (left-hand side coefficients)
 Table A_initial(i,j) Nutritional values per 100g
-             calories   protein   carbs   fat_min   fat_max   calcium   vit_b2   min_amount
+              calories   protein   carbs   fat_min   fat_max   calcium   vit_b2   min_amount
     apple       52       0.35      18      0.4       0.4       7         30        1
     cornflake  355       7        307      0.6       0.6       13        60        0
     carrots     26       1          7      0.2       0.2       41        53        1
@@ -24,16 +24,16 @@ Table A_initial(i,j) Nutritional values per 100g
 
 * Table of reduction percentages as for an lp equivalent the worst case scenario is considered, which is that less nutrients are available in the food than expected
 Table Uncertainty_interval_A_relativ(i,j) Uncertainty percentage for each nutrient of each food item
-             calories   protein   carbs   fat_min   fat_max   calcium   vit_b2   min_amount
-    u_apple       0        0.2       0       0.2       0.2       0.2       0.15       0
-    u_cornflake   0        0.1       0       0.2       0.2       0.5       0.2        0
-    u_carrots     0        0.2       0       0.2       0.2       0.2       0.2        0
-    u_potatoes    0        0.05      0       0.02      0.02      0.02      0.01       0
-    u_cheese      0        0.01      0       0.01      0.01      0.1       0.05       0
-    u_milk        0        0.1       0       0.1       0.1       0.2       0.05       0
-    u_chocolate   0        0.01      0       0.01      0.01      0.01      0.01       0
-    u_spinach     0        0.1       0       0.015     0.015     0.1       0.2        0
-    u_steak       0        0.15      0       0.3       0.3       0.2       0.15       0;
+              calories   protein  carbs   fat_min   fat_max   calcium   vit_b2   min_amount
+    apple       0        0.2       0       0.2       0.2       0.2       0.15       0
+    cornflake   0        0.1       0       0.2       0.2       0.5       0.2        0
+    carrots     0        0.2       0       0.2       0.2       0.2       0.2        0
+    potatoes    0        0.05      0       0.02      0.02      0.02      0.01       0
+    cheese      0        0.01      0       0.01      0.01      0.1       0.05       0
+    milk        0        0.1       0       0.1       0.1       0.2       0.05       0
+    chocolate   0        0.01      0       0.01      0.01      0.01      0.01       0
+    spinach     0        0.1       0       0.015     0.015     0.1       0.2        0
+    steak       0        0.15      0       0.3       0.3       0.2       0.15       0;
 
 * Table for updated nutritional values
 Table A(i,j) Updated nutritional values per 100g;
@@ -54,15 +54,15 @@ Parameter
         vit_b2   1100,
         min_amount 4 /
     uncertainty_surcharge_b_absolut(j) 'Amount of additional surcharge needed per day as the worst case scenario is that more nutrients are needed' /
-        u_calories 350,
-        u_protein  10,
-        u_carbs    0,
-        u_fat_min  10,
+        calories 350,
+        protein  10,
+        carbs    0,
+        fat_min  10,
 *       Only the minimum amount of fat needed to get increased   
-        u_fat_max  0,
-        u_calcium  200,
-        u_vit_b2   300,
-        u_min_amount 0 /
+        fat_max  0,
+        calcium  200,
+        vit_b2   300,
+        min_amount 0 /
     b(j) 'Updated parameter for daily nutrient needs equivalent to the right-hand side of the constraints';
 
 * Initialize b(j) with b_initial(j) and apply the absolute surcharge    
@@ -82,16 +82,16 @@ Parameter
         spinach 0.28,
         steak 3.2 /
     uncertainty_surcharge_c_absolut(i) 'Amount of additional surcharge per 100g' /
-        u_apple 0.06,
-        u_potatoes 0.04,
-        u_cheese 0.1,
-        u_spinach 0.1/
+        apple 0.06,
+        potatoes 0.04,
+        cheese 0.1,
+        spinach 0.1/
     uncertainty_surcharge_c_relative(i) 'Percentage of additional surcharge per 100g' /
-        u_cornflake 0.15,
-        u_carrots 0.2,
-        u_milk 0.25,
-        u_chocolate 0.4,
-        u_steak 0.4/
+        cornflake 0.15,
+        carrots 0.2,
+        milk 0.25,
+        chocolate 0.4,
+        steak 0.4/
     c(i) 'Final coefficients for objective function';
 
 * Initialize c(i) with c_initial(i)
