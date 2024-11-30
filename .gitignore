@@ -1,0 +1,22 @@
+# macOS
+.DS_Store
+
+# LaTeX intermediate files
+.aux
+.toc
+.fls
+.log
+.out
+.synctex.gz
+.tex.bak
+.fdb_latexmk
+
+# Backup files
+*~
+*.bak
+*.swp
+*.swo
+
+# Temporary files
+*.tmp
+*.temp
