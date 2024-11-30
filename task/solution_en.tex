@@ -1,0 +1,109 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[applemac]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage[nospace,noadjust]{cite}
+\usepackage{eurosym}
+\usepackage{amssymb,amsmath}
+\usepackage{graphicx}
+\usepackage{color}
+\definecolor{kit}{cmyk}{1,0,0.6,0}
+\usepackage{hyperref}
+\hypersetup{
+    pdftoolbar=true,
+    pdfmenubar=true,
+    pdfpagemode=UseOutlines,
+    bookmarksnumbered=true,
+    linktocpage=true,
+    colorlinks=false,
+    colorlinks=false
+}
+
+\setlength{\parindent}{0pt}
+\parskip1.5ex
+
+\begin{document}
+\begin{titlepage}
+    \begin{center}
+        \vspace*{-80pt}
+        \includegraphics[scale=0.25]{img/kit_logo.png}
+
+        \vspace*{40pt}
+
+        Department of Economics and Management \\[1ex]
+        Institute for Operations Research (IOR) \\[1ex]
+        Optimization under Uncertainty \\[1ex]
+        Prof. Dr. Steffen Rebennack          
+
+        \vspace*{25pt}   
+
+        \vspace*{35pt}
+
+        \fboxsep 40pt
+        \fboxrule 6pt
+        \fcolorbox{kit}{white}{
+            \parbox{80mm}{
+                \begin{center}
+                    \Large{Excercise Submission}\\ 
+                    \Large{Winter Semester 2024/25}
+                \end{center}
+            }
+        }
+
+        \vspace*{40pt}
+
+        \normalsize
+
+        First Name Last Name\\
+        Student ID:\\
+        Study Program (B.Sc.)\\[4ex]
+
+        und \\[4ex]
+
+        First Name Last Name\\
+        Student ID:\\
+        Study Program (B.Sc.)\\[4ex]
+    \end{center}
+\end{titlepage}
+
+\newpage
+
+\section*{Solutions to Task 1}
+
+\subsection*{Task Part a}
+
+The source code can be found in the file \href{../src/r1/Aufgabe1.gms}{Aufgabe1.gms}.
+
+\subsection*{Task Part b}
+
+The corresponding execution can be viewed at \href{../results/r1/Aufgabe1.lst}{Aufgabe1.lst}. From this, it can be deduced that the optimal value is $5.169180$ Euros and the optimal point is
+\[
+\begin{pmatrix}
+\text{Apple} \\ 
+\text{Cornflakes} \\ 
+\text{Carrots} \\ 
+\text{Potatoes} \\ 
+\text{Cheese} \\ 
+\text{Milk} \\ 
+\text{Chocolate} \\ 
+\text{Spinach} \\ 
+\text{Steak}
+\end{pmatrix}^T
+=
+\begin{pmatrix}
+0 \\ 
+3 \\ 
+4 \\ 
+0.4512 \\ 
+0 \\ 
+0 \\ 
+2.0111 \\
+0 \\
+1
+\end{pmatrix}^T.
+\]
+
+\newpage
+
+\end{document}

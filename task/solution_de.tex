@@ -1,0 +1,110 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[applemac]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage[nospace,noadjust]{cite}
+\usepackage{eurosym}
+\usepackage{amssymb,amsmath}
+\usepackage{graphicx}
+\usepackage{color}
+\definecolor{kit}{cmyk}{1,0,0.6,0}
+\usepackage{hyperref}
+\hypersetup{
+    pdftoolbar=true,
+    pdfmenubar=true,
+    pdfpagemode=UseOutlines,
+    bookmarksnumbered=true,
+    linktocpage=true,
+    colorlinks=false,
+    colorlinks=false
+}
+
+\setlength{\parindent}{0pt}
+\parskip1.5ex
+
+\begin{document}
+\begin{titlepage}
+    \begin{center}
+        \vspace*{-80pt}
+        \includegraphics[scale=0.25]{img/kit_logo.png}
+
+        \vspace*{40pt}
+
+        Fakult\text{\"a}t f\text{\"u}r Wirtschaftswissenschaften \\[1ex]
+        Institut f\text{\"u}r Operations Research (IOR) \\[1ex]
+        Optimierungsans\text{\"a}tze unter Unsicherheit \\[1ex]
+        Prof. Dr. Steffen Rebennack          
+
+        \vspace*{25pt}   
+
+        \vspace*{35pt}
+
+        \fboxsep 40pt
+        \fboxrule 6pt
+        \fcolorbox{kit}{white}{
+            \parbox{80mm}{
+                \begin{center}
+                    \Large{Abgabge Rechner\text{\"u}bung}\\ 
+                    \Large{Wintersemester 2024/25}
+                \end{center}
+            }
+        }
+
+        \vspace*{40pt}
+
+        \normalsize
+
+        Vorname Nachname\\
+        Matr. Nr.:\\
+        Studiengang (B.Sc.)\\[4ex]
+
+        und \\[4ex]
+
+        Vorname Nachname\\
+        Matr. Nr.:\\
+        Studiengang (B.Sc.)\\[4ex]
+    \end{center}
+\end{titlepage}
+
+\newpage
+
+\section*{L\"osungen zu Aufgabe 1}
+
+\subsection*{Aufgabenteil a}
+
+Der Quellcode ist in der Datei \href{../src/r1/Aufgabe1.gms}{Aufgabe1.gms} zu finden.
+
+\subsection*{Aufgabenteil b}
+
+Die entsprechende Ausf\"uhrung kann unter \href{../results/r1/Aufgabe1.lst}{Aufgabe1.lst} eingesehen werden. Daraus l\"asst sich entnehmen, dass der optimale Wert bei $5,169180$ Euro liegt und der optimale Punkt bei
+\[
+\begin{pmatrix}
+\text{Apfel} \\ 
+\text{Cornflakes} \\ 
+\text{Karotten} \\ 
+\text{Kartoffeln} \\ 
+\text{K\"ase} \\ 
+\text{Milch} \\ 
+\text{Schokolade} \\ 
+\text{Spinat} \\ 
+\text{Steak}
+\end{pmatrix}^T
+=
+\begin{pmatrix}
+0 \\ 
+3 \\ 
+4 \\ 
+0,4512 \\ 
+0 \\ 
+0 \\ 
+2,0111 \\
+0 \\
+1
+\end{pmatrix}^T
+\]
+zu finden ist.
+
+\newpage
+
+\end{document}
