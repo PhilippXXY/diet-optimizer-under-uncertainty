@@ -228,7 +228,7 @@ D^{10}_{b} = \begin{pmatrix}
 Insgesamt gilt dann:
 
 \[
-\mathcal{U} = \left\{ D^0 + \sum_{\ell=1}^{10}D^{\ell} \times \zeta_{\ell} \;\vert\; \zeta_{\ell} \in [-1, 1] \right\}
+\mathcal{U} = \left\{ D^0 + \sum_{\ell=1}^{10}D^{\ell} \zeta_{\ell} \;\vert\; \zeta_{\ell} \in [-1, 1] \right\}
 \]
 
 \subsubsection*{4. Bilden des robusten Pendants}
@@ -264,8 +264,14 @@ In diesem Fall ergibt es sich zu:
 \end{aligned}
 \]
 
+\subsubsection*{5. Herleitung eines LP-\"Aquivalents}
 
-
+Es wird exemplarisch die erste Nebenbedingung umgewandelt.
+Man geht nach folgendem Ansatz durch Einsetzen der Definition von $\mathcal{U}$ in die Nebenbedingung vor:
+\[
+(a_1^0)^\top x + \zeta_1 (a_1^1)^\top x + \dots + \zeta_9 (a_1^9)^\top x + \underbrace{\zeta_{10} (a_1^{10})^\top x}_{= 0} \leq b_1^0 + \underbrace{\zeta_1 b_1^1}_{=0} + \dots +\zeta_{10} b_1^{10} \quad \forall \zeta \in [-1, 1]
+\]
+Nach dem Einsetzen der entsprechenden Werte erh\"alt man folgendes:
 
 
 
