@@ -138,6 +138,7 @@ Die Anzahl der Shiftmatrizen $D^\ell$ ergibt sich aus der Anzahl der Unsicherhei
 F\"ur die Shiftmatrizen $D^\ell$ gilt es, die Unsicherheiten ggf. durch Multiplikation mit dem entsprechenden Koeffizienten der Zielfunktion in absolute Abweichungen umzuwandeln.
 Wie in \"{U}bung 3f und Vorlesung 7 (Abschnitt 5.3) erw\"{a}hnt, nutzt man f\"{u}r jede Unsicherheit in einer Zeile eine neue Shiftmatrix.
 Durch diesen Ansatz lassen sich die Unsicherheiten eines Parameters $x_{\ell \in [1,9]}$ und des Mindestbedarfs $b$ in einer Shiftmatrix $D^\ell$ darstellen. Au\ss erdem ist es zu Vereinfachungszwecken erlaubt, Zeilen, in denen keine Unsicherheiten auftreten, zu streichen.
+
 Die Shiftmatrizen lauten dann wie folgt:
 
 \[
@@ -229,6 +230,12 @@ D^{10} = \begin{pmatrix}
 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 200 \\
 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 300
 \end{pmatrix}
+\]
+
+Insgesamt gilt dann:
+
+\[
+\mathcal{U} = \left\{ D^0 + \sum_{\ell=1}^{10}D^{\ell} \times \zeta_{\ell} \;\vert\; \zeta_{\ell} \in [-1, 1] \right\}
 \]
 
 \newpage
