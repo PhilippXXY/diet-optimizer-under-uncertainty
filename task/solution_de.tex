@@ -266,14 +266,207 @@ In diesem Fall ergibt es sich zu:
 
 \subsubsection*{5. Herleitung eines LP-\"Aquivalents}
 
-Es wird exemplarisch die erste Nebenbedingung umgewandelt.
-Man geht nach folgendem Ansatz durch Einsetzen der Definition von $\mathcal{U}$ in die Nebenbedingung vor:
+Zur Veranschaulichung wird die erste Nebenbedingung umgewandelt.
+Dabei wird die Definition von $\mathcal{U}$ in die Nebenbedingung eingesetzt:
 \[
 (a_1^0)^\top x + \zeta_1 (a_1^1)^\top x + \dots + \zeta_9 (a_1^9)^\top x + \underbrace{\zeta_{10} (a_1^{10})^\top x}_{= 0} \leq b_1^0 + \underbrace{\zeta_1 b_1^1}_{=0} + \dots +\zeta_{10} b_1^{10} \quad \forall \zeta \in [-1, 1]
 \]
-Nach dem Einsetzen der entsprechenden Werte erh\"alt man folgendes:
+Exemplarisch gehen wir f\"ur die erste Nebenbedingung folgenderma\ss en vor:
 
+Projektion der Unsicherheitsmenge bei Intervall-Unsicherheit:
 
+\[
+\mathcal{U}^{1} = \left\{ 
+\begin{array}{l}
+    \begin{pmatrix}
+    -52 \\ 
+    -355 \\ 
+    -26 \\
+    -71 \\
+    -354 \\
+    -64 \\
+    -536 \\
+    -17 \\
+    -121 \\
+    -2400
+    \end{pmatrix}
+    + \zeta_1 
+    \begin{pmatrix}
+    0.07 \\ 
+    0 \\ 
+    0 \\
+    0 \\
+    0 \\
+    0 \\
+    0 \\
+    0 \\
+    0 \\
+    0
+    \end{pmatrix}
+    + \zeta_2 
+    \begin{pmatrix}
+    0 \\ 
+    0.7 \\ 
+    0 \\
+    0 \\
+    0 \\
+    0 \\
+    0 \\
+    0 \\
+    0 \\
+    0
+    \end{pmatrix}
+    + \zeta_3 
+    \begin{pmatrix}
+    0 \\ 
+    0 \\ 
+    0.2 \\
+    0 \\ 
+    0 \\ 
+    0 \\ 
+    0 \\ 
+    0 \\ 
+    0 \\
+    0
+    \end{pmatrix}
+    + \zeta_4 
+    \begin{pmatrix}
+    0 \\ 
+    0 \\ 
+    0 \\
+    0.1 \\ 
+    0 \\ 
+    0 \\ 
+    0 \\ 
+    0 \\ 
+    0 \\
+    0
+    \end{pmatrix}
+    + \zeta_5 
+    \begin{pmatrix}
+    0 \\ 
+    0 \\ 
+    0\\
+    0 \\ 
+    1.77 \\ 
+    0 \\ 
+    0 \\ 
+    0 \\ 
+    0 \\
+    0
+    \end{pmatrix}
+    \\[10pt]
+    + \zeta_6 
+    \begin{pmatrix}
+    0 \\ 
+    0 \\ 
+    0 \\
+    0 \\ 
+    0 \\ 
+    0.35 \\ 
+    0 \\ 
+    0 \\ 
+    0 \\
+    0
+    \end{pmatrix}
+    + \zeta_7 
+    \begin{pmatrix}
+    0 \\ 
+    0 \\ 
+    0 \\
+    0 \\ 
+    0 \\ 
+    0 \\ 
+    0.9 \\ 
+    0 \\ 
+    0 \\
+    0
+    \end{pmatrix}
+    + \zeta_8 
+    \begin{pmatrix}
+    0 \\ 
+    0 \\ 
+    0 \\
+    0 \\ 
+    0 \\ 
+    0 \\ 
+    0 \\ 
+    0.25 \\ 
+    0 \\
+    0
+    \end{pmatrix}
+    + \zeta_9
+    \begin{pmatrix}
+    0 \\ 
+    0 \\ 
+    0 \\
+    0 \\ 
+    0 \\ 
+    0 \\ 
+    0 \\ 
+    0 \\ 
+    3.15 \\
+    0
+    \end{pmatrix}
+    + \zeta_{10} 
+    \begin{pmatrix}
+    0 \\ 
+    0 \\ 
+    0 \\
+    0 \\ 
+    0 \\ 
+    0 \\ 
+    0 \\ 
+    0 \\ 
+    0 \\
+    350
+    \end{pmatrix}
+\end{array}
+\; \middle| \; \|\zeta\|_\infty \leq 1 
+\right\}.
+\]
+
+Damit ergibt sich f\"ur die Restriktion die robuste Darstellung:
+
+\[
+\begin{aligned}
+    &-52x_1 - 355x_2 - 26x_3 - 71x_4 - 354x_5 - 64x_6 - 536x_7 - 17x_8 - 121x_9 \\
+    &\quad + \max_{\|\zeta\|_\infty \leq 1} \big( 0.07\zeta_1 + 0.7\zeta_2 + 0.2\zeta_3 + 0.1\zeta_4 + 1.77\zeta_5 \\
+    &\qquad + 0.35\zeta_6 + 0.9\zeta_7 + 0.25\zeta_8 + 3.15\zeta_9 - 350\zeta_{10} \big) \leq -2400
+\end{aligned}
+\]
+\[
+\begin{aligned}
+    &\Leftrightarrow -52x_1 - 355x_2 - 26x_3 - 71x_4 - 354x_5 - 64x_6 - 536x_7 - 17x_8 - 121x_9 \\
+    &\quad + 0.07|\zeta_1| + 0.7|\zeta_2| + 0.2|\zeta_3| + 0.1|\zeta_4| + 1.77|\zeta_5| \\
+    &\qquad + 0.35|\zeta_6| + 0.9|\zeta_7| + 0.25|\zeta_8| + 3.15|\zeta_9| + 350|\zeta_{10}| \leq -2400
+\end{aligned}
+\]
+
+Ein lineares \"Aquivalent l\"asst sich dann mit Hilfe des Lifting-Ansatzes folgenderma\ss en aufstellen:
+\[
+\begin{aligned}
+    &-52x_1 - 355x_2 - 26x_3 - 71x_4 - 354x_5 - 64x_6 - 536x_7 - 17x_8 - 121x_9 \\
+    &\quad + w_{11} + w_{12} + w_{13} + w_{14} + w_{15} + w_{16} + w_{17}+ w_{18}+ w_{19}+ w_{110}
+\end{aligned}
+\begin{aligned}
+    &\quad \leq -2400
+\end{aligned}
+\]
+\[
+\begin{aligned} 
+    -w_{11} \leq 0.07x_1 \leq w_{11} \\
+    -w_{12} \leq 0.7x_2 \leq w_{12} \\
+    -w_{13} \leq 0.2x_3 \leq w_{13} \\
+    -w_{14} \leq 0.1x_4 \leq w_{14} \\
+    -w_{15} \leq 1.77x_5 \leq w_{15} \\
+    -w_{16} \leq 0.35x_6 \leq w_{16} \\
+    -w_{17} \leq 0.9x_7 \leq w_{17} \\
+    -w_{18} \leq 0.25x_8 \leq w_{18} \\
+    -w_{19} \leq 3.15x_9 \leq w_{19} \\
+    -w_{110} \leq 350 \leq w_{110} \\
+\end{aligned}
+\]
 
 \newpage
 
