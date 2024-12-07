@@ -1,0 +1,518 @@
+GAMS 48.2.0  4a7dd217 Oct 29, 2024          DAX-DAC arm 64bit/macOS - 12/07/24 19:50:30 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+      Detailed description of the model:
+      - Objective: Create a robust counterpart model for the given linear program, as uncertainty is present.
+      - Uncertainty: The uncertainty is present in the objective function as well as the constraints.
+      - LP Equivalence: The robust counterpart model is equivalent to the original LP model when the uncertainty is zero.
+   7   
+   8  * Sets for the model, where i represents the food items with additional variables for the robust counterpart model and j represents the nutritional requirements
+   9  Sets
+  10      i / x1*x9, w01*w09, w110, w21*w29, w210, w41*w49, w410, w51*w59, w510, w61*w69, w610, w71*w79, w710 /
+  11      j / a1 * a8 /;
+  12   
+  13  * Changed every constraint into standard form and added additional variables for the robust counterpart
+  14  Table A(i, j)
+  15           a1     a2     a3     a4     a5     a6     a7   a8
+  16  x1    -52.0  -0.35  -18.0  -0.40   0.40   -7.0  -30.0 -1.0
+  17  x2   -355.0  -7.00 -307.0  -0.60   0.60  -13.0  -60.0  0.0
+  18  x3    -26.0  -1.00   -7.0  -0.20   0.20  -41.0  -53.0 -1.0
+  19  x4    -71.0  -2.00  -24.5  -0.11   0.11   -6.0  -47.0  0.0
+  20  x5   -354.0 -25.00  177.0 -28.30  28.30 -800.0 -300.0  0.0
+  21  x6    -64.0  -3.50   12.0  -3.50   3.50 -120.0 -170.0  0.0
+  22  x7   -536.0  -9.00   52.0 -31.50  31.50 -214.0 -370.0  0.0
+  23  x8    -17.0  -2.50    6.5  -0.30   0.30 -126.0 -230.0 -1.0
+  24  x9   -121.0 -21.00   60.5  -4.00   4.00   -3.0 -130.0  0.0
+  25  w110    1.0   0.00    0.0   0.00   0.00    0.0    0.0  0.0
+  26  w21     0.0   1.00    0.0   0.00   0.00    0.0    0.0  0.0
+  27  w22     0.0   1.00    0.0   0.00   0.00    0.0    0.0  0.0
+  28  w23     0.0   1.00    0.0   0.00   0.00    0.0    0.0  0.0
+  29  w24     0.0   1.00    0.0   0.00   0.00    0.0    0.0  0.0
+  30  w25     0.0   1.00    0.0   0.00   0.00    0.0    0.0  0.0
+  31  w26     0.0   1.00    0.0   0.00   0.00    0.0    0.0  0.0
+  32  w27     0.0   1.00    0.0   0.00   0.00    0.0    0.0  0.0
+  33  w28     0.0   1.00    0.0   0.00   0.00    0.0    0.0  0.0
+  34  w29     0.0   1.00    0.0   0.00   0.00    0.0    0.0  0.0
+  35  w210    0.0   1.00    0.0   0.00   0.00    0.0    0.0  0.0
+  36  w41     0.0   0.00    0.0   1.00   0.00    0.0    0.0  0.0
+  37  w42     0.0   0.00    0.0   1.00   0.00    0.0    0.0  0.0
+  38  w43     0.0   0.00    0.0   1.00   0.00    0.0    0.0  0.0
+  39  w44     0.0   0.00    0.0   1.00   0.00    0.0    0.0  0.0
+  40  w45     0.0   0.00    0.0   1.00   0.00    0.0    0.0  0.0
+  41  w46     0.0   0.00    0.0   1.00   0.00    0.0    0.0  0.0
+  42  w47     0.0   0.00    0.0   1.00   0.00    0.0    0.0  0.0
+  43  w48     0.0   0.00    0.0   1.00   0.00    0.0    0.0  0.0
+  44  w49     0.0   0.00    0.0   1.00   0.00    0.0    0.0  0.0
+  45  w410    0.0   0.00    0.0   1.00   0.00    0.0    0.0  0.0
+  46  w51     0.0   0.00    0.0   0.00   1.00    0.0    0.0  0.0
+  47  w52     0.0   0.00    0.0   0.00   1.00    0.0    0.0  0.0
+  48  w53     0.0   0.00    0.0   0.00   1.00    0.0    0.0  0.0
+  49  w54     0.0   0.00    0.0   0.00   1.00    0.0    0.0  0.0
+  50  w55     0.0   0.00    0.0   0.00   1.00    0.0    0.0  0.0
+  51  w56     0.0   0.00    0.0   0.00   1.00    0.0    0.0  0.0
+  52  w57     0.0   0.00    0.0   0.00   1.00    0.0    0.0  0.0
+  53  w58     0.0   0.00    0.0   0.00   1.00    0.0    0.0  0.0
+  54  w59     0.0   0.00    0.0   0.00   1.00    0.0    0.0  0.0
+  55  w510    0.0   0.00    0.0   0.00   1.00    0.0    0.0  0.0
+  56  w61     0.0   0.00    0.0   0.00   0.00    1.0    0.0  0.0
+  57  w62     0.0   0.00    0.0   0.00   0.00    1.0    0.0  0.0
+  58  w63     0.0   0.00    0.0   0.00   0.00    1.0    0.0  0.0
+  59  w64     0.0   0.00    0.0   0.00   0.00    1.0    0.0  0.0
+  60  w65     0.0   0.00    0.0   0.00   0.00    1.0    0.0  0.0
+  61  w66     0.0   0.00    0.0   0.00   0.00    1.0    0.0  0.0
+  62  w67     0.0   0.00    0.0   0.00   0.00    1.0    0.0  0.0
+  63  w68     0.0   0.00    0.0   0.00   0.00    1.0    0.0  0.0
+  64  w69     0.0   0.00    0.0   0.00   0.00    1.0    0.0  0.0
+  65  w610    0.0   0.00    0.0   0.00   0.00    1.0    0.0  0.0
+  66  w71     0.0   0.00    0.0   0.00   0.00    0.0    1.0  0.0
+  67  w72     0.0   0.00    0.0   0.00   0.00    0.0    1.0  0.0
+  68  w73     0.0   0.00    0.0   0.00   0.00    0.0    1.0  0.0
+  69  w74     0.0   0.00    0.0   0.00   0.00    0.0    1.0  0.0
+  70  w75     0.0   0.00    0.0   0.00   0.00    0.0    1.0  0.0
+  71  w76     0.0   0.00    0.0   0.00   0.00    0.0    1.0  0.0
+  72  w77     0.0   0.00    0.0   0.00   0.00    0.0    1.0  0.0
+  73  w78     0.0   0.00    0.0   0.00   0.00    0.0    1.0  0.0
+  74  w79     0.0   0.00    0.0   0.00   0.00    0.0    1.0  0.0
+  75  w710    0.0   0.00    0.0   0.00   0.00    0.0    1.0  0.0;
+  76   
+  77  * Right-hand side values for the constraints transformed into standard form
+  78  Parameter
+  79  b(j)
+  80      / a1 -2400
+  81        a2 -56
+  82        a3 -0
+  83        a4 -50
+  84        a5 70
+  85        a6 -500
+  86        a7 -1100
+  87        a8 4 /;
+  88   
+  89  * Coefficients for the objective function
+  90  Parameter
+  91  c(i)
+  92      /x1 0.22
+  93       x2 0.18
+  94       x3 0.07
+  95       x4 0.14
+  96       x5 0.55
+  97       x6 0.1
+  98       x7 0.54
+  99       x8 0.28
+ 100       x9 3.2 /;
+ 101   
+ 102  * Uncertainty values for the objective function
+ 103  Parameter wc(i)
+ 104      /w01 1
+ 105       w02 1
+ 106       w03 1
+ 107       w04 1
+ 108       w05 1
+ 109       w06 1
+ 110       w07 1
+ 111       w08 1
+ 112       w09 1
+ 113       /;
+ 114   
+ 115  * Variables for the model
+ 116  Positive Variable x(i);
+ 117  Free Variable z;
+ 118   
+ 119  * Constraints as in the original model
+ 120  x.up(i) = 5;
+ 121  x.up('x2') = 3;
+ 122  x.up('x6') = 2;
+ 123  x.up('x7') = 3;
+ 124  * Adjusted to standard form
+ 125  x.lo('x9') = 1;
+ 126   
+ 127  x.lo('w01') = -0.06 * x.l('x1');
+ 128  x.up('w01') = 0.06 * x.l('x1');
+ 129  x.lo('w02') = 0.027 * x.l('x2');
+ 130  x.up('w02') = 0.027 * x.l('x2');
+ 131  x.lo('w03') = -0.014 * x.l('x3');
+ 132  x.up('w03') = 0.014 * x.l('x3');
+ 133  x.lo('w04') = -0.04 * x.l('x4');
+ 134  x.up('w04') = 0.04 * x.l('x4');
+ 135  x.lo('w05') = -0.1 * x.l('x5');
+ 136  x.up('w05') = 0.1 * x.l('x5');
+ 137  x.lo('w06') = -0.04 * x.l('x6');
+ 138  x.up('w06') = 0.04 * x.l('x6');
+ 139  x.lo('w07') = -0.216 * x.l('x7');
+ 140  x.up('w07') = 0.216 * x.l('x7');
+ 141  x.lo('w08') = -0.1 * x.l('x8');
+ 142  x.up('w08') = 0.1 * x.l('x8');
+ 143  x.lo('w09') = -1.28 * x.l('x9');
+ 144  x.up('w09') = 1.28 * x.l('x9');
+ 145   
+ 146  x.lo('w110') = -350;
+ 147  x.up('w110') = 350;
+ 148   
+ 149  x.lo('w21') = -0.07 * x.l('x1');
+ 150  x.up('w21') = 0.07 * x.l('x1');
+ 151  x.lo('w22') = -0.7 * x.l('x2');
+ 152  x.up('w22') = 0.7 * x.l('x2');
+ 153  x.lo('w23') = -0.2 * x.l('x3');
+ 154  x.up('w23') = 0.2 * x.l('x3');
+ 155  x.lo('w24') = -0.1 * x.l('x4');
+ 156  x.up('w24') = 0.1 * x.l('x4');
+ 157  x.lo('w25') = -1.77 * x.l('x5');
+ 158  x.up('w25') = 1.77 * x.l('x5');
+ 159  x.lo('w26') = -0.35 * x.l('x6');
+ 160  x.up('w26') = 0.35 * x.l('x6');
+ 161  x.lo('w27') = -0.9 * x.l('x7');
+ 162  x.up('w27') = 0.9 * x.l('x7');
+ 163  x.lo('w28') = -0.25 * x.l('x8');
+ 164  x.up('w28') = 0.25 * x.l('x8');
+ 165  x.lo('w29') = -3.15 * x.l('x9');
+ 166  x.up('w29') = 3.15 * x.l('x9');
+ 167  x.lo('w210') = -10;
+ 168  x.up('w210') = 10;
+ 169   
+ 170  x.lo('w41') = -0.8 * x.l('x1');
+ 171  x.up('w41') = 0.8 * x.l('x1');
+ 172  x.lo('w42') = -0.12 * x.l('x2');
+ 173  x.up('w42') = 0.12 * x.l('x2');
+ 174  x.lo('w43') = -0.04 * x.l('x3');
+ 175  x.up('w43') = 0.04 * x.l('x3');
+ 176  x.lo('w44') = -0.0022 * x.l('x4');
+ 177  x.up('w44') = 0.0022 * x.l('x4');
+ 178  x.lo('w45') = -0.035 * x.l('x5');
+ 179  x.up('w45') = 0.035 * x.l('x5');
+ 180  x.lo('w46') = -0.35 * x.l('x6');
+ 181  x.up('w46') = 0.35 * x.l('x6');
+ 182  x.lo('w47') = -3.15 * x.l('x7');
+ 183  x.up('w47') = 3.15 * x.l('x7');
+ 184  x.lo('w48') = -0.045 * x.l('x8');
+ 185  x.up('w48') = 0.045 * x.l('x8');
+ 186  x.lo('w49') = -1.2 * x.l('x9');
+ 187  x.up('w49') = 1.2 * x.l('x9');
+ 188  x.lo('w410') = -10;
+ 189  x.up('w410') = 10;
+ 190   
+ 191  x.lo('w51') = -0.8 * x.l('x1');
+ 192  x.up('w51') = 0.8 * x.l('x1');
+ 193  x.lo('w52') = -0.12 * x.l('x2');
+ 194  x.up('w52') = 0.12 * x.l('x2');
+ 195  x.lo('w53') = -0.04 * x.l('x3');
+ 196  x.up('w53') = 0.04 * x.l('x3');
+ 197  x.lo('w54') = -0.0022 * x.l('x4');
+ 198  x.up('w54') = 0.0022 * x.l('x4');
+ 199  x.lo('w55') = -0.035 * x.l('x5');
+ 200  x.up('w55') = 0.035 * x.l('x5');
+ 201  x.lo('w56') = -0.35 * x.l('x6');
+ 202  x.up('w56') = 0.35 * x.l('x6');
+ 203  x.lo('w57') = -3.15 * x.l('x7');
+ 204  x.up('w57') = 3.15 * x.l('x7');
+ 205  x.lo('w58') = -0.045 * x.l('x8');
+ 206  x.up('w58') = 0.045 * x.l('x8');
+ 207  x.lo('w59') = -1.2 * x.l('x9');
+ 208  x.up('w59') = 1.2 * x.l('x9');
+ 209  x.lo('w510') = 0;
+ 210  x.up('w510') = 0;
+ 211   
+ 212  x.lo('w61') = -1.4 * x.l('x1');
+ 213  x.up('w61') = 1.4 * x.l('x1');
+ 214  x.lo('w62') = -6.5 * x.l('x2');
+ 215  x.up('w62') = 6.5 * x.l('x2');
+ 216  x.lo('w63') = -8.2 * x.l('x3');
+ 217  x.up('w63') = 8.2 * x.l('x3');
+ 218  x.lo('w64') = -0.12 * x.l('x4');
+ 219  x.up('w64') = 0.12 * x.l('x4');
+ 220  x.lo('w65') = -80 * x.l('x5');
+ 221  x.up('w65') = 80 * x.l('x5');
+ 222  x.lo('w66') = -24 * x.l('x6');
+ 223  x.up('w66') = 24 * x.l('x6');
+ 224  x.lo('w67') = -21.4 * x.l('x7');
+ 225  x.up('w67') = 21.4 * x.l('x7');
+ 226  x.lo('w68') = -12.6 * x.l('x8');
+ 227  x.up('w68') = 12.6 * x.l('x8');
+ 228  x.lo('w69') = -0.6 * x.l('x9');
+ 229  x.up('w69') = 0.6 * x.l('x9');
+ 230  x.lo('w610') = -200;
+ 231  x.up('w610') = 200;
+ 232   
+ 233  x.lo('w71') = -4.5 * x.l('x1');
+ 234  x.up('w71') = 4.5 * x.l('x1');
+ 235  x.lo('w72') = -12 * x.l('x2');
+ 236  x.up('w72') = 12 * x.l('x2');
+ 237  x.lo('w73') = -10.6 * x.l('x3');
+ 238  x.up('w73') = 10.6 * x.l('x3');
+ 239  x.lo('w74') = -0.47 * x.l('x4');
+ 240  x.up('w74') = 0.47 * x.l('x4');
+ 241  x.lo('w75') = -15 * x.l('x5');
+ 242  x.up('w75') = 15 * x.l('x5');
+ 243  x.lo('w76') = -8.5 * x.l('x6');
+ 244  x.up('w76') = 8.5 * x.l('x6');
+ 245  x.lo('w77') = -37 * x.l('x7');
+ 246  x.up('w77') = 37 * x.l('x7');
+ 247  x.lo('w78') = -46 * x.l('x8');
+ 248  x.up('w78') = 46 * x.l('x8');
+ 249  x.lo('w79') = -19.5 * x.l('x9');
+ 250  x.up('w79') = 19.5 * x.l('x9');
+ 251  x.lo('w710') = -300;
+ 252  x.up('w710') = 300;
+ 253   
+ 254   
+ 255   
+ 256   
+ 257  Equations
+ 258      eq1 objective_function,
+ 259      eq2(j) nutritional_requirements;
+ 260   
+ 261  eq1.. z =e= sum(i, c(i) * x(i) + wc(i));
+ 262  eq2(j).. sum(i, A(i, j) * x(i)) =l= b(j);
+ 263   
+ 264  Model problem /all/;
+ 265  Solve problem using lp minimizing z;
+ 266  Display x.l, z.l;
+ 267   
+ 268   
+ 269   
+
+
+COMPILATION TIME     =        0.001 SECONDS      3 MB  48.2.0 4a7dd217 DAX-DAC
+GAMS 48.2.0  4a7dd217 Oct 29, 2024          DAX-DAC arm 64bit/macOS - 12/07/24 19:50:30 Page 2
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Equation Listing    SOLVE problem Using LP From line 265
+
+
+---- eq1  =E=  objective_function
+
+eq1..  - 0.22*x(x1) - 0.18*x(x2) - 0.07*x(x3) - 0.14*x(x4) - 0.55*x(x5) - 0.1*x(x6) - 0.54*x(x7) - 0.28*x(x8) - 3.2*x(x9) + z =E= 9 ; (LHS = -3.2, INFES = 12.2 ****)
+     
+
+---- eq2  =L=  nutritional_requirements
+
+eq2(a1)..  - 52*x(x1) - 355*x(x2) - 26*x(x3) - 71*x(x4) - 354*x(x5) - 64*x(x6) - 536*x(x7) - 17*x(x8) - 121*x(x9) + x(w110) =L= -2400 ; (LHS = -121, INFES = 2279 ****)
+     
+eq2(a2)..  - 0.35*x(x1) - 7*x(x2) - x(x3) - 2*x(x4) - 25*x(x5) - 3.5*x(x6) - 9*x(x7) - 2.5*x(x8) - 21*x(x9) + x(w21) + x(w22) + x(w23) + x(w24) + x(w25) + x(w26) + x(w27) + x(w28) + x(w29) + x(w210) =L= -56 ; (LHS = -21, INFES = 35 ****)
+     
+eq2(a3)..  - 18*x(x1) - 307*x(x2) - 7*x(x3) - 24.5*x(x4) + 177*x(x5) + 12*x(x6) + 52*x(x7) + 6.5*x(x8) + 60.5*x(x9) =L= 0 ; (LHS = 60.5, INFES = 60.5 ****)
+     
+REMAINING 5 ENTRIES SKIPPED
+
+GAMS 48.2.0  4a7dd217 Oct 29, 2024          DAX-DAC arm 64bit/macOS - 12/07/24 19:50:30 Page 3
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Column Listing      SOLVE problem Using LP From line 265
+
+
+---- x  
+
+x(x1)
+                (.LO, .L, .UP, .M = 0, 0, 5, 0)
+       -0.22    eq1
+      -52       eq2(a1)
+       -0.35    eq2(a2)
+      -18       eq2(a3)
+       -0.4     eq2(a4)
+        0.4     eq2(a5)
+       -7       eq2(a6)
+      -30       eq2(a7)
+       -1       eq2(a8)
+
+x(x2)
+                (.LO, .L, .UP, .M = 0, 0, 3, 0)
+       -0.18    eq1
+     -355       eq2(a1)
+       -7       eq2(a2)
+     -307       eq2(a3)
+       -0.6     eq2(a4)
+        0.6     eq2(a5)
+      -13       eq2(a6)
+      -60       eq2(a7)
+
+x(x3)
+                (.LO, .L, .UP, .M = 0, 0, 5, 0)
+       -0.07    eq1
+      -26       eq2(a1)
+       -1       eq2(a2)
+       -7       eq2(a3)
+       -0.2     eq2(a4)
+        0.2     eq2(a5)
+      -41       eq2(a6)
+      -53       eq2(a7)
+       -1       eq2(a8)
+
+REMAINING 57 ENTRIES SKIPPED
+
+---- z  
+
+z
+                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+        1       eq1
+
+GAMS 48.2.0  4a7dd217 Oct 29, 2024          DAX-DAC arm 64bit/macOS - 12/07/24 19:50:30 Page 4
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Range Statistics    SOLVE problem Using LP From line 265
+
+
+RANGE STATISTICS (ABSOLUTE NON-ZERO FINITE VALUES)
+
+RHS       [min, max] : [ 4.000E+00, 2.400E+03] - Zero values observed as well
+Bound     [min, max] : [ 1.000E+00, 3.500E+02] - Zero values observed as well
+Matrix    [min, max] : [ 7.000E-02, 8.000E+02]
+
+GAMS 48.2.0  4a7dd217 Oct 29, 2024          DAX-DAC arm 64bit/macOS - 12/07/24 19:50:30 Page 5
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Model Statistics    SOLVE problem Using LP From line 265
+
+
+MODEL STATISTICS
+
+BLOCKS OF EQUATIONS           2     SINGLE EQUATIONS            9
+BLOCKS OF VARIABLES           2     SINGLE VARIABLES           61  1 projected
+NON ZERO ELEMENTS           127
+
+
+GENERATION TIME      =        0.002 SECONDS      4 MB  48.2.0 4a7dd217 DAX-DAC
+GAMS 48.2.0  4a7dd217 Oct 29, 2024          DAX-DAC arm 64bit/macOS - 12/07/24 19:50:30 Page 6
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Solution Report     SOLVE problem Using LP From line 265
+
+
+               S O L V E      S U M M A R Y
+
+     MODEL   problem             OBJECTIVE  z
+     TYPE    LP                  DIRECTION  MINIMIZE
+     SOLVER  CPLEX               FROM LINE  265
+
+**** SOLVER STATUS     1 Normal Completion
+**** MODEL STATUS      1 Optimal
+**** OBJECTIVE VALUE               13.6104
+
+ RESOURCE USAGE, LIMIT          0.001 10000000000.000
+ ITERATION COUNT, LIMIT         1    2147483647
+*** This solver runs with a demo license. No commercial use.
+--- GMO setup time: 0.00s
+--- GMO memory 0.50 Mb (peak 0.51 Mb)
+--- Dictionary memory 0.00 Mb
+--- Cplex 22.1.1.0 link memory 0.00 Mb (peak 0.00 Mb)
+--- Starting Cplex
+
+
+--- LP status (1): optimal.
+--- Cplex Time: 0.00sec (det. 0.04 ticks)
+
+
+Optimal solution found
+Objective:           13.610448
+
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- EQU eq1                9.0000         9.0000         9.0000         1.0000      
+
+  eq1  objective_function
+
+---- EQU eq2  nutritional_requirements
+
+          LOWER          LEVEL          UPPER         MARGINAL
+
+a1        -INF        -2400.0000     -2400.0000        -0.0010      
+a2        -INF          -66.5075       -56.0000          .          
+a3        -INF         -776.6791          .              .          
+a4        -INF          -66.5761       -50.0000          .          
+a5        -INF           56.5761        70.0000          .          
+a6        -INF         -586.9552      -500.0000          .          
+a7        -INF        -1206.4179     -1100.0000          .          
+a8        -INF             .             4.0000          .          
+
+---- VAR x  
+
+            LOWER          LEVEL          UPPER         MARGINAL
+
+x1            .              .             5.0000         0.1676      
+x2            .             3.0000         3.0000        -0.1776      
+x3            .              .             5.0000         0.0438      
+x4            .              .             5.0000         0.0685      
+x5            .              .             5.0000         0.1934      
+x6            .              .             2.0000         0.0355      
+x7            .             1.6119         3.0000          .          
+x8            .              .             5.0000         0.2629      
+x9           1.0000         1.0000         5.0000         3.0781      
+w110      -350.0000      -350.0000       350.0000         0.0010      
+w21           .              .              .             EPS         
+w22           .              .              .             EPS         
+w23           .              .              .             EPS         
+w24           .              .              .             EPS         
+w25           .              .              .             EPS         
+w26           .              .              .             EPS         
+w27           .              .              .             EPS         
+w28           .              .              .             EPS         
+w29           .              .              .             EPS         
+w210       -10.0000       -10.0000        10.0000         EPS         
+w41           .              .              .             EPS         
+w42           .              .              .             EPS         
+w43           .              .              .             EPS         
+w44           .              .              .             EPS         
+w45           .              .              .             EPS         
+w46           .              .              .             EPS         
+w47           .              .              .             EPS         
+w48           .              .              .             EPS         
+w49           .              .              .             EPS         
+w410       -10.0000       -10.0000        10.0000         EPS         
+w51           .              .              .             EPS         
+w52           .              .              .             EPS         
+w53           .              .              .             EPS         
+w54           .              .              .             EPS         
+w55           .              .              .             EPS         
+w56           .              .              .             EPS         
+w57           .              .              .             EPS         
+w58           .              .              .             EPS         
+w59           .              .              .             EPS         
+w510          .              .              .             EPS         
+w61           .              .              .             EPS         
+w62           .              .              .             EPS         
+w63           .              .              .             EPS         
+w64           .              .              .             EPS         
+w65           .              .              .             EPS         
+w66           .              .              .             EPS         
+w67           .              .              .             EPS         
+w68           .              .              .             EPS         
+w69           .              .              .             EPS         
+w610      -200.0000      -200.0000       200.0000         EPS         
+w71           .              .              .             EPS         
+w72           .              .              .             EPS         
+w73           .              .              .             EPS         
+w74           .              .              .             EPS         
+w75           .              .              .             EPS         
+w76           .              .              .             EPS         
+w77           .              .              .             EPS         
+w78           .              .              .             EPS         
+w79           .              .              .             EPS         
+w710      -300.0000      -300.0000       300.0000         EPS         
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- VAR z                 -INF           13.6104        +INF             .          
+
+
+**** REPORT SUMMARY :        0     NONOPT
+                             0 INFEASIBLE
+                             0  UNBOUNDED
+GAMS 48.2.0  4a7dd217 Oct 29, 2024          DAX-DAC arm 64bit/macOS - 12/07/24 19:50:30 Page 7
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+E x e c u t i o n
+
+
+----    266 VARIABLE x.L  
+
+x2      3.000,    x7      1.612,    x9      1.000,    w110 -350.000,    w210  -10.000,    w410  -10.000,    w610 -200.000,    w710 -300.000
+
+
+----    266 VARIABLE z.L                   =       13.610  
+
+
+EXECUTION TIME       =        0.024 SECONDS      4 MB  48.2.0 4a7dd217 DAX-DAC
+
+
+USER: GAMS Demo, for EULA and demo limitations see   G241001/0001CB-GEN
+      https://www.gams.com/latest/docs/UG%5FLicense.html         DC0000
+
+
+**** FILE SUMMARY
+
+Input      /Users/phschmidt/Developer/diet-optimizer-under-uncertainty/src/r3/Aufgabe3a.gms
+Output     /Users/phschmidt/Developer/diet-optimizer-under-uncertainty/src/r3/Aufgabe3a.lst
