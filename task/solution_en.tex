@@ -72,17 +72,17 @@
 
 \newpage
 
-\section*{L\"osungen zu Aufgabe 3}
+\section*{Solutions to Task 3}
 
-\subsection*{Aufgabenteil a - Intervall-Unsicherheit}
+\subsection*{Task Part a - Interval Uncertainty}
 
-\subsubsection*{1. Umwandeln des Ursprungsproblems in Standardform}
+\subsubsection*{1. Transforming the Original Problem into Standard Form}
 
-Das Ursprungsproblem muss in folgende Struktur umgewandelt werden:
+The original problem must be transformed into the following structure:
 \[
 (\text{LO}) \quad \left\{ \min_{x} \left\{ \mathbf{c}^\top \mathbf{x} + d \; \middle| \; A\mathbf{x} \leq \mathbf{b} \right\} \right\}
 \]
-Entsprechend l\"asst sich dieses dann nun folgenderma\ss en darstellen:
+This can then be represented as follows:
 \[
 \begin{aligned}
     \min & \quad 0.22x_1 + 0.18x_2 + 0.07x_3 + 0.14x_4 + 0.55x_5 + 0.16x_6 + 0.54x_7 + 0.28x_8 + 3.2x_9 \\
@@ -103,227 +103,225 @@ Entsprechend l\"asst sich dieses dann nun folgenderma\ss en darstellen:
 \end{aligned}
 \]
 
-\subsubsection*{2. Bilden der nominalen Datenmatrix $D^0$}
+\subsubsection*{2. Constructing the Nominal Data Matrix $D^0$}
 
-Mit den vorherigen \"Uberlegungen l\"asst sich ganz einfach die nominale Datenmatrix $D^0$ dieser Struktur
+Using the above considerations, the nominal data matrix $D^0$ for this structure can be constructed:
 \[
 D^0 = \begin{pmatrix}\begin{array}{c|c}
 (c^0)^\top & d^0 \\ \hline
 A^0 & b^0
 \end{array}\end{pmatrix}
 \]
-bilden.
 
-Nach dem Streichen von Zeilen ohne Unsicherheiten lautet diese dann wie folgt:
+After removing rows without uncertainties, it becomes:
 \[
 D^0 = \begin{pmatrix}
-0.22 & 0.18 & 0.07 & 0.14 & 0.55 & 0.16 & 0.54 & 0.28 & 3.2 & 0 \\ % Zielfunktion
--52 & -355 & -26 & -71 & -354 & -64 & -536 & -17 & -121 & -2400 \\ % Kalorien
--0.35 & -7 & -1 & -2 & -25 & -3.5 & -9 & -2.5 & -21 & -56 \\ % Mind. Proteine
--0.4 & -0.6 & -0.2 & -0.11 & -28.3 & -3.5 & -31.5 & -0.3 & -4 & -50 \\ % Mind. Fett
-0.4 & 0.6 & 0.2 & 0.11 & 28.3 & 3.5 & 31.5 & 0.3 & 4 & 70 \\ % Max. Fett
--7 & -13 & -41 & -6 & -800 & -120 & -214 & -126 & -3 & -500 \\ % Mind. Calcium
--30 & -60 & -53 & -47 & -300 & -170 & -370 & -230 & -130 & -1100 \\ % Mind. Vit. B2
+0.22 & 0.18 & 0.07 & 0.14 & 0.55 & 0.16 & 0.54 & 0.28 & 3.2 & 0 \\
+-52 & -355 & -26 & -71 & -354 & -64 & -536 & -17 & -121 & -2400 \\
+-0.35 & -7 & -1 & -2 & -25 & -3.5 & -9 & -2.5 & -21 & -56 \\
+-0.4 & -0.6 & -0.2 & -0.11 & -28.3 & -3.5 & -31.5 & -0.3 & -4 & -50 \\
+0.4 & 0.6 & 0.2 & 0.11 & 28.3 & 3.5 & 31.5 & 0.3 & 4 & 70 \\
+-7 & -13 & -41 & -6 & -800 & -120 & -214 & -126 & -3 & -500 \\
+-30 & -60 & -53 & -47 & -300 & -170 & -370 & -230 & -130 & -1100 \\
 \end{pmatrix}
 \]
 
-\subsubsection*{3. Bilden der Shiftmatrizen $D^\ell$}
-Die Anzahl der Shiftmatrizen $D^\ell$ ergibt sich aus der Anzahl der Unsicherheiten. Alle Unsicherheiten lassen sich aus den Tabellen entnehmen.
+\subsubsection*{3. Constructing the Shift Matrices $D^\ell$}
+The number of shift matrices $D^\ell$ is determined by the number of uncertainties. All uncertainties can be derived from the tables.
 
-F\"ur die Shiftmatrizen $D^\ell$ gilt es, die Unsicherheiten ggf. durch Multiplikation mit dem entsprechenden Koeffizienten der Zielfunktion in absolute Abweichungen umzuwandeln.
-Wie in \"{U}bung $3f$ und Vorlesung $7$ (Abschnitt 5.3) erw\"{a}hnt, nutzt man f\"{u}r jede Unsicherheit in einer Zeile eine neue Shiftmatrix.
-Durch diesen Ansatz lassen sich die Unsicherheiten eines Parameters $x_{\ell \in [1,9]}$ und des Mindestbedarfs $b$ in einer Shiftmatrix $D^\ell$ darstellen. Au\ss erdem ist es zu Vereinfachungszwecken erlaubt, Zeilen, in denen keine Unsicherheiten auftreten, zu streichen.
+For the shift matrices $D^\ell$, it is necessary to convert the uncertainties into absolute deviations by multiplying them with the corresponding coefficient of the objective function, if applicable.
+As mentioned in Exercise $3f$ and Lecture $7$ (Section 5.3), a new shift matrix is used for each uncertainty in a row.
+This approach allows the uncertainties of a parameter $x_{\ell \in [1,9]}$ and the minimum requirement $b$ to be represented in a shift matrix $D^\ell$. Additionally, for simplification purposes, it is permissible to omit rows where no uncertainties occur.
 
-Die Shiftmatrizen lauten dann wie folgt:
+The shift matrices are as follows:
 
 \[
 D^1_{x_1} = \begin{pmatrix}
-0.06 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ % Zielfunktion
-0.07 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ % Proteine
-0.8 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ % Mind. Fette
-0.8 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ % Max. Fette
-1.4 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ % Calcium
-4.5 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 % Vit. B2
+0.06 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+0.07 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+0.8 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+0.8 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+1.4 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+4.5 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 
 \end{pmatrix}
 \begin{pmatrix}
-    Zielfunktion \\
-    Proteine \\
-    Min. Fette \\
-    Max. Fette \\
+    Objective Function \\
+    Proteins \\
+    Min. Fats \\
+    Max. Fats \\
     Calcium \\
     Vit. B2
 \end{pmatrix}
 \]
 \[
 D^2_{x_2} = \begin{pmatrix}
-0 & 0.027 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ % Zielfunktion
-0 & 0.7 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ % Proteine
-0 & 0.12 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ % Mind. Fette
-0 & 0.12 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ % Max. Fette
-0 & 6.5 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ % Calcium
-0 & 12 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 % Vit. B2
+0 & 0.027 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+0 & 0.7 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+0 & 0.12 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0.12 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 6.5 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+0 & 12 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
 \end{pmatrix}
 \begin{pmatrix}
-    Zielfunktion \\
-    Proteine \\
-    Min. Fette \\
-    Max. Fette \\
+    Objective Function \\
+    Proteins \\
+    Min. Fats \\
+    Max. Fats \\
     Calcium \\
     Vit. B2
 \end{pmatrix}
 \]
 \[
 D^3_{x_3} = \begin{pmatrix} 
-0 & 0 & 0.014 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ % Zielfunktion
-0 & 0 & 0.2 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ % Proteine
-0 & 0 & 0.04 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ % Mind. Fette
-0 & 0 & 0.04 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ % Max. Fette
-0 & 0 & 8.2 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ % Calcium
+0 & 0 & 0.014 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0.2 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+0 & 0 & 0.04 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0.04 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 8.2 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
 0 & 0 & 10.6 & 0 & 0 & 0 & 0 & 0 & 0 & 0
 \end{pmatrix}
 \begin{pmatrix}
-    Zielfunktion \\
-    Proteine \\
-    Min. Fette \\
-    Max. Fette \\
+    Objective Function \\
+    Proteins \\
+    Min. Fats \\
+    Max. Fats \\
     Calcium \\
     Vit. B2
 \end{pmatrix}
 \]
 \[
 D^4_{x_4} = \begin{pmatrix}
-0 & 0 & 0 & 0.04 & 0 & 0 & 0 & 0 & 0 & 0 \\ % Zielfunktion
-0 & 0 & 0 & 0.1 & 0 & 0 & 0 & 0 & 0 & 0 \\ % Proteine
-0 & 0 & 0 & 0.0022 & 0 & 0 & 0 & 0 & 0 & 0 \\ % Mind. Fette
-0 & 0 & 0 & 0.0022 & 0 & 0 & 0 & 0 & 0 & 0 \\ % Max. Fette
-0 & 0 & 0 & 0.12 & 0 & 0 & 0 & 0 & 0 & 0 \\ % Calcium
-0 & 0 & 0 & 0.47 & 0 & 0 & 0 & 0 & 0 & 0 % Vit. B2
+0 & 0 & 0 & 0.04 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+0 & 0 & 0 & 0.1 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+0 & 0 & 0 & 0.0022 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0.0022 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+0 & 0 & 0 & 0.12 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+0 & 0 & 0 & 0.47 & 0 & 0 & 0 & 0 & 0 & 0 
 \end{pmatrix}
 \begin{pmatrix}
-    Zielfunktion \\
-    Proteine \\
-    Min. Fette \\
-    Max. Fette \\
+    Objective Function \\
+    Proteins \\
+    Min. Fats \\
+    Max. Fats \\
     Calcium \\
     Vit. B2
 \end{pmatrix}
 \]
 \[
 D^5_{x_5} = \begin{pmatrix}
-0 & 0 & 0 & 0 & 0.1 & 0 & 0 & 0 & 0 & 0 \\ % Zielfunktion
-0 & 0 & 0 & 0 & 1.77 & 0 & 0 & 0 & 0 & 0 \\ % Proteine
-0 & 0 & 0 & 0 & 0.035 & 0 & 0 & 0 & 0 & 0 \\ % Mind. Fette
-0 & 0 & 0 & 0 & 0.035 & 0 & 0 & 0 & 0 & 0 \\ % Max. Fette
-0 & 0 & 0 & 0 & 80 & 0 & 0 & 0 & 0 & 0 \\ % Calcium
-0 & 0 & 0 & 0 & 15 & 0 & 0 & 0 & 0 & 0 % Vit. B2
+0 & 0 & 0 & 0 & 0.1 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 1.77 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0.035 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0.035 & 0 & 0 & 0 & 0 & 0 \\ 
+0 & 0 & 0 & 0 & 80 & 0 & 0 & 0 & 0 & 0 \\ 
+0 & 0 & 0 & 0 & 15 & 0 & 0 & 0 & 0 & 0 
 \end{pmatrix}
 \begin{pmatrix}
-    Zielfunktion \\
-    Proteine \\
-    Min. Fette \\
-    Max. Fette \\
+    Objective Function \\
+    Proteins \\
+    Min. Fats \\
+    Max. Fats \\
     Calcium \\
     Vit. B2
 \end{pmatrix}
 \]
 \[
 D^6_{x_6} = \begin{pmatrix}
-0 & 0 & 0 & 0 & 0 & 0.04 & 0 & 0 & 0 & 0 \\ % Zielfunktion
-0 & 0 & 0 & 0 & 0 & 0.35 & 0 & 0 & 0 & 0 \\ % Proteine
-0 & 0 & 0 & 0 & 0 & 0.35 & 0 & 0 & 0 & 0 \\ % Mind. Fette
-0 & 0 & 0 & 0 & 0 & 0.35 & 0 & 0 & 0 & 0 \\ % Max. Fette
-0 & 0 & 0 & 0 & 0 & 24 & 0 & 0 & 0 & 0 \\ % Calcium
-0 & 0 & 0 & 0 & 0 & 8.5 & 0 & 0 & 0 & 0 % Vit. B2
+0 & 0 & 0 & 0 & 0 & 0.04 & 0 & 0 & 0 & 0 \\ 
+0 & 0 & 0 & 0 & 0 & 0.35 & 0 & 0 & 0 & 0 \\ 
+0 & 0 & 0 & 0 & 0 & 0.35 & 0 & 0 & 0 & 0 \\ 
+0 & 0 & 0 & 0 & 0 & 0.35 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 24 & 0 & 0 & 0 & 0 \\ 
+0 & 0 & 0 & 0 & 0 & 8.5 & 0 & 0 & 0 & 0 
 \end{pmatrix}
 \begin{pmatrix}
-    Zielfunktion \\
-    Proteine \\
-    Min. Fette \\
-    Max. Fette \\
+    Objective Function \\
+    Proteins \\
+    Min. Fats \\
+    Max. Fats \\
     Calcium \\
     Vit. B2
 \end{pmatrix}
 \]
 \[
 D^7_{x_7} = \begin{pmatrix}
-0 & 0 & 0 & 0 & 0 & 0 & 0.216 & 0 & 0 & 0 \\ % Zielfunktion
-0 & 0 & 0 & 0 & 0 & 0 & 0.9 & 0 & 0 & 0 \\ % Proteine
-0 & 0 & 0 & 0 & 0 & 0 & 3.15 & 0 & 0 & 0 \\ % Mind. Fette
-0 & 0 & 0 & 0 & 0 & 0 & 3.15 & 0 & 0 & 0 \\ % Max. Fette
-0 & 0 & 0 & 0 & 0 & 0 & 21.4 & 0 & 0 & 0 \\ % Calcium
-0 & 0 & 0 & 0 & 0 & 0 & 37 & 0 & 0 & 0 % Vit. B2
+0 & 0 & 0 & 0 & 0 & 0 & 0.216 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0.9 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 3.15 & 0 & 0 & 0 \\ 
+0 & 0 & 0 & 0 & 0 & 0 & 3.15 & 0 & 0 & 0 \\ 
+0 & 0 & 0 & 0 & 0 & 0 & 21.4 & 0 & 0 & 0 \\ 
+0 & 0 & 0 & 0 & 0 & 0 & 37 & 0 & 0 & 0 
 \end{pmatrix}
 \begin{pmatrix}
-    Zielfunktion \\
-    Proteine \\
-    Min. Fette \\
-    Max. Fette \\
+    Objective Function \\
+    Proteins \\
+    Min. Fats \\
+    Max. Fats \\
     Calcium \\
     Vit. B2
 \end{pmatrix}
 \]
 \[
 D^8_{x_8} = \begin{pmatrix}
-0 & 0 & 0 & 0 & 0 & 0 & 0 & 0.1 & 0 & 0 \\ % Zielfunktion
-0 & 0 & 0 & 0 & 0 & 0 & 0 & 0.25 & 0 & 0 \\ % Proteine
-0 & 0 & 0 & 0 & 0 & 0 & 0 & 0.045 & 0 & 0 \\ % Mind. Fette
-0 & 0 & 0 & 0 & 0 & 0 & 0 & 0.045 & 0 & 0 \\ % Max. Fette
-0 & 0 & 0 & 0 & 0 & 0 & 0 & 12.6 & 0 & 0 \\ % Calcium
-0 & 0 & 0 & 0 & 0 & 0 & 0 & 46 & 0 & 0 % Vit. B2
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0.1 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0.25 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0.045 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0.045 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 12.6 & 0 & 0 \\ 
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 46 & 0 & 0 
 \end{pmatrix}
 \begin{pmatrix}
-    Zielfunktion \\
-    Proteine \\
-    Min. Fette \\
-    Max. Fette \\
+    Objective Function \\
+    Proteins \\
+    Min. Fats \\
+    Max. Fats \\
     Calcium \\
     Vit. B2
 \end{pmatrix}
 \]
 \[
 D^9_{x_9} = \begin{pmatrix}
-0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1.28 & 0 \\ % Zielfunktion
-0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 3.15 & 0 \\ % Proteine
-0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1.2 & 0 \\ % Mind. Fette
-0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1.2 & 0 \\ % Max. Fette
-0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0.6 & 0 \\ % Calcium
-0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 19.5 & 0 % Vit. B2
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1.28 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 3.15 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1.2 & 0 \\ 
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1.2 & 0 \\ 
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0.6 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 19.5 & 0 
 \end{pmatrix}
 \begin{pmatrix}
-    Zielfunktion \\
-    Proteine \\
-    Min. Fette \\
-    Max. Fette \\
+    Objective Function \\
+    Proteins \\
+    Min. Fats \\
+    Max. Fats \\
     Calcium \\
     Vit. B2
 \end{pmatrix}
 \]
 \[
 D^{10}_{b} = \begin{pmatrix}
-0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 350 \\ % b_1
-0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 10 \\ % b_2
-0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 10 \\ % b_4
-0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 200 \\ % b_6
-0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 300 % b_7
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 350 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 10 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 10 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 200 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 300 
 \end{pmatrix}
 \begin{pmatrix}
-    Kalorien \\
-    Proteine \\
-    Min. Fette \\
+    Calories \\
+    Proteins \\
+    Min. Fats \\
     Calcium \\
     Vit. B2
 \end{pmatrix}
 \]
 
-Insgesamt gilt dann:
-
+In summary, the following holds:
 \[
 \mathcal{U} = \left\{ D^0 + \sum_{\ell=1}^{10}D^{\ell} \zeta_{\ell} \;\vert\; \zeta_{\ell} \in [-1, 1] \right\}
 \]
 
-\subsubsection*{4. Bilden des robusten Pendants}
+\subsubsection*{4. Constructing the Robust Counterpart}
 
-Mit Hilfe der Unsicherheitsmenge aus dem vorherigen Schritt l\"asst sich nun das robuste Pendant des Ursprungsproblems bilden:
+Using the uncertainty set from the previous step, the robust counterpart of the original problem can be formulated as:
 \[
 \begin{aligned}
     &\min && \sup_{(c, d, \cdot) \in \mathcal{U}} \left(c^\top x + d\right) \\
@@ -331,7 +329,7 @@ Mit Hilfe der Unsicherheitsmenge aus dem vorherigen Schritt l\"asst sich nun das
     & && x \geq 0
 \end{aligned}
 \]
-In diesem Fall ergibt es sich zu:
+In this case, it results in:
 \[
 \begin{aligned}
    \begin{aligned}
@@ -354,15 +352,16 @@ In diesem Fall ergibt es sich zu:
 \end{aligned}
 \]
 
-\subsubsection*{5. Herleitung eines LP-\"Aquivalents}
+\subsubsection*{5. Derivation of an LP Equivalent}
 
-Zur Veranschaulichung wird die zweite Nebenbedingung (Proteine) umgewandelt.
-Dabei wird die Definition von $\mathcal{U}$ in die Nebenbedingung eingesetzt:
+
+To illustrate, the second constraint (Proteins) is transformed.
+The definition of $\mathcal{U}$ is substituted into the constraint:
 \[
 (a_1^0)^\top x + \zeta_1 (a_1^1)^\top x + \dots + \zeta_9 (a_1^9)^\top x + \underbrace{\zeta_{10} (a_1^{10})^\top x}_{= 0} \leq b_1^0 + \underbrace{\zeta_1 b_1^1}_{=0} + \dots +\zeta_{10} b_1^{10} \quad \forall \zeta \in [-1, 1]
 \]
 
-Zuerst gilt es die Projektion der Unsicherheitsmenge bei Intervall-Unsicherheit zu bestimmen:
+First, the projection of the uncertainty set for interval uncertainty must be determined:
 \[
 \mathcal{U}^{2} = \left\{ 
 \begin{array}{l}
@@ -514,7 +513,7 @@ Zuerst gilt es die Projektion der Unsicherheitsmenge bei Intervall-Unsicherheit 
 \right\}.
 \]
 
-Damit ergibt sich f\"ur die Restriktion folgende robuste Darstellung:
+Thus, the robust representation for the constraint is as follows:
 \[
 \begin{aligned}
     &-0.35x_1 - 7x_2 - x_3 - 2x_4 - 25x_5 - 3.5x_6 - 9x_7 - 2.5x_8 - 21x_9 \\
@@ -530,7 +529,7 @@ Damit ergibt sich f\"ur die Restriktion folgende robuste Darstellung:
 \end{aligned}
 \]
 \newpage
-Ein lineares \"Aquivalent l\"asst sich daraufhin mit Hilfe des Lifting-Ansatzes aufstellen:
+A linear equivalent can then be established using the lifting approach:
 \[
 \begin{aligned}
     &-0.35x_1 - 7x_2 - x_3 - 2x_4 - 25x_5 - 3.5x_6 - 9x_7 - 2.5x_8 - 21x_9 \\
@@ -554,35 +553,34 @@ Ein lineares \"Aquivalent l\"asst sich daraufhin mit Hilfe des Lifting-Ansatzes 
     -w_{210} \leq 10 \leq w_{210} \\
 \end{aligned}
 \]
-
-Die restlichen Schritte zur Herleitung des linearen \"Aquivalents wurden analog durchgef\"uhrt. Man findet das gesamte lineare Programm unter dem Abschnitt \hyperref[sec:lp-equivalent]{LP-\"Aquivalent bei Intervall-Unsicherheit}.
+The remaining steps to derive the linear equivalent were carried out analogously. The complete linear program can be found in the section \hyperref[sec:lp-equivalent]{LP-Equivalent for Interval Uncertainty}.
 
 \newpage
 
-\subsubsection*{L\"osung des linearen Programms}
+\subsubsection*{Solution of the Linear Program}
 
-Nach der Herleitung des linearen \"Aquivalents kann das lineare Programm gel\"ost werden. Hierzu wurde der Code entsprechend in \href{../src/r3/Aufgabe3a.gms}{Aufgabe3a.gms} umgesetzt.
-Daraus l\"asst sich entnehmen, dass die optimale L\"osung in folgendem Punkt liegt:
+After deriving the linear equivalent, the linear program can be solved. The code was implemented accordingly in \href{../src/r3/Aufgabe3a.gms}{Aufgabe3a.gms}.
+From this, it can be concluded that the optimal solution is at the following point:
 \[
 x^* = \begin{pmatrix}
-    \text{Apfel} \\ \text{Cornflakes} \\ \text{Karotten} \\ \text{Kartoffeln} \\ \text{K\"ase} \\ \text{Milch} \\ \text{Schokolade} \\ \text{Spinat} \\ \text{Steak}
+    \text{Apple} \\ \text{Cornflakes} \\ \text{Carrots} \\ \text{Potatoes} \\ \text{Cheese} \\ \text{Milk} \\ \text{Chocolate} \\ \text{Spinach} \\ \text{Steak}
     \end{pmatrix}^T
      =
      \begin{pmatrix}
      0, 3, 4, 4.7749, 0, 1.0713, 1.9635, 0, 1
         \end{pmatrix}
 \]
-Der optimale Zielfunktionswert betr\"agt \EUR{7.914778}.
+The optimal objective function value is \EUR{7.914778}.
 
-\subsubsection*{Zusammensetzung der Variablen und Restriktionen} 
+\subsubsection*{Composition of Variables and Constraints} 
 
-Die Variablen und Restriktionen des linearen Programms besteht aus $9$ Entscheidungsvariablen $x_i$, $51$ Unsicherheitsvariablen in den Nebenbedingungen $w_{ai}$ und $9$ Unsicherheitsvariablen in der Zielfunktion $w_{0i}$.
-Zu den vorher bestehenden Restriktionen kommen je Unsicherheitsvariable eine Restriktion hinzu, die die Unsicherheiten beschreiben, d.h. es kommen auf die bestehenden $14$ Restriktionen $60$ hinzu.
-Demnach besteht das lineare Programm aus $69$ Variablen und $74$ Restriktionen.
+The variables and constraints of the linear program consist of $9$ decision variables $x_i$, $51$ uncertainty variables in the constraints $w_{ai}$, and $9$ uncertainty variables in the objective function $w_{0i}$.
+For each uncertainty variable, an additional constraint is added to describe the uncertainties, i.e., $60$ constraints are added to the existing $14$ constraints.
+Thus, the linear program consists of $69$ variables and $74$ constraints.
 
 \newpage
 
-\subsubsection*{LP-\"Aquivalent bei Intervall-Unsicherheit}
+\subsubsection*{LP-Equivalent for Interval Uncertainty}
 \label{sec:lp-equivalent}
 \begin{adjustwidth}{-1.5cm}{}
 \begin{tiny}
