@@ -11,6 +11,7 @@
 \definecolor{kit}{cmyk}{1,0,0.6,0}
 \usepackage{hyperref}
 \usepackage{breqn}
+\usepackage{changepage}
 
 \hypersetup{
     pdftoolbar=true,
@@ -557,13 +558,19 @@ Ein lineares \"Aquivalent l\"asst sich dann mit Hilfe des Lifting-Ansatzes folge
 \end{aligned}
 \]
 
-Demnach lautet das gesamt lineare \"Aquivalent des robusten Pendants mit Intervall-Unsicherheit:
+Das gesamte lineare \"Aquivalent l\"asst sich unter \hyperref[sec:lp-equivalent]{LP-\"Aquivalent bei Intervall-Unsicherheit} finden.
 
+\newpage
+
+\subsubsection*{LP-\"Aquivalent bei Intervall-Unsicherheit}
+\label{sec:lp-equivalent}
+\begin{adjustwidth}{-1.5cm}{}
+\begin{tiny}
+\setlength{\jot}{0pt}
 \[
 \begin{aligned}
    \begin{aligned}
-    \min & \quad  0.22x_1 + 0.18x_2 + 0.07x_3 + 0.14x_4 + 0.55x_5 + 0.16x_6 + 0.54x_7 + 0.28x_8 + 3.2x_9 \\
-    & \qquad + w_{01} + w_{02} + w_{03} + w_{04} + w_{05} + w_{06} + w_{07}+ w_{08}+ w_{09} \\
+    \min & \quad  0.22x_1 + 0.18x_2 + 0.07x_3 + 0.14x_4 + 0.55x_5 + 0.16x_6 + 0.54x_7 + 0.28x_8 + 3.2x_9 + w_{01} + w_{02} + w_{03} + w_{04} + w_{05} + w_{06} + w_{07}+ w_{08}+ w_{09} \\
     \text{s.t.} & \quad -w_{01} \leq 0.06x_1 \leq w_{01} \\
     & \quad -w_{02} \leq 0.027x_2 \leq w_{02} \\
     & \quad -w_{03} \leq 0.014x_3 \leq w_{03} \\
@@ -575,8 +582,7 @@ Demnach lautet das gesamt lineare \"Aquivalent des robusten Pendants mit Interva
     & \quad -w_{09} \leq 1.28x_9 \leq w_{09} \\
     & \quad -52x_1-355x_2-26x_3-71x_4-354x_5-64x_6-536x_7-17x_8-121x_9 \leq -2400 - w_{110}\\
     & \quad -w_{110} \leq 350 \leq w_{110} \\
-    & \quad -0.35x_1 - 7x_2 - x_3 - 2x_4 - 25x_5 - 3.5x_6 - 9x_7 - 2.5x_8 - 21x_9 \\
-    & \qquad + w_{21} + w_{22} + w_{23} + w_{24} + w_{25} + w_{26} + w_{27}+ w_{28}+ w_{29} \leq -56 - w_{210} \\
+    & \quad -0.35x_1 - 7x_2 - x_3 - 2x_4 - 25x_5 - 3.5x_6 - 9x_7 - 2.5x_8 - 21x_9 + w_{21} + w_{22} + w_{23} + w_{24} + w_{25} + w_{26} + w_{27}+ w_{28}+ w_{29} \leq -56 - w_{210} \\
     & \quad -w_{21} \leq 0.07x_1 \leq w_{21} \\
     & \quad -w_{22} \leq 0.7x_2 \leq w_{22} \\
     & \quad -w_{23} \leq 0.2x_3 \leq w_{23} \\
@@ -588,8 +594,7 @@ Demnach lautet das gesamt lineare \"Aquivalent des robusten Pendants mit Interva
     & \quad -w_{29} \leq 3.15x_9 \leq w_{29} \\
     & \quad -w_{210} \leq 10 \leq w_{210} \\
     & \quad -18x_1 - 307x_2 - 7x_3 - 24.5x_4 + 177x_5 + 12x_6 + 52x_7 + 6.5x_8 + 60.5x_9 \leq 0 \\
-    & \quad -0.4x_1 - 0.6x_2 - 0.2x_3 - 0.11x_4 - 28.3x_5 - 3.5x_6 - 31.5x_7 - 0.3x_8 - 4x_9 \\
-    & \qquad + w_{41} + w_{42} + w_{43} + w_{44} + w_{45} + w_{46} + w_{47}+ w_{48}+ w_{49} \leq -50 - w_{410} \\
+    & \quad -0.4x_1 - 0.6x_2 - 0.2x_3 - 0.11x_4 - 28.3x_5 - 3.5x_6 - 31.5x_7 - 0.3x_8 - 4x_9  + w_{41} + w_{42} + w_{43} + w_{44} + w_{45} + w_{46} + w_{47}+ w_{48}+ w_{49} \leq -50 - w_{410} \\
     & \quad -w_{41} \leq 0.8x_1 \leq w_{41} \\
     & \quad -w_{42} \leq 0.12x_2 \leq w_{42} \\
     & \quad -w_{43} \leq 0.04x_3 \leq w_{43} \\
@@ -600,8 +605,7 @@ Demnach lautet das gesamt lineare \"Aquivalent des robusten Pendants mit Interva
     & \quad -w_{48} \leq 0.045x_8 \leq w_{48} \\
     & \quad -w_{49} \leq 1.2x_9 \leq w_{49} \\
     & \quad -w_{410} \leq 10 \leq w_{410} \\
-    & \quad 0.4x_1 + 0.6x_2 + 0.2x_3 + 0.11x_4 + 28.3x_5 + 3.5x_6 + 31.5x_7 + 0.3x_8 + 4x_9 \\
-    & \qquad + w_{51} + w_{52} + w_{53} + w_{54} + w_{55} + w_{56} + w_{57}+ w_{58}+ w_{59} \leq 70 \\
+    & \quad 0.4x_1 + 0.6x_2 + 0.2x_3 + 0.11x_4 + 28.3x_5 + 3.5x_6 + 31.5x_7 + 0.3x_8 + 4x_9 + w_{51} + w_{52} + w_{53} + w_{54} + w_{55} + w_{56} + w_{57}+ w_{58}+ w_{59} \leq 70 \\
     & \quad -w_{51} \leq 0.8x_1 \leq w_{51} \\
     & \quad -w_{52} \leq 0.12x_2 \leq w_{52} \\
     & \quad -w_{53} \leq 0.04x_3 \leq w_{53} \\
@@ -611,8 +615,7 @@ Demnach lautet das gesamt lineare \"Aquivalent des robusten Pendants mit Interva
     & \quad -w_{57} \leq 3.15x_7 \leq w_{57} \\
     & \quad -w_{58} \leq 0.045x_8 \leq w_{58} \\
     & \quad -w_{59} \leq 1.2x_9 \leq w_{59} \\
-    & \quad -7x_1 - 13x_2 - 41x_3 - 6x_4 - 800x_5 - 120x_6 - 214x_7 - 126x_8 - 3x_9 \\
-    & \qquad + w_{61} + w_{62} + w_{63} + w_{64} + w_{65} + w_{66} + w_{67}+ w_{68}+ w_{69} \leq -500 - w_{610} \\
+    & \quad -7x_1 - 13x_2 - 41x_3 - 6x_4 - 800x_5 - 120x_6 - 214x_7 - 126x_8 - 3x_9 + w_{61} + w_{62} + w_{63} + w_{64} + w_{65} + w_{66} + w_{67}+ w_{68}+ w_{69} \leq -500 - w_{610} \\
     & \quad -w_{61} \leq 1.4x_1 \leq w_{61} \\
     & \quad -w_{62} \leq 6.5x_2 \leq w_{62} \\
     & \quad -w_{63} \leq 8.2x_5 \leq w_{63} \\
@@ -623,8 +626,7 @@ Demnach lautet das gesamt lineare \"Aquivalent des robusten Pendants mit Interva
     & \quad -w_{68} \leq 12.6x_8 \leq w_{68} \\
     & \quad -w_{69} \leq 0.6x_9 \leq w_{69} \\
     & \quad -w_{610} \leq 200 \leq w_{610} \\
-    & \quad -30x_1 - 60x_2 - 53x_3 - 47x_4 - 300x_5 -170x_6 - 370x_7 -230x_8 - 130x_9
-    & \qquad + w_{71} + w_{72} + w_{73} + w_{74} + w_{75} + w_{76} + w_{77}+ w_{78}+ w_{79} \leq -1100 - w_{710} \\
+    & \quad -30x_1 - 60x_2 - 53x_3 - 47x_4 - 300x_5 -170x_6 - 370x_7 -230x_8 - 130x_9 + w_{71} + w_{72} + w_{73} + w_{74} + w_{75} + w_{76} + w_{77}+ w_{78}+ w_{79} \leq -1100 - w_{710} \\
     & \quad -w_{71} \leq 4.5x_1 \leq w_{71} \\
     & \quad -w_{72} \leq 12x_2 \leq w_{72} \\
     & \quad -w_{73} \leq 10.6x_5 \leq w_{73} \\
@@ -645,6 +647,8 @@ Demnach lautet das gesamt lineare \"Aquivalent des robusten Pendants mit Interva
     \end{aligned}
 \end{aligned}
 \]
+\end{tiny}
+\end{adjustwidth}
 
 \newpage
 
