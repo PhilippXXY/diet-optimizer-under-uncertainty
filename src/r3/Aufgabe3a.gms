@@ -1,11 +1,16 @@
 $ontext
-
+Detailed description of the model:
+- Objective: Create a robust counterpart model for the given linear program, as uncertainty is present.
+- Uncertainty: The uncertainty is present in the objective function as well as the constraints.
+- LP Equivalence: The robust counterpart model is equivalent to the original LP model when the uncertainty is zero.
 $offtext
 
+* Sets for the model, where i represents the food items with additional variables for the robust counterpart model and j represents the nutritional requirements
 Sets
     i / x1*x9, w01*w09, w110, w21*w29, w210, w41*w49, w410, w51*w59, w510, w61*w69, w610, w71*w79, w710 /
     j / a1 * a8 /;
 
+* Changed every constraint into standard form and added additional variables for the robust counterpart
 Table A(i, j)                
          a1     a2     a3     a4     a5     a6     a7   a8
 x1    -52.0  -0.35  -18.0  -0.40   0.40   -7.0  -30.0 -1.0
@@ -69,6 +74,7 @@ w78     0.0   0.00    0.0   0.00   0.00    0.0    1.0  0.0
 w79     0.0   0.00    0.0   0.00   0.00    0.0    1.0  0.0
 w710    0.0   0.00    0.0   0.00   0.00    0.0    1.0  0.0;
 
+* Right-hand side values for the constraints transformed into standard form
 Parameter 
 b(j)
     / a1 -2400
@@ -80,6 +86,7 @@ b(j)
       a7 -1100
       a8 4 /;
 
+* Coefficients for the objective function
 Parameter 
 c(i)
     /x1 0.22
@@ -92,6 +99,7 @@ c(i)
      x8 0.28
      x9 3.2 /;
 
+* Uncertainty values for the objective function
 Parameter wc(i)
     /w01 1
      w02 1
@@ -104,17 +112,19 @@ Parameter wc(i)
      w09 1    
      /;
 
-
+* Variables for the model
 Positive Variable x(i);
 Free Variable z;
 
-
+* Constraints as in the original model
 x.up(i) = 5;
 x.up('x2') = 3;
 x.up('x6') = 2;
 x.up('x7') = 3;
+* Adjusted to standard form
 x.lo('x9') = 1;
 
+* Uncertainty values for the constraints of the objective function
 x.lo('w01') = -0.06 * x.l('x1');
 x.up('w01') = 0.06 * x.l('x1');
 x.lo('w02') = 0.027 * x.l('x2');
@@ -134,6 +144,7 @@ x.up('w08') = 0.1 * x.l('x8');
 x.lo('w09') = -1.28 * x.l('x9');
 x.up('w09') = 1.28 * x.l('x9');
 
+* Uncertainty values for the constraints of the restrictions
 x.lo('w110') = -350;
 x.up('w110') = 350;
 
@@ -242,18 +253,21 @@ x.up('w79') = 19.5 * x.l('x9');
 x.lo('w710') = -300;
 x.up('w710') = 300;
 
-
-
-
+* Equations for the model
 Equations
     eq1 objective_function,
     eq2(j) nutritional_requirements;
 
+* Objective function
 eq1.. z =e= sum(i, c(i) * x(i) + wc(i));
+* Constraints for the nutritional requirements
 eq2(j).. sum(i, A(i, j) * x(i)) =l= b(j);
 
+* Model for the robust counterpart
 Model problem /all/;
+* Solve the model using the lp solver
 Solve problem using lp minimizing z;
+* Display the results
 Display x.l, z.l;
 
 
