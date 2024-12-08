@@ -626,8 +626,6 @@ x^* = \begin{pmatrix}
 \]
 Der optimale Zielfunktionswert betr\"agt \EUR{7.6895}.
 
-\newpage
-
 \subsection*{Aufgabenteil c - Vergleich der Ergebnisse}
 
 Wie aus den vorherigen Teilaufgaben ersichtlich, unterscheiden sich die Ergebnisse der verschiedenen Unsicherheitsmodelle:
@@ -649,6 +647,13 @@ Die Unterschiede in den Ergebnissen zeigen, dass die Wahl des Unsicherheitsmodel
     \item[Ellips-Unsicherheit:] Diese L\"osung bietet ebenfalls Robustheit, ist jedoch weniger konservativ als die L\"osung mit Intervall-Unsicherheiten. Die Ber\"ucksichtigung von Abh\"angigkeiten zwischen Unsicherheiten f\"uhrt zu einem niedrigeren Zielwert, was im Kontext der Minimierung besser ist.
 \end{description}
 Abschlie\ss end l\"asst sich sagen, dass das Einbeziehen von Unsicherheiten die Zielwerte erheblich erh\"oht, wobei die Ber\"ucksichtigung von Intervall Unsicherheiten die konservativste, aber auch teuerste L\"osung bietet. Der Unterschied zwischen den robusten L\"osungen zeigt, dass die Wahl der Unsicherheitsmenge einen Einfluss auf den Zielwert hat. Dieser Unterschied ist jedoch nicht extrem und eher von Relevanz, wenn Effizienz eine besonders wichtige Rolle spielt.
+
+\subsection*{Aufgabenteil d - Erh\"ohung der ben\"otigten Kalorien}
+
+Nach Einf\"uhrung der Intervall- und Ellips-Unsicherheiten l\"asst sich der erh\"ohte Kalorienbedarf nicht mehr decken. Das liegt daran, dass durch die erh\"ohte Kalorienzufuhr die maximale Fett-Restriktion verletzt wird, da sie eine obere Schranke darstellt. Grund daf\"ur ist, dass das robuste Pendant Worst-Case-Szenarien abbildet. In einem Szenario ohne Unsicherheiten k\"onnte der erh\"ohte Kalorienbedarf gedeckt werden.
+Dies l\"asst sich durch Anpassen der Restriktionen in den bisherigen GAMS-Dateien \"uberpr\"ufen.
+
+\newpage
 
 \subsubsection*{LP-\"Aquivalent bei Intervall-Unsicherheit}
 \label{sec:lp-equivalent-interval}

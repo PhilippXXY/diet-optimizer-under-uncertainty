@@ -624,8 +624,6 @@ x^* = \begin{pmatrix}
 \]
 The optimal objective function value is \EUR{7.6895}.
 
-\newpage
-
 \subsection*{Task Part c - Comparison of Results}
 
 As can be seen from the previous tasks, the results of the different uncertainty models differ:
@@ -647,6 +645,13 @@ The differences in the results show that the choice of uncertainty model has a s
     \item[Ellipsoidal uncertainty:] This solution also offers robustness but is less conservative than the solution with interval uncertainties. Considering dependencies between uncertainties leads to a lower objective value, which is better in the context of minimization.
 \end{description}
 In conclusion, it can be said that including uncertainties significantly increases the objective values, with interval uncertainties providing the most conservative but also the most expensive solution. The difference between the robust solutions shows that the choice of the uncertainty set has an impact on the objective value. However, this difference is not extreme and is more relevant when efficiency plays a particularly important role.
+
+\subsection*{Task Part d - Increase in Required Calories}
+
+After introducing interval and ellipsoidal uncertainties, the increased calorie requirement can no longer be met. This is because the increased calorie intake violates the maximum fat restriction, as it represents an upper bound. The reason for this is that the robust counterpart models worst-case scenarios. In a scenario without uncertainties, the increased calorie requirement could be met.
+This can be verified by adjusting the constraints in the existing GAMS files.
+
+\newpage
 
 \subsubsection*{LP-Equivalent for Interval Uncertainty}
 \label{sec:lp-equivalent-interval}
