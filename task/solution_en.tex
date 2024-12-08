@@ -1,0 +1,1007 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[applemac]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage[nospace,noadjust]{cite}
+\usepackage{eurosym}
+\usepackage{amssymb,amsmath,mathdots}
+\usepackage{graphicx}
+\usepackage{color}
+\definecolor{kit}{cmyk}{1,0,0.6,0}
+\usepackage{hyperref}
+\usepackage{breqn}
+\usepackage{changepage}
+\hypersetup{
+    pdftoolbar=true,
+    pdfmenubar=true,
+    pdfpagemode=UseOutlines,
+    bookmarksnumbered=true,
+    linktocpage=true,
+    colorlinks=false,
+    colorlinks=false
+}
+
+\setlength{\parindent}{0pt}
+\parskip1.5ex
+
+\begin{document}
+\begin{titlepage}
+    \begin{center}
+        \vspace*{-80pt}
+
+        \includegraphics[scale=0.25]{img/kit_logo.png}
+
+        \vspace*{40pt}
+
+        Department of Economics and Management \\[1ex]
+        Institute for Operations Research (IOR) \\[1ex]
+        Optimization under Uncertainty \\[1ex]
+
+        Prof. Dr. Steffen Rebennack          
+
+        \vspace*{25pt}   
+
+        \vspace*{35pt}
+
+        \fboxsep 40pt
+        \fboxrule 6pt
+        \fcolorbox{kit}{white}{
+            \parbox{80mm}{
+                \begin{center}
+                
+                    \Large{Excercise Submission}\\ 
+                    \Large{Winter Semester 2024/25}
+
+                \end{center}
+            }
+        }
+
+        \vspace*{40pt}
+
+        \normalsize
+
+        First Name Last Name\\
+        Student ID:\\
+        Study Program (B.Sc.)\\[4ex]
+
+        and \\[4ex]
+
+        First Name Last Name\\
+        Student ID:\\
+        Study Program (B.Sc.)\\[4ex]
+
+    \end{center}
+\end{titlepage}
+
+\newpage
+
+\section*{Solutions to Task 1}
+
+\subsection*{Task Part a}
+
+The source code can be found in the file \href{../src/r1/Aufgabe1.gms}{Aufgabe1.gms}.
+
+\subsection*{Task Part b}
+
+The corresponding execution can be viewed at \href{../results/r1/Aufgabe1.lst}{Aufgabe1.lst}. From this, it can be deduced that the optimal value is \EUR{5.169180} and the optimal point is
+\[
+\begin{pmatrix}
+\text{Apple} \\ 
+\text{Cornflakes} \\ 
+\text{Carrots} \\ 
+\text{Potatoes} \\ 
+\text{Cheese} \\ 
+\text{Milk} \\ 
+\text{Chocolate} \\ 
+\text{Spinach} \\ 
+\text{Steak}
+\end{pmatrix}^T
+=
+\begin{pmatrix}
+0 \\ 
+3 \\ 
+4 \\ 
+0.4512 \\ 
+0 \\ 
+0 \\ 
+2.0111 \\
+0 \\
+1
+\end{pmatrix}^T.
+\]
+
+\newpage
+
+\section*{Solutions to Task 2}
+
+The uncertainty set can generally be described as follows:
+
+\[
+\mathcal{U} = \left\{
+\underbrace{
+\left[
+\begin{array}{c|c}
+(c^0)^\top & d^0 \\ \hline
+A^0 & b^0
+\end{array}
+\right]
+}_{D^0}
++ \sum_{\ell=1}^L \zeta_\ell
+\underbrace{
+\left[
+\begin{array}{c|c}
+(c^\ell)^\top & d^\ell \\ \hline
+A^\ell & b^\ell
+\end{array}
+\right]
+}_{D^\ell}
+\;\middle|\; \zeta \in \mathbb{Z}
+\right\}
+\]
+
+For the task, among other things, the objective function is given by
+\[
+    \min \quad 0.22x_1 + 0.18x_2 + 0.07x_3 + 0.14x_4 + 0.55x_5 + 0.1x_6 + 0.54x_7 + 0.28x_8 + 3.2x_9
+\]
+and the second constraint is
+\[
+0.35x_1 + 7x_2 + x_3 + 2x_4 + 25x_5 + 3.5x_6 + 9x_7 + 2.5x_8 + 21x_9 \geq 56
+\]
+required.
+
+First, the second constraint must be converted to standard form. This is done by multiplying the inequality by $-1$:
+\[
+    -0.35x_1  -7x_2  -x_3  -2x_4 - 25x_5 - 3.5x_6 - 9x_7 - 2.5x_8 - 21x_9 \leq -56
+\]
+
+From the corresponding considerations, the nominal data matrix $D^0_2$ can be directly derived: 
+\[
+    D^0_2 = \begin{pmatrix}
+        0.22 & 0.18 & 0.07 & 0.14 & 0.55 & 0.1 & 0.54 & 0.28 & 3.2 & 0 \\
+        -0.35 & -7 & -1 & -2 & -25 & -3.5 & -9 & -2.5 & -21 & -56
+    \end{pmatrix}
+\]
+        
+The uncertainties affect all coefficients of the objective function, as well as the nutrient values for proteins, fats, calcium and vitamin B2. Additionally, there is a fluctuation in the minimum protein requierement of $10g$. All values can be taken from the table in the task description.
+
+Therefore, it is crucial to calculate the uncertainties of the objective and constraint functions in absolute values. The uncertainty magnitude can then be represented as follows:
+\[
+    \text{OF} = \begin{pmatrix}
+        0.06 & \underbrace{0.027}_{\mathrm{0.18 \times 0.15}} & \underbrace{0.014}_{\mathrm{0.07 \times 0.2}} & 0.04 & 0.1 & \underbrace{0.025}_{\mathrm{0.1 \times 0.25}} & \underbrace{0.216}_{\mathrm{0.54 \times 0.4}} & 0.1 & \underbrace{1.28}_{\mathrm{3.2 \times 0.4}}
+    \end{pmatrix}        
+\]
+\[
+    \text{CF} = \begin{pmatrix}
+        \underbrace{-0.07}_{\mathrm{-0.35 \times 0.2}} & \underbrace{-0.7}_{\mathrm{-7 \times 0.1}} & \underbrace{-0.2}_{\mathrm{-1 \times 0.2}} & \underbrace{-0.1}_{\mathrm{-2 \times 0.05}} & \underbrace{-0.25}_{\mathrm{-25 \times 0.01}} & \underbrace{-0.35}_{\mathrm{-3.5 \times 0.1}} & \underbrace{-0.09}_{\mathrm{-9 \times 0.01}} & \underbrace{-0.25}_{\mathrm{-2.5 \times 0.1}} & \underbrace{-3.15}_{\mathrm{-21 \times 0.15}}
+    \end{pmatrix}
+\]
+
+Based on these values, all shift matrices $D^\ell_2$ can be calculated. The amount of shift matrices corresponds to the number of uncertain coefficients, which is $L = 19$ in this case. They are calculated as follows:
+
+\[
+D^1_2 = \begin{pmatrix}
+    0.06 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^2_2 = \begin{pmatrix}
+    0 & 0.027 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^3_2 = \begin{pmatrix}
+    0 & 0 & 0.014 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^4_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0.04 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^5_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0.1 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^6_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0.025 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^7_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0.216 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^8_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0.1 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^9_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1.28 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^{10}_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0.07 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^{11}_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0.7 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^{12}_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0.2 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^{13}_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0.1 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^{14}_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0.25 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^{15}_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0.35 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^{16}_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0.09 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^{17}_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0.25 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^{18}_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 3.15 & 0
+\end{pmatrix}
+\]
+\[
+D^{19}_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 10
+\end{pmatrix}
+\]
+
+\newpage
+
+\section*{Solutions to Task 3}
+
+\subsection*{Task Part a - Interval Uncertainty}
+
+\subsubsection*{Transforming the Original Problem into Standard Form}
+
+The original problem must be transformed into the following structure:
+\[
+(\text{LO}) \quad \left\{ \min_{x} \left\{ \mathbf{c}^\top \mathbf{x} + d \; \middle| \; A\mathbf{x} \leq \mathbf{b} \right\} \right\}
+\]
+This can then be represented as follows:
+\[
+\begin{aligned}
+    \min & \quad 0.22x_1 + 0.18x_2 + 0.07x_3 + 0.14x_4 + 0.55x_5 + 0.16x_6 + 0.54x_7 + 0.28x_8 + 3.2x_9 \\
+    \text{s.t.} & \quad -52x_1 - 355x_2 - 26x_3 - 71x_4 - 354x_5 - 64x_6 - 536x_7 - 17x_8 - 121x_9 \leq -2400 \\
+    & \quad -0.35x_1 - 7x_2 - x_3 - 2x_4 - 25x_5 - 3.5x_6 - 9x_7 - 2.5x_8 - 21x_9 \leq -56 \\
+    & \quad -18x_1 - 307x_2 - 7x_3 - 24.5x_4 + 177x_5 + 12x_6 + 52x_7 + 6.5x_8 + 60.5x_9 \leq 0 \\
+    & \quad -0.4x_1 - 0.6x_2 - 0.2x_3 - 0.11x_4 - 28.3x_5 - 3.5x_6 - 31.5x_7 - 0.3x_8 - 4x_9 \leq -50 \\
+    & \quad 0.4x_1 + 0.6x_2 + 0.2x_3 + 0.11x_4 + 28.3x_5 + 3.5x_6 + 31.5x_7 + 0.3x_8 + 4x_9 \leq 70 & \\
+    & \quad -7x_1 - 13x_2 - 41x_3 - 6x_4 - 800x_5 - 120x_6 - 214x_7 - 126x_8 - 3x_9 \leq -500 \\
+    & \quad -30x_1 - 60x_2 - 53x_3 - 47x_4 - 300x_5 - 170x_6 - 370x_7 - 230x_8 - 130x_9 \leq -1100 \\
+    & \quad -x_1 - x_3 - x_8 \leq -4 \\
+    & \quad x_1, \dots, x_9 \leq 5 \\
+    & \quad - x_1, \dots, - x_9 \leq 0 \\
+    & \quad x_2 \leq 3 \\
+    & \quad x_6 \leq 2 \\
+    & \quad x_7 \leq 3 \\
+    & \quad - x_9 \leq - 1
+\end{aligned}
+\]
+
+\subsubsection*{Constructing the Nominal Data Matrix $D^0$}
+
+Using the above considerations, the nominal data matrix $D^0$ for this structure can be constructed:
+\[
+D^0 = \begin{pmatrix}\begin{array}{c|c}
+(c^0)^\top & d^0 \\ \hline
+A^0 & b^0
+\end{array}\end{pmatrix}
+\]
+
+After removing rows without uncertainties, it becomes:
+\[
+D^0 = \begin{pmatrix}
+0.22 & 0.18 & 0.07 & 0.14 & 0.55 & 0.16 & 0.54 & 0.28 & 3.2 & 0 \\
+-52 & -355 & -26 & -71 & -354 & -64 & -536 & -17 & -121 & -2400 \\
+-0.35 & -7 & -1 & -2 & -25 & -3.5 & -9 & -2.5 & -21 & -56 \\
+-0.4 & -0.6 & -0.2 & -0.11 & -28.3 & -3.5 & -31.5 & -0.3 & -4 & -50 \\
+0.4 & 0.6 & 0.2 & 0.11 & 28.3 & 3.5 & 31.5 & 0.3 & 4 & 70 \\
+-7 & -13 & -41 & -6 & -800 & -120 & -214 & -126 & -3 & -500 \\
+-30 & -60 & -53 & -47 & -300 & -170 & -370 & -230 & -130 & -1100 \\
+\end{pmatrix}
+\]
+
+\subsubsection*{Constructing the Shift Matrices $D^\ell$}
+The number of shift matrices $D^\ell$ is determined by the number of uncertainties. All uncertainties can be derived from the tables.
+
+For the shift matrices $D^\ell$, it is necessary to convert the uncertainties into absolute deviations by multiplying them with the corresponding coefficient of the objective function, if applicable.
+As mentioned in Exercise $3f$ and Lecture $7$ (Section 5.3), a new shift matrix is used for each uncertainty in a row.
+This approach allows the uncertainties of a parameter $x_{\ell \in [1,9]}$ and the minimum requirement $b$ to be represented in a shift matrix $D^\ell$. Additionally, for simplification purposes, it is permissible to omit rows where no uncertainties occur.
+
+The shift matrices are as follows:
+
+\[
+D^1_{x_1} = \begin{pmatrix}
+0.06 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+0.07 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+0.8 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+0.8 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+1.4 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+4.5 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 
+\end{pmatrix}
+\begin{pmatrix}
+    Objective Function \\
+    Proteins \\
+    Min. Fats \\
+    Max. Fats \\
+    Calcium \\
+    Vit. B2
+\end{pmatrix}
+\]
+\[
+D^2_{x_2} = \begin{pmatrix}
+0 & 0.027 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+0 & 0.7 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+0 & 0.12 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0.12 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 6.5 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+0 & 12 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\begin{pmatrix}
+    Objective Function \\
+    Proteins \\
+    Min. Fats \\
+    Max. Fats \\
+    Calcium \\
+    Vit. B2
+\end{pmatrix}
+\]
+\[
+D^3_{x_3} = \begin{pmatrix} 
+0 & 0 & 0.014 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0.2 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+0 & 0 & 0.04 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0.04 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 8.2 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 10.6 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\begin{pmatrix}
+    Objective Function \\
+    Proteins \\
+    Min. Fats \\
+    Max. Fats \\
+    Calcium \\
+    Vit. B2
+\end{pmatrix}
+\]
+\[
+D^4_{x_4} = \begin{pmatrix}
+0 & 0 & 0 & 0.04 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+0 & 0 & 0 & 0.1 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+0 & 0 & 0 & 0.0022 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0.0022 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+0 & 0 & 0 & 0.12 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+0 & 0 & 0 & 0.47 & 0 & 0 & 0 & 0 & 0 & 0 
+\end{pmatrix}
+\begin{pmatrix}
+    Objective Function \\
+    Proteins \\
+    Min. Fats \\
+    Max. Fats \\
+    Calcium \\
+    Vit. B2
+\end{pmatrix}
+\]
+\[
+D^5_{x_5} = \begin{pmatrix}
+0 & 0 & 0 & 0 & 0.1 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 1.77 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0.035 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0.035 & 0 & 0 & 0 & 0 & 0 \\ 
+0 & 0 & 0 & 0 & 80 & 0 & 0 & 0 & 0 & 0 \\ 
+0 & 0 & 0 & 0 & 15 & 0 & 0 & 0 & 0 & 0 
+\end{pmatrix}
+\begin{pmatrix}
+    Objective Function \\
+    Proteins \\
+    Min. Fats \\
+    Max. Fats \\
+    Calcium \\
+    Vit. B2
+\end{pmatrix}
+\]
+\[
+D^6_{x_6} = \begin{pmatrix}
+0 & 0 & 0 & 0 & 0 & 0.04 & 0 & 0 & 0 & 0 \\ 
+0 & 0 & 0 & 0 & 0 & 0.35 & 0 & 0 & 0 & 0 \\ 
+0 & 0 & 0 & 0 & 0 & 0.35 & 0 & 0 & 0 & 0 \\ 
+0 & 0 & 0 & 0 & 0 & 0.35 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 24 & 0 & 0 & 0 & 0 \\ 
+0 & 0 & 0 & 0 & 0 & 8.5 & 0 & 0 & 0 & 0 
+\end{pmatrix}
+\begin{pmatrix}
+    Objective Function \\
+    Proteins \\
+    Min. Fats \\
+    Max. Fats \\
+    Calcium \\
+    Vit. B2
+\end{pmatrix}
+\]
+\[
+D^7_{x_7} = \begin{pmatrix}
+0 & 0 & 0 & 0 & 0 & 0 & 0.216 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0.9 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 3.15 & 0 & 0 & 0 \\ 
+0 & 0 & 0 & 0 & 0 & 0 & 3.15 & 0 & 0 & 0 \\ 
+0 & 0 & 0 & 0 & 0 & 0 & 21.4 & 0 & 0 & 0 \\ 
+0 & 0 & 0 & 0 & 0 & 0 & 37 & 0 & 0 & 0 
+\end{pmatrix}
+\begin{pmatrix}
+    Objective Function \\
+    Proteins \\
+    Min. Fats \\
+    Max. Fats \\
+    Calcium \\
+    Vit. B2
+\end{pmatrix}
+\]
+\[
+D^8_{x_8} = \begin{pmatrix}
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0.1 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0.25 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0.045 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0.045 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 12.6 & 0 & 0 \\ 
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 46 & 0 & 0 
+\end{pmatrix}
+\begin{pmatrix}
+    Objective Function \\
+    Proteins \\
+    Min. Fats \\
+    Max. Fats \\
+    Calcium \\
+    Vit. B2
+\end{pmatrix}
+\]
+\[
+D^9_{x_9} = \begin{pmatrix}
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1.28 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 3.15 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1.2 & 0 \\ 
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1.2 & 0 \\ 
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0.6 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 19.5 & 0 
+\end{pmatrix}
+\begin{pmatrix}
+    Objective Function \\
+    Proteins \\
+    Min. Fats \\
+    Max. Fats \\
+    Calcium \\
+    Vit. B2
+\end{pmatrix}
+\]
+\[
+D^{10}_{b} = \begin{pmatrix}
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 350 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 10 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 10 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 200 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 300 
+\end{pmatrix}
+\begin{pmatrix}
+    Calories \\
+    Proteins \\
+    Min. Fats \\
+    Calcium \\
+    Vit. B2
+\end{pmatrix}
+\]
+
+In summary, the following holds:
+\[
+\mathcal{U} = \left\{ D^0 + \sum_{\ell=1}^{10}D^{\ell} \zeta_{\ell} \;\vert\; \zeta_{\ell} \in [-1, 1] \right\}
+\]
+
+\subsubsection*{Constructing the Robust Counterpart}
+
+Using the uncertainty set from the previous step, the robust counterpart of the original problem can be formulated as:
+\[
+\begin{aligned}
+    &\min && \sup_{(c, d, \cdot) \in \mathcal{U}} \left(c^\top x + d\right) \\
+    &\text{s.t.} && Ax \leq b \quad \forall (\cdot, A, b) \in \mathcal{U}, \\
+    & && x \geq 0
+\end{aligned}
+\]
+In this case, it results in:
+\[
+\begin{aligned}
+   \begin{aligned}
+    \min & \quad \textcolor{blue}{c^\top x \quad \forall (c^\top, \cdot,\cdot,\cdot) \in \mathcal{U}} \\ % TODO
+    \text{s.t.} & \quad \textcolor{blue}{a_1^\top x \leq b_1 \quad \forall (\cdot, \cdot, a_1^\top, b_1) \in \mathcal{U}} \\
+    & \quad \textcolor{blue}{a_2^\top x \leq b_2 \quad \forall (\cdot, \cdot, a_2^\top, b_2) \in \mathcal{U}} \\
+    & \quad -18x_1 - 307x_2 - 7x_3 - 24.5x_4 + 177x_5 + 12x_6 + 52x_7 + 6.5x_8 + 60.5x_9 \leq 0 \\
+    & \quad \textcolor{blue}{a_4^\top x \leq b_4 \quad \forall (\cdot, \cdot, a_4^\top, b_4) \in \mathcal{U}} \\
+    & \quad \textcolor{blue}{a_5^\top x \leq b_5 \quad \forall (\cdot, \cdot, a_5^\top, b_5) \in \mathcal{U}} \\
+    & \quad \textcolor{blue}{a_6^\top x \leq b_6 \quad \forall (\cdot, \cdot, a_6^\top, b_6) \in \mathcal{U}} \\
+    & \quad \textcolor{blue}{a_7^\top x \leq b_7 \quad \forall (\cdot, \cdot, a_7^\top, b_7) \in \mathcal{U}}\\
+    & \quad -x_1 - x_3 - x_8 \leq -4 \\
+    & \quad x_1, \dots, x_9 \leq 5 \\
+    & \quad - x_1, \dots, - x_9 \leq 0 \\
+    & \quad x_2 \leq 3 \\
+    & \quad x_6 \leq 2 \\
+    & \quad x_7 \leq 3 \\
+    & \quad - x_9 \leq - 1
+\end{aligned}
+\end{aligned}
+\]
+
+\subsubsection*{Derivation of an LP Equivalent}
+
+
+To illustrate, the second constraint (Proteins) is transformed.
+The definition of $\mathcal{U}$ is substituted into the constraint:
+\[
+(a_1^0)^\top x + \zeta_1 (a_1^1)^\top x + \dots + \zeta_9 (a_1^9)^\top x + \underbrace{\zeta_{10} (a_1^{10})^\top x}_{= 0} \leq b_1^0 + \underbrace{\zeta_1 b_1^1}_{=0} + \dots +\zeta_{10} b_1^{10} \quad \forall \zeta \in [-1, 1]
+\]
+
+First, the projection of the uncertainty set for interval uncertainty must be determined:
+\[
+\mathcal{U}^{2} = \left\{ 
+\begin{array}{l}
+    \begin{pmatrix}
+    -0.35 \\ 
+    -7 \\ 
+    -1 \\
+    -2 \\
+    -25 \\
+    -3.5 \\
+    -9 \\
+    -2.5 \\
+    -21 \\
+    -56
+    \end{pmatrix}
+    + \zeta_1 
+    \begin{pmatrix}
+    0.07 \\ 
+    0 \\ 
+    0 \\
+    0 \\
+    0 \\
+    0 \\
+    0 \\
+    0 \\
+    0 \\
+    0
+    \end{pmatrix}
+    + \zeta_2 
+    \begin{pmatrix}
+    0 \\ 
+    0.7 \\ 
+    0 \\
+    0 \\
+    0 \\
+    0 \\
+    0 \\
+    0 \\
+    0 \\
+    0
+    \end{pmatrix}
+    + \zeta_3 
+    \begin{pmatrix}
+    0 \\ 
+    0 \\ 
+    0.2 \\
+    0 \\ 
+    0 \\ 
+    0 \\ 
+    0 \\ 
+    0 \\ 
+    0 \\
+    0
+    \end{pmatrix}
+    + \zeta_4 
+    \begin{pmatrix}
+    0 \\ 
+    0 \\ 
+    0 \\
+    0.1 \\ 
+    0 \\ 
+    0 \\ 
+    0 \\ 
+    0 \\ 
+    0 \\
+    0
+    \end{pmatrix}
+    + \zeta_5 
+    \begin{pmatrix}
+    0 \\ 
+    0 \\ 
+    0\\
+    0 \\ 
+    1.77 \\ 
+    0 \\ 
+    0 \\ 
+    0 \\ 
+    0 \\
+    0
+    \end{pmatrix}
+    \\[10pt]
+    + \zeta_6 
+    \begin{pmatrix}
+    0 \\ 
+    0 \\ 
+    0 \\
+    0 \\ 
+    0 \\ 
+    0.35 \\ 
+    0 \\ 
+    0 \\ 
+    0 \\
+    0
+    \end{pmatrix}
+    + \zeta_7 
+    \begin{pmatrix}
+    0 \\ 
+    0 \\ 
+    0 \\
+    0 \\ 
+    0 \\ 
+    0 \\ 
+    0.9 \\ 
+    0 \\ 
+    0 \\
+    0
+    \end{pmatrix}
+    + \zeta_8 
+    \begin{pmatrix}
+    0 \\ 
+    0 \\ 
+    0 \\
+    0 \\ 
+    0 \\ 
+    0 \\ 
+    0 \\ 
+    0.25 \\ 
+    0 \\
+    0
+    \end{pmatrix}
+    + \zeta_9
+    \begin{pmatrix}
+    0 \\ 
+    0 \\ 
+    0 \\
+    0 \\ 
+    0 \\ 
+    0 \\ 
+    0 \\ 
+    0 \\ 
+    3.15 \\
+    0
+    \end{pmatrix}
+    + \zeta_{10} 
+    \begin{pmatrix}
+    0 \\ 
+    0 \\ 
+    0 \\
+    0 \\ 
+    0 \\ 
+    0 \\ 
+    0 \\ 
+    0 \\ 
+    0 \\
+    10
+    \end{pmatrix}
+\end{array}
+\; \middle| \; \|\zeta\|_\infty \leq 1 
+\right\}.
+\]
+
+Thus, the robust representation for the constraint is as follows:
+\[
+\begin{aligned}
+    &\quad-0.35x_1 - 7x_2 - x_3 - 2x_4 - 25x_5 - 3.5x_6 - 9x_7 - 2.5x_8 - 21x_9 \\
+    &\qquad + \max_{\|\zeta\|_\infty \leq 1} \big( 0.07\zeta_1 + 0.7\zeta_2 + 0.2\zeta_3 + 0.1\zeta_4 + 1.77\zeta_5 +  0.35\zeta_6\\
+    &\qquad + 0.9\zeta_7 + 0.25\zeta_8 + 3.15\zeta_9 - 10\zeta_{10} \big) \leq -56
+\end{aligned}
+\]
+\[
+\begin{aligned}
+    &\Leftrightarrow -0.35x_1 - 7x_2 - x_3 - 2x_4 - 25x_5 - 3.5x_6 - 9x_7 - 2.5x_8 - 21x_9 \\
+    &\qquad + 0.07|\zeta_1| + 0.7|\zeta_2| + 0.2|\zeta_3| + 0.1|\zeta_4| + 1.77|\zeta_5| + 0.35|\zeta_6| \\
+    &\qquad + 0.9|\zeta_7| + 0.25|\zeta_8| + 3.15|\zeta_9| + 10|\zeta_{10}| \leq -56
+\end{aligned}
+\]
+\newpage
+A linear equivalent can then be established using the lifting approach:
+\[
+\begin{aligned}
+    &-0.35x_1 - 7x_2 - x_3 - 2x_4 - 25x_5 - 3.5x_6 - 9x_7 - 2.5x_8 - 21x_9 \\
+    &\quad + w_{21} + w_{22} + w_{23} + w_{24} + w_{25} + w_{26} + w_{27}+ w_{28}+ w_{29}+ w_{210}
+\end{aligned}
+\begin{aligned}
+    &\quad \leq -56
+\end{aligned}
+\]
+\[
+\begin{aligned} 
+    -w_{21} \leq 0.07x_1 \leq w_{21} \\
+    -w_{22} \leq 0.7x_2 \leq w_{22} \\
+    -w_{23} \leq 0.2x_3 \leq w_{23} \\
+    -w_{24} \leq 0.1x_4 \leq w_{24} \\
+    -w_{25} \leq 1.77x_5 \leq w_{25} \\
+    -w_{26} \leq 0.35x_6 \leq w_{26} \\
+    -w_{27} \leq 0.9x_7 \leq w_{27} \\
+    -w_{28} \leq 0.25x_8 \leq w_{28} \\
+    -w_{29} \leq 3.15x_9 \leq w_{29} \\
+    -w_{210} \leq 10 \leq w_{210} \\
+\end{aligned}
+\]
+The remaining steps to derive the linear equivalent were carried out analogously. The complete linear program can be found in the section \hyperref[sec:lp-equivalent-interval]{LP-Equivalent for Interval Uncertainty}.
+
+\newpage
+
+\subsubsection*{Solution of the Linear Program}
+
+After deriving the linear equivalent, the linear program can be solved. The code was implemented accordingly in \href{../src/r3/Aufgabe3a.gms}{Aufgabe3a.gms}.
+However, it must be mentioned that we were not able to successfully implement the linear program in GAMS. We noticed this because the optimal value, contrary to our intuition, was \EUR{13.610}. For this reason, we decided to solve the corresponding problem additionally with the \href{../src/r3/Aufgabe3a_NaiveApproach.gms}{naive approach}, on which the following findings are based.
+From this, it can be concluded that the optimal solution is at the following point:
+\[
+x^* = \begin{pmatrix}
+    \text{Apple} \\ \text{Cornflakes} \\ \text{Carrots} \\ \text{Potatoes} \\ \text{Cheese} \\ \text{Milk} \\ \text{Chocolate} \\ \text{Spinach} \\ \text{Steak}
+    \end{pmatrix}^T
+     =
+     \begin{pmatrix}
+     0, 3, 4, 4.7749, 0, 1.0713, 1.9635, 0, 1
+        \end{pmatrix}
+\]
+The optimal objective function value is \EUR{7.914778}.
+
+\subsubsection*{Composition of Variables and Constraints} 
+
+The variables and constraints of the linear program consist of $9$ decision variables $x_i$, $51$ uncertainty variables in the constraints $w_{ai}$, and $9$ uncertainty variables in the objective function $w_{0i}$.
+For each uncertainty variable, an additional constraint is added to describe the uncertainties, i.e., $60$ constraints are added to the existing $14$ constraints.
+Thus, the linear program consists of $69$ variables and $74$ constraints.
+
+\newpage
+
+\subsection*{Task Part b - Ellipsoidal-Uncertainty}
+
+\subsubsection*{Derivation of an LP Equivalent}
+
+To derive the linear equivalent for ellipsoidal uncertainty, we can apply similar preliminary considerations as for interval uncertainty. However, the uncertainty set $\mathcal{U}$ is described using the Euclidean norm instead of the supremum norm. In this case, the uncertainty set is given by:
+\[
+\mathcal{U} = \left\{ D^0 + \sum_{\ell=1}^{10}D^{\ell} \zeta_{\ell} \;\vert\; \|\zeta\|_2 \leq 1 \right\}
+\]
+We consider the same constraint as in the interval uncertainty case and obtain the following robust counterpart:
+\[
+\begin{aligned}
+    &\quad -0.35x_1 - 7x_2 - x_3 - 2x_4 - 25x_5 - 3.5x_6 - 9x_7 - 2.5x_8 - 21x_9 \\
+    &\quad + \max_{\|\zeta\|_2 \leq 1} \big( 0.07\zeta_1 + 0.7\zeta_2 + 0.2\zeta_3 + 0.1\zeta_4 + 1.77\zeta_5 +  0.35\zeta_6\\
+    &\qquad + 0.9\zeta_7 + 0.25\zeta_8 + 3.15\zeta_9 - 10\zeta_{10} \big) \leq -56
+\end{aligned}
+\]
+Since we are dealing with the Euclidean norm, the constraint can be reformulated as follows:
+\[
+\begin{aligned}
+    &\quad -0.35x_1 - 7x_2 - x_3 - 2x_4 - 25x_5 - 3.5x_6 - 9x_7 - 2.5x_8 - 21x_9 \\
+    &\qquad + \sqrt{
+        \begin{aligned}0.0049x_1^2 + 0.49x_2 + 0.04x_3^2 + 0.01x_4^2 + 3.1329x_5^2 \\
+            + 0.1225x_6^2 + 0.81x_7^2 + 0.0625x_8^2 + 9.9225x_9^2 + 100 \end{aligned}
+            } \leq -56
+\end{aligned}
+\]
+
+The remaining steps to derive the linear equivalent were carried out analogously. The complete linear program can be found in the section \hyperref[sec:lp-equivalent-ellips]{LP-Equivalent for Ellipsoidal Uncertainty}.
+
+\subsubsection*{Solution of the Program}
+
+After deriving the equivalent, the program can be solved. The code was implemented accordingly in \href{../src/r3/Aufgabe3b.gms}{Aufgabe3b.gms}. Since the problem is non-linear, a non-linear solver is required.
+From this, it can be concluded that the optimal solution is at the following point:
+\[
+x^* = \begin{pmatrix}
+    \text{Apple} \\ \text{Cornflakes} \\ \text{Carrots} \\ \text{Potatoes} \\ \text{Cheese} \\ \text{Milk} \\ \text{Chocolate} \\ \text{Spinach} \\ \text{Steak}
+    \end{pmatrix}^T
+     =
+     \begin{pmatrix}
+        2.484, 3, 5, 5, 0, 0.371, 1.728, 0, 1
+        \end{pmatrix}
+\]
+The optimal objective function value is \EUR{7.6895}.
+
+\subsection*{Task Part c - Comparison of Results}
+
+As can be seen from the previous tasks, the results of the different uncertainty models differ:
+\begin{itemize}
+    \item Nominal case without uncertainties: \EUR{5.1692}
+    \item Interval uncertainty: \EUR{7.9148}
+    \item Ellipsoidal uncertainty: \EUR{7.6895}
+\end{itemize}
+At first glance, it is clear that considering uncertainties increases the objective values, as robust optimizations provide more security, but at the cost of efficiency.
+\begin{description}
+    \item[1b) and 3a):] There is a significant difference here, showing how strongly the assumption of interval uncertainties affects the objective value. The value increases by approximately $53\%$, as the worst-case combinations of the parameters are considered.
+    \item[1b) and 3b):] Here, too, the objective value increases significantly, but more moderately than with interval uncertainty, by approximately $49\%$.
+    \item[3a) and 3b):] The difference between interval and ellipsoidal uncertainty is approximately $2.85\%$. It can be seen that ellipsoidal uncertainty is more efficient, as it considers more realistic dependencies and distributions of uncertainties.
+\end{description}
+The differences in the results show that the choice of uncertainty model has a significant impact on the objective function. This can be interpreted as follows:
+\begin{description}
+    \item[No uncertainty:] The solution without uncertainties is the cheapest but not robust. As soon as uncertainties occur, the solution can become unusable.
+    \item[Interval uncertainty:] The solution with interval uncertainties is very conservative. It considers worst-case scenarios where all uncertainties can take their extreme values. This significantly increases the objective value, providing high security but also inefficiency.
+    \item[Ellipsoidal uncertainty:] This solution also offers robustness but is less conservative than the solution with interval uncertainties. Considering dependencies between uncertainties leads to a lower objective value, which is better in the context of minimization.
+\end{description}
+In conclusion, it can be said that including uncertainties significantly increases the objective values, with interval uncertainties providing the most conservative but also the most expensive solution. The difference between the robust solutions shows that the choice of the uncertainty set has an impact on the objective value. However, this difference is not extreme and is more relevant when efficiency plays a particularly important role.
+
+\subsection*{Task Part d - Increase in Required Calories}
+
+After introducing interval and ellipsoidal uncertainties, the increased calorie requirement can no longer be met. This is because the increased calorie intake violates the maximum fat restriction, as it represents an upper bound. The reason for this is that the robust counterpart models worst-case scenarios. In a scenario without uncertainties, the increased calorie requirement could be met.
+This can be verified by adjusting the constraints in the existing GAMS files.
+
+\newpage
+
+\subsubsection*{LP-Equivalent for Interval Uncertainty}
+\label{sec:lp-equivalent-interval}
+\begin{adjustwidth}{-1.5cm}{}
+\begin{tiny}
+\setlength{\jot}{0pt}
+\[
+\begin{aligned}
+   \begin{aligned}
+    \min & \quad  0.22x_1 + 0.18x_2 + 0.07x_3 + 0.14x_4 + 0.55x_5 + 0.16x_6 + 0.54x_7 + 0.28x_8 + 3.2x_9 + w_{01} + w_{02} + w_{03} + w_{04} + w_{05} + w_{06} + w_{07}+ w_{08}+ w_{09} \\
+    \text{s.t.} & \quad -w_{01} \leq 0.06x_1 \leq w_{01} \\
+    & \quad -w_{02} \leq 0.027x_2 \leq w_{02} \\
+    & \quad -w_{03} \leq 0.014x_3 \leq w_{03} \\
+    & \quad -w_{04} \leq 0.04x_4 \leq w_{04} \\
+    & \quad -w_{05} \leq 0.1x_5 \leq w_{05} \\
+    & \quad -w_{06} \leq 0.04x_6 \leq w_{06} \\
+    & \quad -w_{07} \leq 0.216x_7 \leq w_{07} \\
+    & \quad -w_{08} \leq 0.1x_8 \leq w_{08} \\
+    & \quad -w_{09} \leq 1.28x_9 \leq w_{09} \\
+    & \quad -52x_1-355x_2-26x_3-71x_4-354x_5-64x_6-536x_7-17x_8-121x_9 \leq -2400 - w_{110}\\
+    & \quad -w_{110} \leq 350 \leq w_{110} \\
+    & \quad -0.35x_1 - 7x_2 - x_3 - 2x_4 - 25x_5 - 3.5x_6 - 9x_7 - 2.5x_8 - 21x_9 + w_{21} + w_{22} + w_{23} + w_{24} + w_{25} + w_{26} + w_{27}+ w_{28}+ w_{29} \leq -56 - w_{210} \\
+    & \quad -w_{21} \leq 0.07x_1 \leq w_{21} \\
+    & \quad -w_{22} \leq 0.7x_2 \leq w_{22} \\
+    & \quad -w_{23} \leq 0.2x_3 \leq w_{23} \\
+    & \quad -w_{24} \leq 0.1x_4 \leq w_{24} \\
+    & \quad -w_{25} \leq 1.77x_5 \leq w_{25} \\
+    & \quad -w_{26} \leq 0.35x_6 \leq w_{26} \\
+    & \quad -w_{27} \leq 0.9x_7 \leq w_{27} \\
+    & \quad -w_{28} \leq 0.25x_8 \leq w_{28} \\
+    & \quad -w_{29} \leq 3.15x_9 \leq w_{29} \\
+    & \quad -w_{210} \leq 10 \leq w_{210} \\
+    & \quad -18x_1 - 307x_2 - 7x_3 - 24.5x_4 + 177x_5 + 12x_6 + 52x_7 + 6.5x_8 + 60.5x_9 \leq 0 \\
+    & \quad -0.4x_1 - 0.6x_2 - 0.2x_3 - 0.11x_4 - 28.3x_5 - 3.5x_6 - 31.5x_7 - 0.3x_8 - 4x_9  + w_{41} + w_{42} + w_{43} + w_{44} + w_{45} + w_{46} + w_{47}+ w_{48}+ w_{49} \leq -50 - w_{410} \\
+    & \quad -w_{41} \leq 0.8x_1 \leq w_{41} \\
+    & \quad -w_{42} \leq 0.12x_2 \leq w_{42} \\
+    & \quad -w_{43} \leq 0.04x_3 \leq w_{43} \\
+    & \quad -w_{44} \leq 0.0022x_4 \leq w_{44} \\
+    & \quad -w_{45} \leq 0.035x_5 \leq w_{45} \\
+    & \quad -w_{46} \leq 0.35x_6 \leq w_{46} \\
+    & \quad -w_{47} \leq 3.15x_7 \leq w_{47} \\
+    & \quad -w_{48} \leq 0.045x_8 \leq w_{48} \\
+    & \quad -w_{49} \leq 1.2x_9 \leq w_{49} \\
+    & \quad -w_{410} \leq 10 \leq w_{410} \\
+    & \quad 0.4x_1 + 0.6x_2 + 0.2x_3 + 0.11x_4 + 28.3x_5 + 3.5x_6 + 31.5x_7 + 0.3x_8 + 4x_9 + w_{51} + w_{52} + w_{53} + w_{54} + w_{55} + w_{56} + w_{57}+ w_{58}+ w_{59} \leq 70 \\
+    & \quad -w_{51} \leq 0.8x_1 \leq w_{51} \\
+    & \quad -w_{52} \leq 0.12x_2 \leq w_{52} \\
+    & \quad -w_{53} \leq 0.04x_3 \leq w_{53} \\
+    & \quad -w_{54} \leq 0.0022x_4 \leq w_{54} \\
+    & \quad -w_{55} \leq 0.035x_5 \leq w_{55} \\
+    & \quad -w_{56} \leq 0.35x_6 \leq w_{56} \\
+    & \quad -w_{57} \leq 3.15x_7 \leq w_{57} \\
+    & \quad -w_{58} \leq 0.045x_8 \leq w_{58} \\
+    & \quad -w_{59} \leq 1.2x_9 \leq w_{59} \\
+    & \quad -7x_1 - 13x_2 - 41x_3 - 6x_4 - 800x_5 - 120x_6 - 214x_7 - 126x_8 - 3x_9 + w_{61} + w_{62} + w_{63} + w_{64} + w_{65} + w_{66} + w_{67}+ w_{68}+ w_{69} \leq -500 - w_{610} \\
+    & \quad -w_{61} \leq 1.4x_1 \leq w_{61} \\
+    & \quad -w_{62} \leq 6.5x_2 \leq w_{62} \\
+    & \quad -w_{63} \leq 8.2x_5 \leq w_{63} \\
+    & \quad -w_{64} \leq 0.12x_4 \leq w_{64} \\
+    & \quad -w_{65} \leq 80x_5 \leq w_{65} \\
+    & \quad -w_{66} \leq 24x_6 \leq w_{66} \\
+    & \quad -w_{67} \leq 21.4x_7 \leq w_{67} \\
+    & \quad -w_{68} \leq 12.6x_8 \leq w_{68} \\
+    & \quad -w_{69} \leq 0.6x_9 \leq w_{69} \\
+    & \quad -w_{610} \leq 200 \leq w_{610} \\
+    & \quad -30x_1 - 60x_2 - 53x_3 - 47x_4 - 300x_5 -170x_6 - 370x_7 -230x_8 - 130x_9 + w_{71} + w_{72} + w_{73} + w_{74} + w_{75} + w_{76} + w_{77}+ w_{78}+ w_{79} \leq -1100 - w_{710} \\
+    & \quad -w_{71} \leq 4.5x_1 \leq w_{71} \\
+    & \quad -w_{72} \leq 12x_2 \leq w_{72} \\
+    & \quad -w_{73} \leq 10.6x_5 \leq w_{73} \\
+    & \quad -w_{74} \leq 0.47x_4 \leq w_{74} \\
+    & \quad -w_{75} \leq 15x_5 \leq w_{75} \\
+    & \quad -w_{76} \leq 8.5x_6 \leq w_{76} \\
+    & \quad -w_{77} \leq 37x_7 \leq w_{77} \\
+    & \quad -w_{78} \leq 46x_8 \leq w_{78} \\
+    & \quad -w_{79} \leq 19.5x_9 \leq w_{79} \\
+    & \quad -w_{710} \leq 300 \leq w_{710} \\
+    & \quad -x_1 - x_3 - x_8 \leq -4 \\
+    & \quad x_1, \dots, x_9 \leq 5 \\
+    & \quad - x_1, \dots, - x_9 \leq 0 \\
+    & \quad x_2 \leq 3 \\
+    & \quad x_6 \leq 2 \\
+    & \quad x_7 \leq 3 \\
+    & \quad - x_9 \leq - 1
+    \end{aligned}
+\end{aligned}
+\]
+\end{tiny}
+\end{adjustwidth}
+
+\newpage
+
+\subsubsection*{LP-Equivalent for Ellipsoidal Uncertainty}
+\label{sec:lp-equivalent-ellips}
+\begin{adjustwidth}{-1.5cm}{}
+\begin{tiny}
+\setlength{\jot}{0pt}
+\[
+\begin{aligned}
+   \begin{aligned}
+    \min & \quad  0.22x_1 + 0.18x_2 + 0.07x_3 + 0.14x_4 + 0.55x_5 + 0.16x_6 + 0.54x_7 + 0.28x_8 + 3.2x_9 \\
+    & \qquad+ \sqrt{0.0036x_1^2+0.000729x_2^2+0.000196x_3^2+0.0016x_4^2+0.01x_5^2+0.0016x_6^2+0.046656x_7^2+0.01x_8^2+1.6384x_9^2} \\
+    \text{s.t.}
+    & \quad -52x_1-355x_2-26x_3-71x_4-354x_5-64x_6-536x_7-17x_8-121x_9+\sqrt{122500} \leq -2400 \\
+    & \quad -0.35x_1 - 7x_2 - x_3 - 2x_4 - 25x_5 - 3.5x_6 - 9x_7 - 2.5x_8 - 21x_9 \\
+    & \qquad + \sqrt{0.0049x_1^2 + 0.49x_2^2 + 0.04x_3^2 + 0.01x_4^2 + 3.1329x_5^2 + 0.1225x_6^2 + 0.81x_7^2 + 0.0625x_8^2 + 9.9225x_9^2 + 100} \leq -56 \\
+    & \quad -18x_1 - 307x_2 - 7x_3 - 24.5x_4 + 177x_5 + 12x_6 + 52x_7 + 6.5x_8 + 60.5x_9 \leq 0 \\
+    & \quad -0.4x_1 - 0.6x_2 - 0.2x_3 - 0.11x_4 - 28.3x_5 - 3.5x_6 - 31.5x_7 - 0.3x_8 - 4x_9 \\
+    & \qquad + \sqrt{0.64x_1^2+ 0.0144x_2^2 + 0.0016x_3^2 + 0.00000484x_4^2 + 0.001225x_5^2 + 0.1225x_6^2 + 9.9225x_7^2 + 0.002025x_8^2 + 1.44x_9^2 + 100} \leq -50 \\
+    & \quad 0.4x_1 + 0.6x_2 + 0.2x_3 + 0.11x_4 + 28.3x_5 + 3.5x_6 + 31.5x_7 + 0.3x_8 + 4x_9 \\
+    & \qquad + \sqrt{0.64x_1^2+ 0.0144x_2^2 + 0.0016x_3^2 + 0.00000484x_4^2 + 0.001225x_5^2 + 0.1225x_6^2 + 9.9225x_7^2 + 0.002025x_8^2 + 1.44x_9^2} \leq 70 \\
+    & \quad -7x_1 - 13x_2 - 41x_3 - 6x_4 - 800x_5 - 120x_6 - 214x_7 - 126x_8 - 3x_9 \\
+    & \qquad + \sqrt{1.96x_1^2 + 42.25x_2^2 + 67.24x_3^2 + 0.0144x_4^2 + 6400x_5^2 + 576x_6^2 + 457.96x_7^2 + 158.76x_8^2 + 0.36x_9^2 + 40000} \leq -500 \\
+    & \quad -30x_1 - 60x_2 - 53x_3 - 47x_4 - 300x_5 -170x_6 - 370x_7 -230x_8 - 130x_9 \\
+    & \qquad + \sqrt{20.25x_1^2 + 144x_2^2 + 112.36x_5^2 + 0.2209x_4^2 + 225x_5^2 + 72.25x_6^2 + 1369x_7^2 + 2116x_8^2 + 380.25x_9^2 + 90000} \leq -1100 \\
+    & \quad -x_1 - x_3 - x_8 \leq -4 \\
+    & \quad x_1, \dots, x_9 \leq 5 \\
+    & \quad - x_1, \dots, - x_9 \leq 0 \\
+    & \quad x_2 \leq 3 \\
+    & \quad x_6 \leq 2 \\
+    & \quad x_7 \leq 3 \\
+    & \quad - x_9 \leq - 1
+    \end{aligned}
+\end{aligned}
+\]
+\end{tiny}
+\end{adjustwidth}
+
+\end{document}   

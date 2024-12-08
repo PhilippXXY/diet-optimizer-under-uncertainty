@@ -1,0 +1,319 @@
+GAMS 48.2.0  4a7dd217 Oct 29, 2024          DAX-DAC arm 64bit/macOS - 12/08/24 13:16:14 Page 1
+Task 3b - Optimization under Uncertainty (Non-Linear Approach)
+C o m p i l a t i o n
+
+
+   2   
+      Detailed description of the model:
+      - Objective: Create a robust counterpart model for the given linear program, as uncertainty is present.
+      - Uncertainty: The uncertainty is present in the objective function as well as the constraints. It arrives as a ellipsoidal uncertainty set.
+      - Approach: By defining the uncertainty as an ellipsoidal set, the uncertainties can be modeled as quadratic terms in the objective function and constraints.
+   9   
+  10  * Sets for foods (i) and nutrients (j)
+  11  Set
+  12      i / x1*x9 /
+  13      j / a1*a8/;
+  14   
+  15  * Parameters for the linear part of the objective function
+  16  Parameter c(i)
+  17      /x1 0.22,
+  18      x2 0.18,
+  19      x3 0.07,
+  20      x4 0.14,
+  21      x5 0.55,
+  22      x6 0.16,
+  23      x7 0.54,
+  24      x8 0.28,
+  25      x9 3.2 /;
+  26   
+  27  * Parameters for the quadratic terms in objective function
+  28  Parameter q_obj(i)
+  29      /x1 0.0036,
+  30      x2 0.000729,
+  31      x3 0.000196,
+  32      x4 0.0016,
+  33      x5 0.01,
+  34      x6 0.0016,
+  35      x7 0.046656,
+  36      x8 0.01,
+  37      x9 1.6384 /;
+  38   
+  39  * Table with coefficients for constraints
+  40  Table A(j,i)
+  41                x1       x2       x3       x4       x5       x6       x7       x8       x9
+  42  a1        -52.00  -355.00   -26.00   -71.00  -354.00   -64.00  -536.00   -17.00  -121.00
+  43  a2         -0.35    -7.00    -1.00    -2.00   -25.00    -3.50    -9.00    -2.50   -21.00
+  44  a3        -18.00  -307.00    -7.00   -24.50   177.00    12.00    52.00     6.50    60.50
+  45  a4         -0.40    -0.60    -0.20    -0.11   -28.30    -3.50   -31.50    -0.30    -4.00
+  46  a5          0.40     0.60     0.20     0.11    28.30     3.50    31.50     0.30     4.00
+  47  a6         -7.00   -13.00   -41.00    -6.00  -800.00  -120.00  -214.00  -126.00    -3.00
+  48  a7        -30.00   -60.00   -53.00   -47.00  -300.00  -170.00  -370.00  -230.00  -130.00
+  49  a8         -1.00     0.00    -1.00     0.00     0.00     0.00     0.00    -1.00     0.00;
+  50   
+  51  * Parameters for the quadratic terms in constraints
+  52  Table q(j,i)
+  53                x1       x2       x3         x4         x5       x6       x7       x8       x9
+  54  a1          0.00     0.00     0.00       0.00       0.00     0.00     0.00     0.00     0.00
+  55  a2        0.0049     0.49     0.04       0.01     3.1329   0.1225     0.81   0.0625   9.9225
+  56  a3          0.00     0.00     0.00       0.00       0.00     0.00     0.00     0.00     0.00
+  57  a4          0.64   0.0144   0.0016 0.00000484   0.001225   0.1225   9.9225 0.002025     1.44
+  58  a5          0.64   0.0144   0.0016 0.00000484   0.001225   0.1225   9.9225 0.002025     1.44
+  59  a6          1.96    42.25    67.24     0.0144    6400.00   576.00   457.96   158.76     0.36
+  60  a7         20.25   144.00   112.36     0.2209     225.00    72.25  1369.00  2116.00   380.25
+  61  a8          0.00     0.00     0.00       0.00       0.00     0.00     0.00     0.00     0.00;
+  62   
+  63  * Constants for square root terms
+  64  Parameter k(j) /
+  65      a1 122500,
+  66      a2 100,
+  67      a3 0,
+  68      a4 100,
+  69      a5 0,
+  70      a6 40000,
+  71      a7 90000,
+  72      a8 0
+  73  /;
+  74   
+  75  * Right hand side values
+  76  Parameter b(j) /
+  77      a1 -2400,
+  78      a2 -56,
+  79      a3 0,
+  80      a4 -50,
+  81      a5 70,
+  82      a6 -500,
+  83      a7 -1100,
+  84      a8 -4
+  85  /;
+  86   
+  87  * Define variables
+  88  Positive Variable x;
+  89  Free Variable z;
+  90   
+  91  * Set Upper bounds
+  92  x.up(i) = 5;
+  93  x.up('x2') = 3;
+  94  x.up('x6') = 2;
+  95  x.up('x7') = 3;
+  96  * Set Lower bounds
+  97  x.lo('x9') = 1;
+  98   
+  99  * Define the Objective Function and Constraints
+ 100  Equations
+ 101      eq1 objective_function
+ 102      eq2(j) constraints;
+ 103   
+ 104  * Add uncertainty values as parameters to x squared and calculate the square root of the sum
+ 105  eq1.. z =e= sum(i, c(i)*x(i)) + sqrt(sum(i, q_obj(i)*x(i)*x(i)));
+ 106  * Add the uncertainty values of the x constraints and the right-hand side values and calculate the square root of the sum
+ 107  eq2(j).. sum(i, A(j,i)*x(i)) + sqrt(sum(i, q(j,i)*x(i)*x(i)) + k(j)) =l= b(j);
+ 108   
+ 109  * Model of the robust counterpart
+ 110  Model problem /all/;
+ 111  * As the model is non-linear, we need to use a non-linear solver
+ 112  Solve problem using nlp minimizing z;
+ 113  * Display the results
+ 114  Display x.l, z.l;
+
+
+COMPILATION TIME     =        0.000 SECONDS      3 MB  48.2.0 4a7dd217 DAX-DAC
+GAMS 48.2.0  4a7dd217 Oct 29, 2024          DAX-DAC arm 64bit/macOS - 12/08/24 13:16:14 Page 2
+Task 3b - Optimization under Uncertainty (Non-Linear Approach)
+Equation Listing    SOLVE problem Using NLP From line 112
+
+
+---- eq1  =E=  objective_function
+
+eq1..  - (0.22)*x(x1) - (0.18)*x(x2) - (0.07)*x(x3) - (0.14)*x(x4) - (0.55)*x(x5) - (0.16)*x(x6) - (0.54)*x(x7) - (0.28)*x(x8) - (4.48)*x(x9) + z =E= 0 ; (LHS = -4.48, INFES = 4.48 ****)
+     
+
+---- eq2  =L=  constraints
+
+eq2(a1)..  - 52*x(x1) - 355*x(x2) - 26*x(x3) - 71*x(x4) - 354*x(x5) - 64*x(x6) - 536*x(x7) - 17*x(x8) - 121*x(x9) =L= -2750 ; (LHS = -121, INFES = 2629 ****)
+     
+eq2(a2)..  - (0.35)*x(x1) - (7)*x(x2) - (1)*x(x3) - (2)*x(x4) - (25)*x(x5) - (3.5)*x(x6) - (9)*x(x7) - (2.5)*x(x8) - (20.0535932938062)*x(x9) =L= -56 ; (LHS = -10.5156068368265, INFES = 45.4843931631735 ****)
+     
+eq2(a3)..  - 18*x(x1) - 307*x(x2) - 7*x(x3) - 24.5*x(x4) + 177*x(x5) + 12*x(x6) + 52*x(x7) + 6.5*x(x8) + 60.5*x(x9) =L= 0 ; (LHS = 60.5, INFES = 60.5 ****)
+     
+REMAINING 5 ENTRIES SKIPPED
+
+GAMS 48.2.0  4a7dd217 Oct 29, 2024          DAX-DAC arm 64bit/macOS - 12/08/24 13:16:14 Page 3
+Task 3b - Optimization under Uncertainty (Non-Linear Approach)
+Column Listing      SOLVE problem Using NLP From line 112
+
+
+---- x  
+
+x(x1)
+                (.LO, .L, .UP, .M = 0, 0, 5, 0)
+      (-0.22)   eq1
+      -52       eq2(a1)
+      (-0.35)   eq2(a2)
+      -18       eq2(a3)
+      (-0.4)    eq2(a4)
+       (0.4)    eq2(a5)
+      (-7)      eq2(a6)
+     (-30)      eq2(a7)
+       -1       eq2(a8)
+
+x(x2)
+                (.LO, .L, .UP, .M = 0, 0, 3, 0)
+      (-0.18)   eq1
+     -355       eq2(a1)
+      (-7)      eq2(a2)
+     -307       eq2(a3)
+      (-0.6)    eq2(a4)
+       (0.6)    eq2(a5)
+     (-13)      eq2(a6)
+     (-60)      eq2(a7)
+
+x(x3)
+                (.LO, .L, .UP, .M = 0, 0, 5, 0)
+      (-0.07)   eq1
+      -26       eq2(a1)
+      (-1)      eq2(a2)
+       -7       eq2(a3)
+      (-0.2)    eq2(a4)
+       (0.2)    eq2(a5)
+     (-41)      eq2(a6)
+     (-53)      eq2(a7)
+       -1       eq2(a8)
+
+REMAINING 6 ENTRIES SKIPPED
+
+---- z  
+
+z
+                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+        1       eq1
+
+GAMS 48.2.0  4a7dd217 Oct 29, 2024          DAX-DAC arm 64bit/macOS - 12/08/24 13:16:14 Page 4
+Task 3b - Optimization under Uncertainty (Non-Linear Approach)
+Range Statistics    SOLVE problem Using NLP From line 112
+
+
+RANGE STATISTICS (ABSOLUTE NON-ZERO FINITE VALUES)
+
+RHS       [min, max] : [ 4.000E+00, 2.750E+03] - Zero values observed as well
+Bound     [min, max] : [ 1.000E+00, 5.000E+00] - Zero values observed as well
+Matrix    [min, max] : [ 7.000E-02, 8.000E+02]
+
+GAMS 48.2.0  4a7dd217 Oct 29, 2024          DAX-DAC arm 64bit/macOS - 12/08/24 13:16:14 Page 5
+Task 3b - Optimization under Uncertainty (Non-Linear Approach)
+Model Statistics    SOLVE problem Using NLP From line 112
+
+
+MODEL STATISTICS
+
+BLOCKS OF EQUATIONS           2     SINGLE EQUATIONS            9
+BLOCKS OF VARIABLES           2     SINGLE VARIABLES           10  1 projected
+NON ZERO ELEMENTS            76     NON LINEAR N-Z             54
+CODE LENGTH                 340     CONSTANT POOL             107
+
+
+GENERATION TIME      =        0.000 SECONDS      4 MB  48.2.0 4a7dd217 DAX-DAC
+GAMS 48.2.0  4a7dd217 Oct 29, 2024          DAX-DAC arm 64bit/macOS - 12/08/24 13:16:14 Page 6
+Task 3b - Optimization under Uncertainty (Non-Linear Approach)
+Solution Report     SOLVE problem Using NLP From line 112
+
+
+               S O L V E      S U M M A R Y
+
+     MODEL   problem             OBJECTIVE  z
+     TYPE    NLP                 DIRECTION  MINIMIZE
+     SOLVER  CONOPT              FROM LINE  112
+
+**** SOLVER STATUS     1 Normal Completion
+**** MODEL STATUS      2 Locally Optimal
+**** OBJECTIVE VALUE                7.6895
+
+ RESOURCE USAGE, LIMIT          0.005 10000000000.000
+ ITERATION COUNT, LIMIT         3    2147483647
+ EVALUATION ERRORS              0             0
+--- *** This solver runs with a demo license. No commercial use.
+ 
+ 
+    C O N O P T   version 4.35
+    Copyright (C) GAMS Software GmbH
+                  GAMS Development Corporation
+ 
+ 
+    The user model has 9 constraints and 10 variables
+    with 76 Jacobian elements, 54 of which are nonlinear.
+    The Hessian of the Lagrangian has 9 elements on the diagonal,
+    36 elements below the diagonal, and 9 nonlinear variables.
+ 
+    The post-triangular part of the model has 1 constraints and variables.
+ 
+    Preprocessed model has 8 constraints and 9 variables
+    with 66 Jacobian elements, 45 of which are nonlinear.
+ 
+ ** Optimal solution. There are no superbasic variables.
+ 
+ 
+ CONOPT time Total                            0.002 seconds
+   of which: Function evaluations             0.000 =  0.0%
+             1st Derivative evaluations       0.000 =  0.0%
+             Interval derivative evals        0.000 =  0.0%
+ 
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- EQU eq1                 .              .              .             1.0000      
+
+  eq1  objective_function
+
+---- EQU eq2  constraints
+
+          LOWER          LEVEL          UPPER         MARGINAL
+
+a1        -INF        -2750.0000     -2750.0000        -0.0051      
+a2        -INF          -63.8520       -56.0000          .          
+a3        -INF         -968.4173          .              .          
+a4        -INF          -52.4398       -50.0000          .          
+a5        -INF           70.0000        70.0000        -0.0658      
+a6        -INF         -500.0000      -500.0000        -0.0005      
+a7        -INF        -1272.6322     -1100.0000          .          
+a8        -INF           -7.4840        -4.0000          .          
+
+---- VAR x  
+
+          LOWER          LEVEL          UPPER         MARGINAL
+
+x1          .             2.4840         5.0000          .          
+x2          .             3.0000         3.0000        -1.6066      
+x3          .             5.0000         5.0000        -0.0702      
+x4          .             5.0000         5.0000        -0.2144      
+x5          .              .             5.0000         0.1730      
+x6          .             0.3706         2.0000          .          
+x7          .             1.7278         3.0000          .          
+x8          .              .             5.0000         0.1460      
+x9         1.0000         1.0000         5.0000         4.0607      
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- VAR z                 -INF            7.6895        +INF             .          
+
+
+**** REPORT SUMMARY :        0     NONOPT
+                             0 INFEASIBLE
+                             0  UNBOUNDED
+                             0     ERRORS
+GAMS 48.2.0  4a7dd217 Oct 29, 2024          DAX-DAC arm 64bit/macOS - 12/08/24 13:16:14 Page 7
+Task 3b - Optimization under Uncertainty (Non-Linear Approach)
+E x e c u t i o n
+
+
+----    114 VARIABLE x.L  
+
+x1 2.484,    x2 3.000,    x3 5.000,    x4 5.000,    x6 0.371,    x7 1.728,    x9 1.000
+
+
+----    114 VARIABLE z.L                   =        7.690  
+
+
+EXECUTION TIME       =        0.021 SECONDS      4 MB  48.2.0 4a7dd217 DAX-DAC
+
+
+USER: GAMS Demo, for EULA and demo limitations see   G241001/0001CB-GEN
+      https://www.gams.com/latest/docs/UG%5FLicense.html         DC0000
