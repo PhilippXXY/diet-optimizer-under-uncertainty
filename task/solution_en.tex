@@ -600,7 +600,10 @@ Since we are dealing with the Euclidean norm, the constraint can be reformulated
 \[
 \begin{aligned}
     &\quad -0.35x_1 - 7x_2 - x_3 - 2x_4 - 25x_5 - 3.5x_6 - 9x_7 - 2.5x_8 - 21x_9 \\
-    &\quad + \sqrt{0.0049x_1^2 + 0.49x_2 + 0.04x_3^2 + 0.01x_4^2 + 3.1329x_5^2 + 0.1225x_6^2 + 0.81x_7^2 + 0.0625x_8^2 + 9.9225x_9^2 + 100} \leq -56
+    &\qquad + \sqrt{
+        \begin{aligned}0.0049x_1^2 + 0.49x_2 + 0.04x_3^2 + 0.01x_4^2 + 3.1329x_5^2 \\
+            + 0.1225x_6^2 + 0.81x_7^2 + 0.0625x_8^2 + 9.9225x_9^2 + 100 \end{aligned}
+            } \leq -56
 \end{aligned}
 \]
 
