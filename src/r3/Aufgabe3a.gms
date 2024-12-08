@@ -1,3 +1,5 @@
+$title Task 3a - Optimization under Uncertainty
+
 $ontext
 Detailed description of the model:
 - Objective: Create a robust counterpart model for the given linear program, as uncertainty is present.
