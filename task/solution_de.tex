@@ -127,7 +127,7 @@ D^0 = \begin{pmatrix}
 \end{pmatrix}
 \]
 
-\subsubsection*{3. Bilden der Shiftmatrizen $D^\ell$}
+\subsubsection*{Bilden der Shiftmatrizen $D^\ell$}
 Die Anzahl der Shiftmatrizen $D^\ell$ ergibt sich aus der Anzahl der Unsicherheiten. Alle Unsicherheiten lassen sich aus den Tabellen entnehmen.
 
 F\"ur die Shiftmatrizen $D^\ell$ gilt es, die Unsicherheiten ggf. durch Multiplikation mit dem entsprechenden Koeffizienten der Zielfunktion in absolute Abweichungen umzuwandeln.
@@ -625,6 +625,30 @@ x^* = \begin{pmatrix}
         \end{pmatrix}
 \]
 Der optimale Zielfunktionswert betr\"agt \EUR{7.6895}.
+
+\newpage
+
+\subsection*{Aufgabenteil c - Vergleich der Ergebnisse}
+
+Wie aus den vorherigen Teilaufgaben ersichtlich, unterscheiden sich die Ergebnisse der verschiedenen Unsicherheitsmodelle:
+\begin{itemize}
+    \item Nominalfall ohne Unsicherheiten: \EUR{5.1692}
+    \item Intervall-Unsicherheit: \EUR{7.9148}
+    \item Ellips-Unsicherheit: \EUR{7.6895}
+\end{itemize}
+Auf den ersten Blick erkennt man, dass die Ber\"ucksichtigung von Unsicherheiten die Zielwerte erh\"oht, da robuste Optimierungen mehr Sicherheit bieten, jedoch auf Kosten der Effizienz.
+\begin{description}
+    \item[1b) und 3a):] Hier besteht ein deutlicher Unterschied, der zeigt, wie stark die Annahme von Intervall-Unsicherheiten den Zielwert beeinflusst. Der Wert steigt um ca. $53 \%$, da die Worst-Case-Kombinationen der Parameter einbezogen werden.
+    \item[1b) und 3b):] Auch hier steigt der Zielwert deutlich, jedoch moderater als bei der Intervall-Unsicherheit, um ca. $49 \%$. 
+    \item[3a) und 3b):] Der Unterschied zwischen Intervall- und Ellips-Unsicherheit betr\"agt ca. $2.85\%$. Man erkennt, dass die Ellips-Unsicherheit effizienter ist, da sie realistischere Abh\"angigkeiten und Verteilungen der Unsicherheiten ber\"ucksichtigt.
+\end{description}
+Die Unterschiede in den Ergebnissen zeigen, dass die Wahl des Unsicherheitsmodells einen gro\ss en Einfluss auf die Zielfunktion hat. Interpretieren l\"asst sich dies folgenderma\ss en: 
+\begin{description}
+    \item[Keine Unsicherheit:] Die L\"osung ohne Unsicherheiten ist die g\"unstigste, jedoch nicht robust. Sobald Unsicherheiten auftreten, kann die L\"osung unbrauchbar werden.
+    \item[Intervall-Unsicherheit:] Die L\"osung mit Intervall-Unsicherheiten ist sehr konservativ. Sie ber\"ucksichtigt Worst-Case-Szenarien, bei denen alle Unsicherheiten ihre Extremwerte annehmen k\"onnen. Dadurch steigt der Zielwert stark an, was hohe Sicherheit, aber auch Ineffizienz bedeutet.
+    \item[Ellips-Unsicherheit:] Diese L\"osung bietet ebenfalls Robustheit, ist jedoch weniger konservativ als die L\"osung mit Intervall-Unsicherheiten. Die Ber\"ucksichtigung von Abh\"angigkeiten zwischen Unsicherheiten f\"uhrt zu einem niedrigeren Zielwert, was im Kontext der Minimierung besser ist.
+\end{description}
+Abschlie\ss end l\"asst sich sagen, dass das Einbeziehen von Unsicherheiten die Zielwerte erheblich erh\"oht, wobei die Ber\"ucksichtigung von Intervall Unsicherheiten die konservativste, aber auch teuerste L\"osung bietet. Der Unterschied zwischen den robusten L\"osungen zeigt, dass die Wahl der Unsicherheitsmenge einen Einfluss auf den Zielwert hat. Dieser Unterschied ist jedoch nicht extrem und eher von Relevanz, wenn Effizienz eine besonders wichtige Rolle spielt.
 
 \subsubsection*{LP-\"Aquivalent bei Intervall-Unsicherheit}
 \label{sec:lp-equivalent-interval}

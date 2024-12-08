@@ -624,6 +624,30 @@ x^* = \begin{pmatrix}
 \]
 The optimal objective function value is \EUR{7.6895}.
 
+\newpage
+
+\subsection*{Task Part c - Comparison of Results}
+
+As can be seen from the previous tasks, the results of the different uncertainty models differ:
+\begin{itemize}
+    \item Nominal case without uncertainties: \EUR{5.1692}
+    \item Interval uncertainty: \EUR{7.9148}
+    \item Ellipsoidal uncertainty: \EUR{7.6895}
+\end{itemize}
+At first glance, it is clear that considering uncertainties increases the objective values, as robust optimizations provide more security, but at the cost of efficiency.
+\begin{description}
+    \item[1b) and 3a):] There is a significant difference here, showing how strongly the assumption of interval uncertainties affects the objective value. The value increases by approximately $53\%$, as the worst-case combinations of the parameters are considered.
+    \item[1b) and 3b):] Here, too, the objective value increases significantly, but more moderately than with interval uncertainty, by approximately $49\%$.
+    \item[3a) and 3b):] The difference between interval and ellipsoidal uncertainty is approximately $2.85\%$. It can be seen that ellipsoidal uncertainty is more efficient, as it considers more realistic dependencies and distributions of uncertainties.
+\end{description}
+The differences in the results show that the choice of uncertainty model has a significant impact on the objective function. This can be interpreted as follows:
+\begin{description}
+    \item[No uncertainty:] The solution without uncertainties is the cheapest but not robust. As soon as uncertainties occur, the solution can become unusable.
+    \item[Interval uncertainty:] The solution with interval uncertainties is very conservative. It considers worst-case scenarios where all uncertainties can take their extreme values. This significantly increases the objective value, providing high security but also inefficiency.
+    \item[Ellipsoidal uncertainty:] This solution also offers robustness but is less conservative than the solution with interval uncertainties. Considering dependencies between uncertainties leads to a lower objective value, which is better in the context of minimization.
+\end{description}
+In conclusion, it can be said that including uncertainties significantly increases the objective values, with interval uncertainties providing the most conservative but also the most expensive solution. The difference between the robust solutions shows that the choice of the uncertainty set has an impact on the objective value. However, this difference is not extreme and is more relevant when efficiency plays a particularly important role.
+
 \subsubsection*{LP-Equivalent for Interval Uncertainty}
 \label{sec:lp-equivalent-interval}
 \begin{adjustwidth}{-1.5cm}{}
