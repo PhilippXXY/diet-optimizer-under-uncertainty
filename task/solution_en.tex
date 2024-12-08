@@ -560,6 +560,7 @@ The remaining steps to derive the linear equivalent were carried out analogously
 \subsubsection*{Solution of the Linear Program}
 
 After deriving the linear equivalent, the linear program can be solved. The code was implemented accordingly in \href{../src/r3/Aufgabe3a.gms}{Aufgabe3a.gms}.
+However, it must be mentioned that we were not able to successfully implement the linear program in GAMS. We noticed this because the optimal value, contrary to our intuition, was \EUR{13.610}. For this reason, we decided to solve the corresponding problem additionally with the \href{../src/r3/Aufgabe3a_NaiveApproach.gms}{naive approach}, on which the following findings are based.
 From this, it can be concluded that the optimal solution is at the following point:
 \[
 x^* = \begin{pmatrix}
