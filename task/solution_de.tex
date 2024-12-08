@@ -12,7 +12,6 @@
 \usepackage{hyperref}
 \usepackage{breqn}
 \usepackage{changepage}
-
 \hypersetup{
     pdftoolbar=true,
     pdfmenubar=true,
@@ -30,7 +29,7 @@
 \begin{titlepage}
     \begin{center}
         \vspace*{-80pt}
-        %\includegraphics[scale=0.25]{img/kit_logo.png}
+        \includegraphics[scale=0.25]{img/kit_logo.png}
 
         \vspace*{40pt}
 
@@ -69,6 +68,227 @@
         Studiengang (B.Sc.)\\[4ex]
     \end{center}
 \end{titlepage}
+
+\newpage
+
+\section*{L\"osungen zu Aufgabe 1}
+
+\subsection*{Aufgabenteil a}
+
+Der Quellcode ist in der Datei \href{../src/r1/Aufgabe1.gms}{Aufgabe1.gms} zu finden.
+
+\subsection*{Aufgabenteil b}
+
+Die entsprechende Ausf\"uhrung kann unter \href{../results/r1/Aufgabe1.lst}{Aufgabe1.lst} eingesehen werden. Daraus l\"asst sich entnehmen, dass der optimale Wert bei $5,169180$ Euro liegt und der optimale Punkt bei
+\[
+\begin{pmatrix}
+\text{Apfel} \\ 
+\text{Cornflakes} \\ 
+\text{Karotten} \\ 
+\text{Kartoffeln} \\ 
+\text{K\"ase} \\ 
+\text{Milch} \\ 
+\text{Schokolade} \\ 
+\text{Spinat} \\ 
+\text{Steak}
+\end{pmatrix}^T
+=
+\begin{pmatrix}
+0 \\ 
+3 \\ 
+4 \\ 
+0,4512 \\ 
+0 \\ 
+0 \\ 
+2,0111 \\
+0 \\
+1
+\end{pmatrix}^T
+\]
+zu finden ist.
+
+\newpage
+
+\section*{L\"osungen zu Aufgabe 2}
+
+Die Unsicherheitsmenge l\"asst sich allgemein folgenderma\ss en beschreiben:
+
+\[
+\mathcal{U} = \left\{
+\underbrace{
+\left[
+\begin{array}{c|c}
+(c^0)^\top & d^0 \\ \hline
+A^0 & b^0
+\end{array}
+\right]
+}_{D^0}
++ \sum_{\ell=1}^L \zeta_\ell
+\underbrace{
+\left[
+\begin{array}{c|c}
+(c^\ell)^\top & d^\ell \\ \hline
+A^\ell & b^\ell
+\end{array}
+\right]
+}_{D^\ell}
+\;\middle|\; \zeta \in \mathbb{Z}
+\right\}
+\]
+
+F\"ur die Aufgabe werden unter anderem die Zielfunktion, gegeben durch
+\[
+    \min \quad 0.22x_1 + 0.18x_2 + 0.07x_3 + 0.14x_4 + 0.55x_5 + 0.1x_6 + 0.54x_7 + 0.28x_8 + 3.2x_9
+\]
+und die zweite Nebenbedingung 
+\[
+0.35x_1 + 7x_2 + x_3 + 2x_4 + 25x_5 + 3.5x_6 + 9x_7 + 2.5x_8 + 21x_9 \geq 56
+\]
+ben\"otigt.
+
+Zuerst gilt es, die zweite Nebenbedingung in Standardform zu bringen. Dazu wird die Ungleichung mit $-1$ multipliziert.
+\[
+    -0.35x_1  -7x_2  -x_3  -2x_4 - 25x_5 - 3.5x_6 - 9x_7 - 2.5x_8 - 21x_9 \leq -56
+\]
+
+Aus den entsprechenden Vor\"uberlegungen l\"asst direkt die nominale Datenmatrix $D^0_2$ bilden:
+\[
+    D^0_2 = \begin{pmatrix}
+        0.22 & 0.18 & 0.07 & 0.14 & 0.55 & 0.1 & 0.54 & 0.28 & 3.2 & 0 \\
+        -0.35 & -7 & -1 & -2 & -25 & -3.5 & -9 & -2.5 & -21 & -56
+    \end{pmatrix}
+\]
+        
+Die Unsicherheiten betreffen s\"amtliche Koeffizienten der Zielfunktion, sowie die N\"ahrwerte f\"ur Proteine, Fette, Calcium und Vitamin B2. Zus\"atzlich gibt es eine Schwankung im Mindestbedarf f\"ur Proteine von $10g$. Alle Werte k\"onnen den Tabellen in der Aufgabenstellung entnommen werden.
+
+Daher ist es entscheidend, die Unsicherheiten der Ziel- und Nebenfunktionen in absoluten Werten zu ermitteln. Die Unsicherheitsgr\"o\ss e kann anschlie\ss end wie folgt dargestellt werden:
+\[
+    \text{ZF} = \begin{pmatrix}
+        0.06 & \underbrace{0.027}_{\mathrm{0.18 \times 0.15}} & \underbrace{0.014}_{\mathrm{0.07 \times 0.2}} & 0.04 & 0.1 & \underbrace{0.025}_{\mathrm{0.1 \times 0.25}} & \underbrace{0.216}_{\mathrm{0.54 \times 0.4}} & 0.1 & \underbrace{1.28}_{\mathrm{3.2 \times 0.4}}
+    \end{pmatrix}        
+\]
+\[
+    \text{NF} = \begin{pmatrix}
+        \underbrace{-0.07}_{\mathrm{-0.35 \times 0.2}} & \underbrace{-0.7}_{\mathrm{-7 \times 0.1}} & \underbrace{-0.2}_{\mathrm{-1 \times 0.2}} & \underbrace{-0.1}_{\mathrm{-2 \times 0.05}} & \underbrace{-0.25}_{\mathrm{-25 \times 0.01}} & \underbrace{-0.35}_{\mathrm{-3.5 \times 0.1}} & \underbrace{-0.09}_{\mathrm{-9 \times 0.01}} & \underbrace{-0.25}_{\mathrm{-2.5 \times 0.1}} & \underbrace{-3.15}_{\mathrm{-21 \times 0.15}}
+    \end{pmatrix}
+\]
+
+Ausgehend von diesen Werten lassen sich nun alle Shift-Matrizen $D^\ell$ berechnen. Die Anzahl der Unsicherheiten betr\"agt $L = 19$, woraus sich eine identische Anzahl an Shift-Matrizen ergibt. Diese sind wie folgt:
+
+\[
+D^1_2 = \begin{pmatrix}
+    0.06 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^2_2 = \begin{pmatrix}
+    0 & 0.027 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^3_2 = \begin{pmatrix}
+    0 & 0 & 0.014 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^4_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0.04 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^5_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0.1 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^6_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0.025 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^7_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0.216 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^8_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0.1 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^9_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1.28 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^{10}_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0.07 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^{11}_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0.7 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^{12}_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0.2 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^{13}_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0.1 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^{14}_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0.25 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^{15}_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0.35 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^{16}_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0.09 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^{17}_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0.25 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^{18}_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 3.15 & 0
+\end{pmatrix}
+\]
+\[
+D^{19}_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 10
+\end{pmatrix}
+\]
 
 \newpage
 
@@ -782,4 +1002,4 @@ Dies l\"asst sich durch Anpassen der Restriktionen in den bisherigen GAMS-Dateie
 \end{tiny}
 \end{adjustwidth}
 
-\end{document}   
+\end{document}

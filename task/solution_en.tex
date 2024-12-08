@@ -2,7 +2,7 @@
 
 \usepackage[applemac]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage[ngerman]{babel}
+\usepackage[english]{babel}
 \usepackage[nospace,noadjust]{cite}
 \usepackage{eurosym}
 \usepackage{amssymb,amsmath,mathdots}
@@ -12,7 +12,6 @@
 \usepackage{hyperref}
 \usepackage{breqn}
 \usepackage{changepage}
-
 \hypersetup{
     pdftoolbar=true,
     pdfmenubar=true,
@@ -30,13 +29,15 @@
 \begin{titlepage}
     \begin{center}
         \vspace*{-80pt}
-        %\includegraphics[scale=0.25]{img/kit_logo.png}
+
+        \includegraphics[scale=0.25]{img/kit_logo.png}
 
         \vspace*{40pt}
 
-        Fakult\text{\"a}t f\text{\"u}r Wirtschaftswissenschaften \\[1ex]
-        Institut f\text{\"u}r Operations Research (IOR) \\[1ex]
-        Optimierungsans\text{\"a}tze unter Unsicherheit \\[1ex]
+        Department of Economics and Management \\[1ex]
+        Institute for Operations Research (IOR) \\[1ex]
+        Optimization under Uncertainty \\[1ex]
+
         Prof. Dr. Steffen Rebennack          
 
         \vspace*{25pt}   
@@ -48,8 +49,10 @@
         \fcolorbox{kit}{white}{
             \parbox{80mm}{
                 \begin{center}
-                    \Large{Abgabge Rechner\text{\"u}bung}\\ 
-                    \Large{Wintersemester 2024/25}
+                
+                    \Large{Excercise Submission}\\ 
+                    \Large{Winter Semester 2024/25}
+
                 \end{center}
             }
         }
@@ -58,17 +61,237 @@
 
         \normalsize
 
-        Vorname Nachname\\
-        Matr. Nr.:\\
-        Studiengang (B.Sc.)\\[4ex]
+        First Name Last Name\\
+        Student ID:\\
+        Study Program (B.Sc.)\\[4ex]
 
-        und \\[4ex]
+        and \\[4ex]
 
-        Vorname Nachname\\
-        Matr. Nr.:\\
-        Studiengang (B.Sc.)\\[4ex]
+        First Name Last Name\\
+        Student ID:\\
+        Study Program (B.Sc.)\\[4ex]
+
     \end{center}
 \end{titlepage}
+
+\newpage
+
+\section*{Solutions to Task 1}
+
+\subsection*{Task Part a}
+
+The source code can be found in the file \href{../src/r1/Aufgabe1.gms}{Aufgabe1.gms}.
+
+\subsection*{Task Part b}
+
+The corresponding execution can be viewed at \href{../results/r1/Aufgabe1.lst}{Aufgabe1.lst}. From this, it can be deduced that the optimal value is $5.169180$ Euros and the optimal point is
+\[
+\begin{pmatrix}
+\text{Apple} \\ 
+\text{Cornflakes} \\ 
+\text{Carrots} \\ 
+\text{Potatoes} \\ 
+\text{Cheese} \\ 
+\text{Milk} \\ 
+\text{Chocolate} \\ 
+\text{Spinach} \\ 
+\text{Steak}
+\end{pmatrix}^T
+=
+\begin{pmatrix}
+0 \\ 
+3 \\ 
+4 \\ 
+0.4512 \\ 
+0 \\ 
+0 \\ 
+2.0111 \\
+0 \\
+1
+\end{pmatrix}^T.
+
+\newpage
+
+\section*{Solutions to Task 2}
+
+The uncertainty set can generally be described as follows:
+
+\[
+\mathcal{U} = \left\{
+\underbrace{
+\left[
+\begin{array}{c|c}
+(c^0)^\top & d^0 \\ \hline
+A^0 & b^0
+\end{array}
+\right]
+}_{D^0}
++ \sum_{\ell=1}^L \zeta_\ell
+\underbrace{
+\left[
+\begin{array}{c|c}
+(c^\ell)^\top & d^\ell \\ \hline
+A^\ell & b^\ell
+\end{array}
+\right]
+}_{D^\ell}
+\;\middle|\; \zeta \in \mathbb{Z}
+\right\}
+\]
+
+For the task, among other things, the objective function is given by
+\[
+    \min \quad 0.22x_1 + 0.18x_2 + 0.07x_3 + 0.14x_4 + 0.55x_5 + 0.1x_6 + 0.54x_7 + 0.28x_8 + 3.2x_9
+\]
+and the second constraint is
+\[
+0.35x_1 + 7x_2 + x_3 + 2x_4 + 25x_5 + 3.5x_6 + 9x_7 + 2.5x_8 + 21x_9 \geq 56
+\]
+required.
+
+First, the second constraint must be converted to standard form. This is done by multiplying the inequality by $-1$:
+\[
+    -0.35x_1  -7x_2  -x_3  -2x_4 - 25x_5 - 3.5x_6 - 9x_7 - 2.5x_8 - 21x_9 \leq -56
+\]
+
+From the corresponding considerations, the nominal data matrix $D^0_2$ can be directly derived: 
+\[
+    D^0_2 = \begin{pmatrix}
+        0.22 & 0.18 & 0.07 & 0.14 & 0.55 & 0.1 & 0.54 & 0.28 & 3.2 & 0 \\
+        -0.35 & -7 & -1 & -2 & -25 & -3.5 & -9 & -2.5 & -21 & -56
+    \end{pmatrix}
+\]
+        
+The uncertainties affect all coefficients of the objective function, as well as the nutrient values for proteins, fats, calcium and vitamin B2. Additionally, there is a fluctuation in the minimum protein requierement of $10g$. All values can be taken from the table in the task description.
+
+Therefore, it is crucial to calculate the uncertainties of the objective and constraint functions in absolute values. The uncertainty magnitude can then be represented as follows:
+\[
+    \text{OF} = \begin{pmatrix}
+        0.06 & \underbrace{0.027}_{\mathrm{0.18 \times 0.15}} & \underbrace{0.014}_{\mathrm{0.07 \times 0.2}} & 0.04 & 0.1 & \underbrace{0.025}_{\mathrm{0.1 \times 0.25}} & \underbrace{0.216}_{\mathrm{0.54 \times 0.4}} & 0.1 & \underbrace{1.28}_{\mathrm{3.2 \times 0.4}}
+    \end{pmatrix}        
+\]
+\[
+    \text{CF} = \begin{pmatrix}
+        \underbrace{-0.07}_{\mathrm{-0.35 \times 0.2}} & \underbrace{-0.7}_{\mathrm{-7 \times 0.1}} & \underbrace{-0.2}_{\mathrm{-1 \times 0.2}} & \underbrace{-0.1}_{\mathrm{-2 \times 0.05}} & \underbrace{-0.25}_{\mathrm{-25 \times 0.01}} & \underbrace{-0.35}_{\mathrm{-3.5 \times 0.1}} & \underbrace{-0.09}_{\mathrm{-9 \times 0.01}} & \underbrace{-0.25}_{\mathrm{-2.5 \times 0.1}} & \underbrace{-3.15}_{\mathrm{-21 \times 0.15}}
+    \end{pmatrix}
+\]
+
+Based on these values, all shift matrices $D^\ell_2$ can be calculated. The amount of shift matrices corresponds to the number of uncertain coefficients, which is $L = 19$ in this case. They are calculated as follows:
+
+\[
+D^1_2 = \begin{pmatrix}
+    0.06 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^2_2 = \begin{pmatrix}
+    0 & 0.027 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^3_2 = \begin{pmatrix}
+    0 & 0 & 0.014 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^4_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0.04 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^5_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0.1 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^6_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0.025 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^7_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0.216 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^8_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0.1 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^9_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1.28 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^{10}_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0.07 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^{11}_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0.7 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^{12}_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0.2 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^{13}_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0.1 & 0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^{14}_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0.25 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^{15}_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0.35 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^{16}_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0.09 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^{17}_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0.25 & 0 & 0
+\end{pmatrix}
+\]
+\[
+D^{18}_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 3.15 & 0
+\end{pmatrix}
+\]
+\[
+D^{19}_2 = \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 10
+\end{pmatrix}
+\]
 
 \newpage
 
