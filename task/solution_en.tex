@@ -606,9 +606,9 @@ Since we are dealing with the Euclidean norm, the constraint can be reformulated
 
 The remaining steps to derive the linear equivalent were carried out analogously. The complete linear program can be found in the section \hyperref[sec:lp-equivalent-ellips]{LP-Equivalent for Ellipsoidal Uncertainty}.
 
-subsubsection*{Solution of the Linear Program}
+\subsubsection*{Solution of the Program}
 
-After deriving the linear equivalent, the linear program can be solved. The code was implemented accordingly in \href{../src/r3/Aufgabe3a.gms}{Aufgabe3a.gms}.
+After deriving the equivalent, the program can be solved. The code was implemented accordingly in \href{../src/r3/Aufgabe3b.gms}{Aufgabe3b.gms}. Since the problem is non-linear, a non-linear solver is required.
 From this, it can be concluded that the optimal solution is at the following point:
 \[
 x^* = \begin{pmatrix}
@@ -616,10 +616,10 @@ x^* = \begin{pmatrix}
     \end{pmatrix}^T
      =
      \begin{pmatrix}
-     0, 0, 0, 0, 0, 0, 0, 0, 0
+        2.484, 3, 5, 5, 0, 0.371, 1.728, 0, 1
         \end{pmatrix}
 \]
-The optimal objective function value is \EUR{0}.
+The optimal objective function value is \EUR{7.6895}.
 
 \subsubsection*{LP-Equivalent for Interval Uncertainty}
 \label{sec:lp-equivalent-interval}

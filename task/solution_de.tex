@@ -608,20 +608,20 @@ Da wir es mit der euklidischen Norm zu tun haben, kann die Nebenbedingung wie fo
 
 Die restlichen Schritte zur Herleitung des linearen \"Aquivalents wurden analog durchgef\"uhrt. Man findet das gesamte lineare Programm unter dem Abschnitt \hyperref[sec:lp-equivalent-ellips]{LP-\"Aquivalent bei Ellips-Unsicherheit}.
 
-\subsubsection*{L\"osung des linearen Programms}
+\subsubsection*{L\"osung des Programms}
 
-Nach der Herleitung des linearen \"Aquivalents kann das lineare Programm gel\"ost werden. Hierzu wurde der Code entsprechend in \href{../src/r3/Aufgabe3b.gms}{Aufgabe3b.gms} umgesetzt.
-Daraus l\"asst sich entnehmen, dass die optimale L\"osung in folgendem Punkt liegt:
+Nach der Herleitung des \"Aquivalents kann das Programm gel\"ost werden. Hierzu wurde der Code entsprechend in \href{../src/r3/Aufgabe3b.gms}{Aufgabe3b.gms} umgesetzt. Da es sich um ein nichtlineares Problem handelt, wird es mit einem entsprechenden Solver gel\"ost.
+Aus der Durchf\"uhrung l\"asst sich entnehmen, dass die optimale L\"osung in folgendem Punkt liegt:
 \[
 x^* = \begin{pmatrix}
     \text{Apfel} \\ \text{Cornflakes} \\ \text{Karotten} \\ \text{Kartoffeln} \\ \text{K\"ase} \\ \text{Milch} \\ \text{Schokolade} \\ \text{Spinat} \\ \text{Steak}
     \end{pmatrix}^T
      =
      \begin{pmatrix}
-     0, 0, 0, 0, 0, 0, 0, 0, 0
+     2.484, 3, 5, 5, 0, 0.371, 1.728, 0, 1
         \end{pmatrix}
 \]
-Der optimale Zielfunktionswert betr\"agt \EUR{0}.
+Der optimale Zielfunktionswert betr\"agt \EUR{7.6895}.
 
 \subsubsection*{LP-\"Aquivalent bei Intervall-Unsicherheit}
 \label{sec:lp-equivalent-interval}
